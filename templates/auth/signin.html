@@ -8,5 +8,16 @@
 </head>
 <body>
     <h1>Sign in page.</h1>
+    <form action="/auth/signin" method="post">
+        {% csrf_token %}
+        <label for = ""> Username </label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" Required>
+
+        <label for = ""> Password </label>
+        <input type="password" id="pass1" name="pass1" placeholder="Enter your password" Required>
+        <br>
+
+        <button type="submit">Sign in</button>
+    </form>
 </body>
 </html>
