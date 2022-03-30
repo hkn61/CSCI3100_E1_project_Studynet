@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Studynet</title>
+    <link rel="shortcut icon" href="1.jpg">
+    <link rel="stylesheet" href="style.css" />
+    <meta http-equiv="refresh" content="300">
+    <meta name="msapplication-TileColor" content="#6371C5" />
+    <meta name="theme-color" content="#6371C5" />
+  </head>
+
+  <body>
+    <div class="content-body">
+      <div class="form-wrapper">
+        <form class="bewhite" id="message" action="shopBar.php" method="get">  <!-- can change -->
+          <h1 class="text-title">Let's begin today's study!!!</h1>
+          <br/>
+
+          <div class="field-group">
+            <label class="label" for="txt-email">Email address</label>
+            <input class="input" type="email" id="txt-email" name="email" placeholder="Enter E-mail" />
+          </div>
+
+          <div class="field-group">
+            <label class="label" for="txt-password">Password</label>
+            <input class="input" type="password" id="txt-password" name="password" placeholder="Enter password" />
+          </div>
+          
+
+
+          <div class="field-group">
+            <input class="btn-submit" type="submit" value="Log In" onclick="login()" /><!-- can change -->
+          </div>
+
+        </form>
+
+        <div class="begrey">
+          <a href=register.html class="link-register">Sign Up</a>
+          <small class="link-about">What is Studynet?       <a href="homepage.html"> Back to Home </a></small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom line -->
+    <footer>
+
+      <span class="author">
+        Crafted with ❤️ by Studynet © 2022
+      </span>
+    </footer>
+    <!--  Bottom line -->
+  </body>
+  <script type="text/javascript">
+    function login(){
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;}
+  </script>
+</html>
