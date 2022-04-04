@@ -1,23 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    {% load static %}
+    <title>Studynet</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Sign in page.</h1>
-    <form action="/auth/signin" method="post">
-        {% csrf_token %}
-        <label for = ""> Username </label>
-        <input type="text" id="username" name="username" placeholder="Enter your username" Required>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <meta http-equiv="refresh" content="300">
+    <meta name="msapplication-TileColor" content="#6371C5" />
+    <meta name="theme-color" content="#6371C5" />
+  </head>
 
-        <label for = ""> Password </label>
-        <input type="password" id="pass1" name="pass1" placeholder="Enter your password" Required>
-        <br>
+  <body>
+    <div class="content-body">
+      <div class="form-wrapper">
+        <form class="bewhite" action="/auth/signin" method="post">  <!-- can change -->
+          {% csrf_token %}
+          {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+          </ul>
+          {% endif %}
+          <h1 class="text-title">Let's begin today's study!!!</h1>
+          <br/>
 
-        <button type="submit">Sign in</button>
-    </form>
-</body>
+          <div class="field-group">
+            <label class="label" for="">User name</label>
+            <input class="input" type="text" id="username" name="username" placeholder="Enter your username" Required>
+          </div>
+
+          <div class="field-group">
+            <label class="label" for="">Password</label>
+            <input class="input" type="password" id="pass1" name="pass1" placeholder="Enter your password" Required>
+          </div>
+          
+
+
+          <div class="field-group">
+            <button class="btn-submit" type="submit">Sign in</button><!-- can change -->
+          </div>
+
+        </form>
+
+        <div class="begrey">
+          <a href=/auth/signup class="link-register">Sign Up</a>
+          <small class="link-about">What is Studynet?       <a href="/"> Back to Home </a></small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom line -->
+    <footer>
+
+      <span class="author">
+        Crafted with ❤️ by Studynet © 2022
+      </span>
+    </footer>
+    <!--  Bottom line -->
+  </body>
 </html>

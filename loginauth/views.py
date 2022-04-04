@@ -50,7 +50,7 @@ def signin(request):
         username = request.POST["username"]
         password = request.POST["pass1"]
 
-        user_auth = authenticate(username=username,password=password)
+        user_auth = authenticate(username=username, password=password)
         if user_auth is not None:
             login(request, user_auth)
             fname = user_auth.first_name
@@ -58,11 +58,16 @@ def signin(request):
             return render(request, "auth/index.html", {"fname": fname})
         else:
             messages.error(request, "You have not sign up yet")
-            return redirect("../")
+            return redirect("signin")
     return render(request, "auth/signin.html")
 
 
 def signout(request):
     logout(request)
     messages.success(request, "Logged out successfully.")
-    return render(request, "home.html")
+    return redirect("../")
+
+def index(request):
+    return render(request,"auth/index.html")
+
+

@@ -4,14 +4,17 @@
 <html lang="en">
   <head>
     <title>Studynet</title>
-    <link rel="shortcut icon" href="1.jpg">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../style.css" />
+      <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 
   <body>
     <div class="content-body">
       <div class="form-wrapper">
         <form class="bewhite" id="message" >  <!-- can change action="a.php" method="get" -->
+
                 <div class="field-group">
                 <label class="label" for="txt-Comfirmation">Comfirmation</label><br/>
                 <input class="input-send" type="Comfirmation" id="txt-Comfirmation" name="Comfirmation" placeholder="Enter Comfirmation code" />
@@ -23,7 +26,7 @@
         </form>
 
         <div class="begrey">
-          <small class="link-about">What is Studynet?       <a href="homepage.html"> Back to Home </a></small>
+          <small class="link-about">What is Studynet?       <a href="../homepage.html"> Back to Home </a></small>
         </div>
       </div>
     </div>
@@ -37,25 +40,4 @@
     </footer>
     <!--  Bottom line -->
   </body>
-  <script type="text/javascript">
-    var a ;
-    function any(){}
-    function send(){
-        a = 60;
-        document.getElementById("btn").style="cursor:default";
-        document.getElementById("btn").onclick=any();
-        timeVar=setInterval(function(){setTime()},1000);
-        var email = document.getElementById("txt-Comfirmation").value;
-}
-    function setTime(){
-        document.getElementById("btn").value= a + "s";
-        a=a-1;
-        if(a<=1) {clearInterval(timeVar);
-        document.getElementById("btn").value= "Send";
-        document.getElementById("btn").onclick=send();
-        document.getElementById("btn").style="cursor:pointer";
-        }
-    }
-
-  </script>
 </html>

@@ -1,43 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    {% load static %}
+    <title>Studynet</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <meta http-equiv="refresh" content="300">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Sign up page.</h1>
-    <form action="/auth/signup" method="post">
-        {% csrf_token %}
-        <label for = ""> Username </label>
-        <input type="text" id="username" name="username" placeholder="Create a username (letters and numbers)" Required>
+  </head>
 
-        <br>
-        <label for = ""> First name </label>
-        <input type="text" id="firstname" name="firstname" placeholder="Enter your First Name" Required>
-        <br>
-        <label for = ""> Last Name </label>
-        <input type="text" id="lastname" name="lastname" placeholder="Enter your Last Name" Required>
-        <br>
+  <body>
+    <div class="content-body">
+      <div class="form-wrapper">
+        <form class="bewhite" id="message" action="/auth/signup" method="post">  <!-- can change -->
+          {% csrf_token %}
+          <h1 class="text-title">Studynet Sign Up</h1>
+          <br/>
 
-        <label for = ""> Email address </label>
-        <input type="email" id="email" name="email" placeholder="Enter your email address" Required>
-        <br>
+          <div class="field-group">
+            <label class="label" for="">User name</label>
+            <input class="input" type="text" id="username" name="username" placeholder="Create a username (letters and numbers)" Required>
+          </div>
 
-        <label for = ""> Password </label>
-        <input type="password" id="pass1" name="pass1" placeholder="Create a password" Required>
-        <br>
+          <div class="field-group">
+            <label class="label" for="">First name</label>
+            <input class="input" type="text" id="firstname" name="firstname" placeholder="Enter your First Name" Required>
+          </div>
 
-        <label for = ""> Confirm your password </label>
-        <input type="password" id="pass2" name="pass2" placeholder="Confirm your password" Required>
-        <br>
+          <div class="field-group">
+            <label class="label" for="">Last name</label>
+            <input class="input" type="text" id="lastname" name="lastname" placeholder="Enter your Last Name" Required>
+          </div>
 
-        <label for = ""> Email Confirmation </label>
-        <input type="text" id="email_auth_token" name="email_auth_token" placeholder="Please fill in the confirmation code" Required>
-        <br>
+          <div class="field-group">
+            <label class="label" for="">Email address</label>
+            <input class="input" type="email" id="email" name="email" placeholder="Enter your email address" Required>
+          </div>
 
-        <button type="submit" >Sign up</button>
-    </form>
-</body>
+          <div class="field-group">
+            <label class="label" for="">Password</label>
+            <input class="input" type="password" id="pass1" name="pass1" placeholder="Create a password" Required>
+          </div>
+
+          <div class="field-group">
+            <label class="label" for=""> Confirm your password</label>
+            <input class="input" type="password" id="pass2" name="pass2" placeholder="Confirm your password" Required>
+          </div>
+
+
+          <div class="field-group">
+            <button class="btn-submit" type="submit">Sign up</button><!-- can change -->
+          </div>
+        </form>
+
+        <div class="begrey">
+          <small class="link-about">What is Studynet?  <a href="/"> Back to Home </a></small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom line -->
+    <footer>
+
+      <span class="author">
+        Crafted with ❤️ by Studynet © 2022
+      </span>
+    </footer>
+    <!--  Bottom line -->
+  </body>
 </html>
