@@ -21,4 +21,5 @@ urlpatterns = [
     path('',views.home,name='home'),
     path('admin/', admin.site.urls),
     path('auth/',include("loginauth.urls")),
+    path('chat/',include("chat.urls")),
 ]
