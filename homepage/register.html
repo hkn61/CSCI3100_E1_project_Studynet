@@ -34,11 +34,6 @@
             <input class="input" type="password2" id="txt-password2" name="password2" placeholder="Enter password again" />
           </div>
 
-          <div class="field-group">
-            <label class="label" for="txt-Comfirmation">Comfirmation</label><br/>
-            <input class="input-send" type="Comfirmation" id="txt-Comfirmation" name="Comfirmation" placeholder="Enter Comfirmation code" />
-            <input class="btn-send" type="submit" value="Send" onclick="send()" />
-          </div>
 
           <div class="field-group">
             <input class="btn-submit" type="submit" value="Sign up" onclick="signup()" /><!-- can change -->
@@ -61,13 +56,14 @@
     <!--  Bottom line -->
   </body>
   <script type="text/javascript">
-    function send(){}
     function signup(){
+    window.open("confirm.html");
     var username = document.getElementById("txt-username").value;
     var email = document.getElementById("email").value;
     var password = document.getElementById("txt-password1").value;
     var password = document.getElementById("txt-password2").value;
-    var email = document.getElementById("txt-Comfirmation").value;}
 
-  </script>
+    }
+
+  </script>    <!-- can change -->
 </html>
