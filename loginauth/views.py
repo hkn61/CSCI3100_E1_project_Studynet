@@ -1,14 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from csci3100 import settings
 import random
 import string
+from csci3100.settings import MONGO_CLIENT
 # Create your views here.
 
-
+USER_AUTH_DB = MONGO_CLIENT['csci3100']['user_auth']
 def signup(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -17,6 +19,7 @@ def signup(request):
         email = request.POST["email"]
         pass1 = request.POST["pass1"]
         pass2 = request.POST["pass2"]
+        email_ver = request.POST["email_ver"]
 
         if User.objects.filter(username=username):
             messages.error(request, "Username already exists.")
@@ -24,25 +27,23 @@ def signup(request):
         if User.objects.filter(email=email):
             messages.error(request, "Email already exists.")
             return redirect("signup")
+        if pass1 != pass2:
+            messages.error(request, "Passwords are not the same.")
+            return redirect("signup")
+
+        real_auth_token = USER_AUTH_DB.find({"username":username})[0]["token"]
+        if email_ver != real_auth_token:
+            messages.error(request, "Invalid confirmation code")
+            return redirect("signup")
 
         newUser = User.objects.create_user(username=username, email=email, password=pass1)
         newUser.first_name = fname
         newUser.last_name = lname
 
-        newUser.save()
         messages.success(request, "Your account has been successfully created.")
+        newUser.save()
 
-        # Email
-        ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-
-        subject = "Welcome to StudyNet"
-        message = "Hello" + username + "!\n" + "Welcome to StudyNet."
-        from_email = settings.EMAIL_HOST_USER
-        to_list = [newUser.email]
-        send_mail(subject, message, from_email,to_list, fail_silently=True)
-
-        return redirect('signin')
-
+        return render(request, "auth/signin.html")
     return render(request, "auth/signup.html")
 
 def signin(request):
@@ -50,7 +51,7 @@ def signin(request):
         username = request.POST["username"]
         password = request.POST["pass1"]
 
-        user_auth = authenticate(username=username,password=password)
+        user_auth = authenticate(username=username, password=password)
         if user_auth is not None:
             login(request, user_auth)
             fname = user_auth.first_name
@@ -58,11 +59,36 @@ def signin(request):
             return render(request, "auth/index.html", {"fname": fname})
         else:
             messages.error(request, "You have not sign up yet")
-            return redirect("../")
+            return redirect("signup")
     return render(request, "auth/signin.html")
 
 
 def signout(request):
     logout(request)
     messages.success(request, "Logged out successfully.")
-    return render(request, "home.html")
+    return redirect("../")
+
+def index(request):
+    return render(request,"auth/index.html")
+
+def send_email(request):
+    username = request.POST["name"]
+    email = request.POST["email"]
+    # Email
+    ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    subject = "Welcome to StudyNet"
+    message = f"Welcome to StudyNet, {username}. Your email verification code is {ran}."
+    from_email = settings.EMAIL_HOST_USER
+    to_list = [email]
+
+    if USER_AUTH_DB.find({"username":username}) is not None:
+        USER_AUTH_DB.delete_many({"username":username})
+
+
+    USER_AUTH_DB.insert({"username": username, "token": ran, })
+    send_mail(subject, message, from_email, to_list, fail_silently=True)
+    return HttpResponse()
+
+
+
+
