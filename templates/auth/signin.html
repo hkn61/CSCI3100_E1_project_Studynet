@@ -18,11 +18,11 @@
         <form class="bewhite" action="/auth/signin" method="post">  <!-- can change -->
           {% csrf_token %}
           {% if messages %}
-          <ul class="messages">
-              {% for message in messages %}
-              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-              {% endfor %}
-          </ul>
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</li>
+                  {% endfor %}
+              </ul>
           {% endif %}
           <h1 class="text-title">Let's begin today's study!!!</h1>
           <br/>

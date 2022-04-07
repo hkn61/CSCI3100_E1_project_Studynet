@@ -4,6 +4,7 @@
     {% load static %}
     <title>Studynet</title>
     <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script src="{% static 'signup.js' %}"></script>
     <meta http-equiv="refresh" content="300">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,6 +16,13 @@
       <div class="form-wrapper">
         <form class="bewhite" id="message" action="/auth/signup" method="post">  <!-- can change -->
           {% csrf_token %}
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
           <h1 class="text-title">Studynet Sign Up</h1>
           <br/>
 
@@ -48,9 +56,17 @@
             <input class="input" type="password" id="pass2" name="pass2" placeholder="Confirm your password" Required>
           </div>
 
+          <div class="field-group">
+            <label class="label" for="">Comfirmation</label>
+            <span>
+            <input class="input" type="text" id="email_ver" name="email_ver" placeholder="Enter Comfirmation code" Required>
+            <input class="btn-send" style="width: 15%" onclick="email_r()" value="Send">
+            </span>
+          </div>
+
 
           <div class="field-group">
-            <button class="btn-submit" type="submit">Sign up</button><!-- can change -->
+            <button class="btn-submit" type="submit" name="signup">Sign up</button><!-- can change -->
           </div>
         </form>
 
