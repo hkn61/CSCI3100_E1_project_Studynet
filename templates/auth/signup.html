@@ -15,7 +15,7 @@
     <div class="content-body">
       <div class="form-wrapper">
         <form class="bewhite" id="message" action="/auth/signup" method="post">  <!-- can change -->
-          {% csrf_token %}
+
           {% if messages %}
               <ul class="messages">
                   {% for message in messages %}
@@ -57,6 +57,7 @@
           </div>
 
           <div class="field-group">
+            {% csrf_token %}
             <label class="label" for="">Comfirmation</label>
             <span>
             <input class="input" type="text" id="email_ver" name="email_ver" placeholder="Enter Comfirmation code" Required>

@@ -10,6 +10,7 @@ function email_r(e) {
     formData.append('csrfmiddlewaretoken', csrftoken);
   console.log(formData);
     fetch("send_email", {
+        headers:{'X-CSRFToken': csrftoken},
         method: 'POST',
         body: formData,
     })
