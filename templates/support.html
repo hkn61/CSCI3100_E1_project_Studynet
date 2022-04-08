@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+      {% load static %}
     <title>Studynet</title>
-    <link rel="shortcut icon" href="1.jpg">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="{% static '1.jpg'%}">
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
     <meta http-equiv="refresh" content="30">
     <meta name="msapplication-TileColor" content="#6371C5" />
     <meta name="theme-color" content="#6371C5" />
@@ -15,11 +16,10 @@
   <body>  
     <ul class = "list-menu">
         <b id = "header" class = "header" >Studynet</b>
-
-        <li><a href="homepage3.html">Support Studynet</a> </li>
-        <li><a href="login.html">Begin Study!</a> </li>
-        <li><a href="homepage2.html">About Our Team</a> </li>
-        <li><a href="homepage.html">Homepage</a> </li>
+        <li><a href="auth/signin">Begin Study!</a> </li>
+        <li><a href="support">Support Studynet</a> </li>
+        <li><a href="about">About Our Team</a> </li>
+        <li><a href="/">Homepage</a> </li>
     </ul>   
 
 
@@ -50,10 +50,4 @@ Your support helps us to do the following:
     </footer>
     <!--  Bottom line -->
   </body>
-  <script type="text/javascript">
-    function login(){
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;}
-
-  </script>
 </html>
