@@ -33,8 +33,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         print('inside ChatConsumer disconnect()')
         # send offline broadcast
-        # offline_data = {'username': self.username, 'online': False, 'type': 'offline'}
-        # await self.channel_layer.group_send(self.room_group_name, offline_data)
+        offline_data = {'username': self.username, 'online': False, 'type': 'offline'}
+        await self.channel_layer.group_send(self.room_group_name, offline_data)
         # await self.channel_layer.group_discard('server_announcements', self.channel_name)
         # Leave room group
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
@@ -61,17 +61,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         print('inside ChatConsumer chat_message()', event)
         await self.send(text_data=json.dumps(event))
-
-        # TODO link with celery later
         # save to database
         message = event.get('message') or ''
         if message:
             user_name = event['username']
             room_name = self.scope['url_route']['kwargs']['room_name']
             timestamp = datetime.datetime.utcnow()
-            chat_data = {'user': user_name, 'chat_room': room_name, 'message': {'text': message},
-                         'timestamp': timestamp}
-            status, inserted_id = await save_to_database('chat_message', 'account_1', chat_data)
+            chat_data = {'group_name': room_name, 'sender': user_name, 'time': timestamp, 'message': {'text': message}}
+            status, inserted_id = await save_to_database('chat', 'chat_message', chat_data)
             if status:
                 print('chat saved to db successfully ====>', inserted_id)
             else:

@@ -222,7 +222,7 @@ html {
     width: 500px;
     height: 330px;
     margin-left: 15%;
-    border:5px#ff9966b7 solid;
+    border:5px #ff9966b7 solid;
     border-radius:30px;
    }
 
@@ -232,7 +232,7 @@ html {
   background: linear-gradient(to right,#ff9966b7, rgba(0, 0, 255, 0.692) );
   -webkit-background-clip: text;
   color: transparent;
-  border:5px#210be965 solid;
+  border:5px #210be965 solid;
   width:550px;
   height: 330px;
   line-height: 65px;
@@ -243,7 +243,6 @@ html {
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.content-table{
-  visibility: visible;
-}
 
+#head{ margin:10px auto} 
+#head img{ border-radius:50%} 
