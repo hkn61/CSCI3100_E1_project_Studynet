@@ -18,7 +18,7 @@ def add_a_group(db, collection, group_name, user_name):
     filter = { 'group_name': group_name }
     entry = MONGO_CLIENT[db][collection].find(filter)
     # ??? update member number
-    member_num = entry['member_num'] + 1 
+    member_num = entry[0]['member_num'] + 1 
     r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'member_num': member_num}}, upsert = True)
     return True, r.inserted_id
 
@@ -30,6 +30,7 @@ def group(request):
 
 def groupadd(request):
     # ??? add a group
+    #if
     username = request.session.get('username') or ''
     if request.method == "POST":
         group_name = request.POST["groupname"]
@@ -76,7 +77,7 @@ def groupsearch(request):
     username = request.session.get('username')
     listquery = {'user_name': username}
     user_record = MONGO_CLIENT['chat']['friend'].find(listquery)
-    added_group_list = user_record['group_list']
+    added_group_list = user_record[0]['group_list']
     # generate (partial) matched result
     for record in result:
         if not record['private']:
@@ -97,7 +98,7 @@ def groupchat(request, room_name):
     sort_fields = [('time', -1)]
     previous_messages = []
     for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
-        chat['_id'] = str(chat['_id'])
+        chat['sender'] = str(chat['sender'])
         chat['time'] = chat['time']
         chat['message'] = chat['message']['text']
         previous_messages.append(chat)
@@ -115,14 +116,17 @@ def add_friend(request):
 
 
 def grouplist(request):
-    username = request.session.get('username') or ''
+    #username = request.session.get('username') or ''
+    username = "test"
     filter = {'user_name': username}
     user_record = MONGO_CLIENT['chat']['friend'].find(filter)
-    group_list = user_record['group_list']
-    friend_list = user_record['friend_list']
+    group_list = user_record[0]['group_list']
+    friend_list = user_record[0]['friend_list']
+    print(group_list)
 
     return render(request, 'chat/grouplist.html', {
         'group_list': group_list,
         'friend_list': friend_list,
-        'current_user': request.session['username']
+        #'current_user': request.session['username']
+        'current_user': "test"
     })
