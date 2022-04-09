@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    {% load static %}
     <title>Studynet</title>
     <link rel="shortcut icon" href="1.jpg">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
     <meta http-equiv="refresh" content="300">
     <meta name="msapplication-TileColor" content="#6371C5" />
     <meta name="theme-color" content="#6371C5" />
@@ -12,12 +13,13 @@
   <body>
     <div class="content-body">
       <div class="form-wrapper">
-        <form class="bewhite" id="message" action="shopBar.php" method="get">  <!-- can change -->
+
+        <form class="bewhite" id="message" action="/user/profile" method="get">  <!-- can change -->
           <h1 class="text-title">Personal Information</h1>
           <br/>
 
           <div class="field-group">
-            <div id="head" ><img src="1.bmp" onclick="chooseimage()"  alt="selfie" width=300 height=300 /></div> 
+            <div id="head" ><img src='/{{image}}' alt="selfie" width=300 height=300 /></div> 
           </div>
 
           <div class="field-group">
@@ -28,21 +30,33 @@
             <label class="label" >User Name:</label>
             <p id="user_name"></p>
           </div>
+          
+        </form>
+
+        <form class="bewhite" id="message" action="/user/updatephoto" method="post">  <!-- can change -->
+          {% csrf_token %}
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+
           <div class="field-group">
-            <label class="label" >Birthday</label>
-            <p id="birthday"></p>
-          </div>
-          <div class="field-group">
-            <label class="label" >Personal Description:</label>
-            <p id="personal_description"></p>
+            <label class="label" for="">Upload a new profile photo</label>
+            <input class="form-control" type="file" id="image" name="image">
           </div>
 
+          <div class="field-group">
+            <button class="btn-submit" type="submit" name="update">Update</button>
+          </div>
 
         </form>
 
         <div class="begrey">
-          <a href=change_text.html class="link-register">Change Personal information</a>
-          <small class="link-about">Notice:Click the head portrait to change it.</small>
+          <a href=changepwd class="link-register">Change your password</a>
+          <small class="link-about">Notice: Click the head portrait to change it.</small>
         </div>
       </div>
     </div>
@@ -56,11 +70,4 @@
     </footer>
     <!--  Bottom line -->
   </body>
-  <script type="text/javascript">
-    document.getElementById("email_text").innerHTML = "rt_vcoffice@cuhk.edu.hk"
-    document.getElementById("user_name").innerHTML = "DUAN Chongzhi"
-    document.getElementById("birthday").innerHTML = "1951/05/03"
-    document.getElementById("personal_description").innerHTML = "Vice-Chancellor  President Lee Quo Wei and Lee Yick Hoi Lun Professor of Tissue Engineering and Regenerative Medicine"
-    function chooseimage(){}
-  </script>
 </html>

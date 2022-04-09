@@ -64,7 +64,7 @@ def groupcreate(request):
         # add the new group to the group list of the group creater
         MONGO_CLIENT['chat']['friend'].update_one(user_filter, {'$push': {'group_list': group_name}}) 
 
-    return render(request, 'chat/groupadd.html', {})
+    return render(request, 'chat/groupcreate.html', {})
 
 
 def groupsearch(request):
@@ -72,13 +72,19 @@ def groupsearch(request):
     myquery = { "group_name": { "$regex": ".*" + group_name + ".*" } }
     result = MONGO_CLIENT['chat']['group'].find(myquery)
     res_group_list = []
+
+    username = request.session.get('username')
+    listquery = {'user_name': username}
+    user_record = MONGO_CLIENT['chat']['friend'].find(listquery)
+    added_group_list = user_record['group_list']
     # generate (partial) matched result
     for record in result:
         if not record['private']:
             res_group_list.append(record['group_name'])
 
+    result_group_list = [i for i in res_group_list if i not in added_group_list]
     return render(request, 'chat/groupadd.html', {
-        'res_group_list': res_group_list
+        'res_group_list': result_group_list
     })
 
 
@@ -103,6 +109,9 @@ def groupchat(request, room_name):
         'current_user': request.session['username']
     })
 
+
+def add_friend(request):
+    username = request.session.get('username') or ''
 
 
 def grouplist(request):

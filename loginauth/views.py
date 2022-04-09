@@ -8,9 +8,12 @@ from csci3100 import settings
 import random
 import string
 from csci3100.settings import MONGO_CLIENT
+from user_profile.models import UserModel
 # Create your views here.
 
 USER_AUTH_DB = MONGO_CLIENT['csci3100']['user_auth']
+FRIEND_DB = MONGO_CLIENT['chat']['friend']
+
 def signup(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -42,6 +45,14 @@ def signup(request):
 
         messages.success(request, "Your account has been successfully created.")
         newUser.save()
+
+        FRIEND_DB.insert({"user_name": username, "friend_list": [], "group_list":[]})
+
+        user = UserModel()
+        user.username = username
+        user.email = email
+        #user.image = 'static/default.png'
+        user.save()
 
         return render(request, "auth/signin.html")
     return render(request, "auth/signup.html")
