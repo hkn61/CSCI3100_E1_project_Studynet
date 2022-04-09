@@ -65,7 +65,10 @@ ROOT_URLCONF = 'csci3100.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["templates"],
+        'DIRS': [
+            "templates",
+            # "vue_bb/dist",
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,6 +139,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static/",
+    # BASE_DIR / "vue_bb/dist/"
 
 ]
 ASGI_APPLICATION = 'chat.routing.application'
