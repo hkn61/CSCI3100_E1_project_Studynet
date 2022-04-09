@@ -1,0 +1,175 @@
+{% extends "chat/group.html" %}
+
+{% block content %}
+    <style>
+        
+        .title{
+        color: #a8b3be;
+        }
+        .list {
+        
+        width: 50%;
+        padding: 0 30px;
+        left: 20%;
+        display: inline-block;
+        }
+
+        /* Remove extra left and right margins, due to padding in columns */
+        .row {
+        margin: 0 -5px;
+        padding: 0 20px 0 0;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+        .listItem-friend {
+        background: #E3D3d4;
+        border-radius: 10px;
+        height: 75px;
+        width: 350px;
+        left: 20%;
+        margin-left:20%;
+        padding: 8px 15px;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        text-align: left;
+        }
+        .listItem-group {
+        background: #d0cdcf;
+        border-radius: 10px;
+        height: 75px;
+        width: 350px;
+        left: 20%;
+        margin-left:20%;
+        padding: 20px 20px;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        text-align: left;
+        }
+        .listItem-friend:hover{
+        background: #baa4b6;
+        }
+        .listItem-group:hover{
+        background: #adb9bf;
+        }
+        /* Style the counter cards */
+        .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+        padding: 16px;
+        text-align: center;
+        background-color: #f1f1f1;
+        }
+        @media screen and (max-width: 1000px) {
+        .list {
+            width: 50%;
+            padding: 0 30px;
+            left: 20%;
+            display: block;
+        }
+        }
+        .photo{
+            width: 60px;
+            float: left;
+
+            border-radius: 50%;
+
+        }
+        
+        .info{
+            display:inline-block;
+            margin-left: 20px;
+            margin-top: 10px;;
+            text-align:left;
+        }
+        .info-name{
+            font-size: 25px;
+            display:inline-block;
+
+        }
+        .info-ID{
+            color: gray;
+            font-size:20px;
+            display:inline-block;
+            margin-left: 20px;
+
+        }
+    </style>
+
+    
+        <p><br></p>
+        
+        <h1 class="title" >StudyNet - Friends/Groups List</h1>
+        
+        <div id = "app">
+            <h1>[[message]]</h1>
+            <div class="list">
+                <p><br></p>
+                <h1 >My friends</h1>
+                <div class="listItem-friend"  @click="enterFriendChat(friend)"  v-for="friend in friend_list " :key="friend.ID">
+                  <!--<img class = "photo" :src="require('../../assets/'+friend.photo )" />-->
+                  <div class = "info">
+                    <p class="info-name">[[friend.name]]</p>
+                    <p class="info-ID">ID: [[friend.ID]]</p>
+                  </div>
+                </div> 
+            </div>
+            <div class="list">
+                <p><br></p>
+                <h1>My groups</h1>
+                <div class="listItem-group" v-for="group in group_list " :key="group.ID">
+                  <p class="info-name">[[group.name]]</p>
+                  <p class="info-ID">ID: [[group.ID]]</p>
+                </div>
+            </div>
+        </div>
+          
+
+   
+    {{ current_user|json_script:"current_user" }}
+    {{ group_list|json_script:"group_list" }}
+    {{ friend_list|json_script:"friend_list" }}
+    
+
+
+  <script>
+    let current_user = JSON.parse(document.getElementById('current_user').textContent);
+    let group_list = JSON.parse(document.getElementById('group_list').textContent);
+    let friend_list = JSON.parse(document.getElementById('friend_list').textContent);
+    
+    const app =  Vue.createApp({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        data() {
+            return {
+                current_user: current_user,
+                friend_list: friend_list,
+                group_list: group_list,
+            }
+        },
+        methods: {
+            enterFriendChat(friend){
+                console.log(friend)
+                chatSocket.send(JSON.stringify({roomName: friend.ID}))
+
+                //this.friend_list.push({ 'name': 'Wendy', 'ID': 123456, 'photo': 'photo1.jpg' })
+            }
+
+            
+        }
+    });
+    app.mount('#app');
+
+      //document.getElementById("listItem-friend").onclick =  function (e){
+      //  console.log(e);
+      //  friend_list.push({ 'name': 'Wendy', 'ID': 123456, 'photo': 'photo1.jpg' });
+      //console.log(friend_list);
+      //}
+    
+      
+  </script>
+
+{% endblock %}

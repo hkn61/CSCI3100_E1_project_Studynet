@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      <!--include Bootstrap CDN-->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+      <!--font-->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Redressed&family=Ubuntu&display=swap" rel="stylesheet">
+      
+      <!--include Vue CDN-->
+      <script src="https://unpkg.com/vue@3"></script>
+
+      <style>
+          body {
+          font-family: 'Ubuntu', sans-serif;
+          /* font-family: Avenir, Helvetica, Arial, sans-serif;*/
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-align: center;
+          color: #2c3e50;
+          }
+
+          nav {
+          padding: 100px;
+          }
+
+          nav a {
+          font-weight: bold;
+          color: #2c3e50;
+          }
+
+          nav a.router-link-exact-active  {
+          color: lightcoral !important;
+          }
+
+          .sideBar {
+          width: 150px;
+              height: 600px;
+              padding: 20px;
+          position: absolute;
+          }
+          .sideBar-item{
+          height: 33%;
+          /*border-top: 2px solid lightgray;*/
+          border-bottom: 2px solid lightgray;
+          border-right: 2px solid lightgray;
+          vertical-align: middle;
+          }
+          .sideBsr-item p{
+          vertical-align: middle;
+          }
+          .sideBar-item3{
+          height: 33%;
+          text-align: center;
+          /*border-top: 2px solid lightgray;*/
+          border-right: 2px solid lightgray;
+          }
+          .groupMain {
+          margin-left: 150px;
+          padding-right: 5%;
+          }
+          .title{
+          color: #a8b3be;
+          }
+          .list {
+          
+          width: 50%;
+          padding: 0 30px;
+          left: 20%;
+          display: inline-block;
+          }
+
+          /* Remove extra left and right margins, due to padding in columns */
+          .row {
+          margin: 0 -5px;
+          padding: 0 20px 0 0;
+          }
+
+          /* Clear floats after the columns */
+          .row:after {
+          content: "";
+          display: table;
+          clear: both;
+          }
+          .listItem-friend {
+          background: #E3D3d4;
+          border-radius: 10px;
+          height: 75px;
+          width: 350px;
+          left: 20%;
+          margin-left:20%;
+          padding: 8px 15px;
+          margin-top: 20px;
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+          text-align: left;
+          }
+          .listItem-group {
+          background: #d0cdcf;
+          border-radius: 10px;
+          height: 75px;
+          width: 350px;
+          left: 20%;
+          margin-left:20%;
+          padding: 20px 20px;
+          margin-top: 20px;
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+          text-align: left;
+          }
+          .listItem-friend:hover{
+          background: #baa4b6;
+          }
+          .listItem-group:hover{
+          background: #adb9bf;
+          }
+          /* Style the counter cards */
+          .card {
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+          padding: 16px;
+          text-align: center;
+          background-color: #f1f1f1;
+          }
+          @media screen and (max-width: 1000px) {
+          .list {
+              width: 50%;
+              padding: 0 30px;
+              left: 20%;
+              display: block;
+          }
+          }
+          .photo{
+              width: 60px;
+              float: left;
+
+              border-radius: 50%;
+
+          }
+          
+          .info{
+              display:inline-block;
+              margin-left: 20px;
+              margin-top: 10px;;
+              text-align:left;
+          }
+          .info-name{
+              font-size: 25px;
+              display:inline-block;
+
+          }
+          .info-ID{
+              color: gray;
+              font-size:20px;
+              display:inline-block;
+              margin-left: 20px;
+
+          }
+      </style>
+    </head>
+    <body>
+      <nav class="navbar  navbar-light bg-light">
+          <router-link to="/" class= "nav-item">Other Pages</router-link> 
+          <router-link to="/group" class="nav-item">Group Chat Page</router-link>
+      </nav>
+      
+      <div class="sideBar"  >
+          <div  class="sideBar-item" onclick="location.href='/chat/groupadd';"><p><br><br><br><i class="bi bi-person-plus-fill" style="font-size: 30px"></i><br>Add</p></div>
+          <div  class="sideBar-item" onclick="location.href='/chat/grouplist';"><p><br><br><br><i class="bi bi-card-list" style="font-size: 30px"></i><br>List</P></div>
+          <div  class="sideBar-item3" onclick="location.href='/chat/groupchat';"><p><br><br><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Chat</P></div>
+          
+        
+      </div>
+      <div class="groupMain">
+          {% block content %}
+
+          {% endblock %}
+
+      </div>
+    <!--
+    <footer>
+
+        <span class="author">
+          Crafted with ❤️ by Studynet © 2022
+        </span>
+      </footer>
+    -->
+    </body>
+
+    <script>
+      var chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
+    </script>
+</html>
+

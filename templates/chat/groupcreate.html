@@ -1,0 +1,26 @@
+{% extends "chat/groupadd.html" %}
+
+{% block form %}
+
+<h1>Hello</h1>
+<div class="backdrop" >
+    <div class = "form" >
+        <form action="/chat/groupcreate" method="post">
+            {% csrf_token %}
+            <label>Group Name: <br></label>
+            <input type="text" required name="groupname">
+
+            <label>Group Description: </label>
+            <input type="text" required name="description">
+
+            <p></p>
+            <input type="checkbox" name="private" >
+            <label> Set to be private</label>
+
+            <button type="submit">Create</button>
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}
