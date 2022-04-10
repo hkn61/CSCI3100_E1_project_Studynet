@@ -12,7 +12,9 @@ from .models import UserModel
 # Create your views here.
 
 def profile(request):
-    username = request.session.get('username') or ''
+    username = ''
+    if request.user.is_authenticated:
+        username = request.user
     image = UserModel.objects.filter(username=username)
     return render(request, "user/profile.html", {
         "profile": image,
@@ -34,8 +36,10 @@ def updatephoto(request):
 
 
 def changepwd(request):
+    username = ''
+    if request.user.is_authenticated:
+        username = request.user
     if request.method == "POST":
-        username = request.POST["username"]
         pass0 = request.POST["pass0"]
         pass1 = request.POST["pass1"]
         pass2 = request.POST["pass2"]
