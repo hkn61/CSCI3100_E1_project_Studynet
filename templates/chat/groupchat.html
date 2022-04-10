@@ -2,24 +2,32 @@
 
 {% block content %}
     <style>
-        .sideBar-item-bottum{
-            background: #c4dad8;
+        .title{
+            padding-top: 2vh;
+            padding-bottom: 2vh;
+        }
+        .sideBar-item-bottom{
+        background: #c4dad8;
         }
         .people-list {
-        
-        width: 280px;
+        /*display: none;*/
+        width: 250px;
         height: 450px;
-        padding: 20px;
+        padding-right: 20px;
 
-    position: absolute;
-
-
+        position: absolute;
+        border: 2px solid gray;
     }
 
-
+    .chat{
+        border-radius: 3px;
+        background: rgba(248, 250, 251, 0.7);
+        border: 2px solid gray;
+    }
     .people-list .chat-list{
         overflow-y: scroll;
         height: 200px;
+        border: 2px solid gray;
     }
     .people-list .chat-list li {
         padding: 10px 15px;
@@ -70,15 +78,15 @@
 
     }
     .chat-block{
-        margin-left: 280px;
-        padding: 30px 30px 20px;
-        border-bottom: 2px solid white;
-        height: 500px;
+        margin-left: 250px;
+        border: 2px solid gray;
+        border-bottom: 2px solid gray;
+        height: 77vh;
     }
     .chat-header {
-        padding: 15px 20px;
-        border-bottom: 2px solid #f4f7f6;
-        height: 70px;
+        padding: 0px 0px;
+        border: 2px solid gray;
+        height: 10vh;
     }
 
     .chat-header img {
@@ -93,9 +101,9 @@
     }
 
     .chat-history {
-        border-bottom: 2px solid white;
+        border-bottom: 2px solid grey;
         overflow-y: scroll;
-        height: 330px;
+        height: 60vh;
     }
 
     .chat-history ul {
@@ -188,7 +196,8 @@
         left: 93%
     }
     .chat-message {
-        padding: 20px
+        padding: 0px;
+        height: 7vh;
     }
     .text-right{
         margin-right:10px;
@@ -206,6 +215,7 @@
                             <div class="name"></div>
                         </div>
                 </div>  
+                <!--
                 <div class="chat-list">
                     <div class="clearfix" v-for="friend in friends " :key="friend.ID">
                         <img :src="require('../../assets/'+friend.photo )">
@@ -217,6 +227,7 @@
                     
                     
                 </div>
+-->
                 <div class="clearfix clearfix-title">
                         <div class="about">
                             <div class="name"></div>
@@ -286,9 +297,9 @@
         <div class="chat-message">
                     <div class="input-group mb-0">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="bi bi-send-fill"></i></span>
+                            <span class="input-group-text" @click="clickSend"><i class="bi bi-send-fill"></i></span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Enter text here...">                                    
+                        <input v-model="myInput" @keyup.enter="clickSend" type="text" class="form-control" placeholder="Enter text here...">                                    
                     </div>
                 </div>
         </div>
@@ -303,35 +314,15 @@
 
     let room_name = JSON.parse(document.getElementById('room_name').textContent);
     let prev_messages = JSON.parse(document.getElementById('prev_messages').textContent);
-    const app =  Vue.createApp({
-        delimiters: ['[[', ']]'],
-        el: '#app',
-        
-        data() {
-            return {
-                
-                room_name: room_name,
-                prev_messages: prev_messages,
-            }
-        },
-        methods: {
-            enterFriendChat(friend){
-                console.log(friend)
-                chatSocket.send(JSON.stringify({roomName: friend.ID}))
+    
+    
+     /*
+    
 
-            }
-
-            
-        }
-    });
-    app.mount('#app');
-    /*
-    let room_name_json = 
-    var chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name_json + '/');
     chatSocket.onmessage = function (e) {
     var data = JSON.parse(e.data);
     var message = data.message;
-    var typing = data.typing;
+    /*var typing = data.typing;
     if (typing) {
         var userName = data.username;
         var outOfFocus = data.outoffocus;
@@ -343,37 +334,20 @@
             }
         }
     }
-    if (message) {
-        document.querySelector('#chat-log').value += (message + '\n');
-    }
+        if (message) {
+            document.querySelector('#chat-log').value += (message + '\n');
+        }
     };
 
     chatSocket.onclose = function (e) {
-    console.error('Chat socket closed unexpectedly');
+        console.error('Chat socket closed unexpectedly');
     };
 
-    //<!-- ############################# javascript events ############################# -->
-
-    document.querySelector('#chat-message-input').focus();
     document.querySelector('#chat-message-input').onkeyup = function (e) {
     if (e.keyCode === 13) {  // enter, return
         document.querySelector('#chat-message-submit').click();
-        chatSocket.send(JSON.stringify({
-            username: currentUser,
-            typing: true,
-            outoffocus: true,
-            timestamp: getTimeStamp()
-        }));
-    } else {
-        chatSocket.send(JSON.stringify({
-            username: currentUser,
-            typing: true,
-            outoffocus: false,
-            timestamp: getTimeStamp()
-        }));
-    }
     };
-
+/*
     document.querySelector('#chat-message-input').onblur = function (e) {
     console.log('on focus out event generated');
     chatSocket.send(JSON.stringify({
@@ -384,15 +358,68 @@
     };
 
     document.querySelector('#chat-message-submit').onclick = function (e) {
-    var messageInputDom = document.querySelector('#chat-message-input');
-    var message = messageInputDom.value;
-    chatSocket.send(JSON.stringify({
-        message: message,
-        typing: true,
-        timestamp: getTimeStamp()
-    }));
-    messageInputDom.value = '';
-    };*/
+        var messageInputDom = document.querySelector('#chat-message-input');
+        var message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            message: message,
+            timestamp: getTimeStamp()
+        }));
+        messageInputDom.value = '';
+    };
+*/
+    const app =  Vue.createApp({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        
+        data() {
+            return {
+                room_name: room_name,
+                prev_messages: prev_messages,
+                chatSocket: null,
+                myInput: "",
+            }
+        },
+        methods: {
+            /*enterFriendChat(friend){
+                console.log(friend)
+                //chatSocket.send(JSON.stringify({roomName: friend.ID}))
+            },*/
+            clickSend(){
+                if (this.myInput != ""){
+                    console.log(this.myInput)
+                    //this.chatSocket.send(JSON.stringify({
+                    //    message: myInput,
+                    //    timestamp: getTimeStamp()
+                    //}))
+                    this.myInput = ""
+                }
+                
+            },
+        },
+        mounted: function(){
+            console.log("Starting connection to WebSocket Server")
+            this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
+
+            this.chatSocket.onmessage = function(event) {
+                console.log(event)
+                var data = JSON.parse(e.data)
+                var message = data.message
+                if (message) {
+                    this.prev_messages.push(message)
+                    //document.querySelector('#chat-log').value += (message + '\n');
+                }
+            }
+            
+            this.chatSocket.onopen = function(event) {
+                console.log(event)
+                console.log("Successfully connected to the echo websocket server...")
+            }
+            this.chatSocket.onclose = function (e) {
+                console.error('Chat socket closed unexpectedly');
+            }
+        }
+    });
+    app.mount('#app');
 
     </script>
 {% endblock %}
