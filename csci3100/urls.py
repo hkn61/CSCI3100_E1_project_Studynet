@@ -22,7 +22,8 @@ urlpatterns = [
     path('about', views.about, name='about'),
     path('support', views.support, name='support'),
     path('admin/', admin.site.urls),
-    path('auth/',include("loginauth.urls")),
-    path('chat/',include("chat.urls")),
-    path('user/',include("user_profile.urls")),
+    path('auth/', include("loginauth.urls")),
+    path('chat/', include("chat.urls")),
+    path('user/', include("user_profile.urls")),
+    path('task/', include("tasks.urls")),
 ]

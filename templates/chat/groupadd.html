@@ -2,7 +2,10 @@
 
 {% block content %}
     <style>
-        
+        .sideBar-item-top{
+            background: #c4dad8;
+        }
+          
         .title{
         color: #a8b3be;
         }
@@ -120,7 +123,7 @@
     
         <p><br></p>
         <h1 class="title">StudyNet - Add Friend/Group</h1>
-        <h3>Find new study groups and friends below</h3>
+        <h3 onload="console.log('load chat');">Find new study groups and friends below</h3>
         <p><br></p>
         <form action="/chat/groupsearch" method="post">
             {% csrf_token %}
@@ -176,6 +179,7 @@
     
 
   <script>
+      
     let res_group_list = JSON.parse(document.getElementById('res_group_list').textContent);
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
@@ -200,6 +204,9 @@
                 })
             }
             
+        },
+        mounted: function(){
+            console.log('== mounted ==')
         }
     });
     app.mount('#app');

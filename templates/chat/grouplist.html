@@ -2,7 +2,9 @@
 
 {% block content %}
     <style>
-        
+        .sideBar-item-middle{
+            background: #c4dad8;
+        }
         .title{
         color: #a8b3be;
         }
@@ -126,8 +128,10 @@
                 </div>
             </div>
         </div>
-          
-
+         <div>
+        
+    </div> 
+    
    
     {{ current_user|json_script:"current_user" }}
     {{ group_list|json_script:"group_list" }}
@@ -139,7 +143,8 @@
     let current_user = JSON.parse(document.getElementById('current_user').textContent);
     let group_list = JSON.parse(document.getElementById('group_list').textContent);
     let friend_list = JSON.parse(document.getElementById('friend_list').textContent);
-    
+    console.log(group_list)
+    console.log(friend_list[0])
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
