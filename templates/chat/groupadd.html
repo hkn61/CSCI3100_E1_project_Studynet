@@ -134,13 +134,13 @@
             </button>
 
             <input class = "radio" type="radio" name="search_type" value="private_group">
-            <label> Private group</label>
+            <label> Search by group ID</label>
 
             <input class = "radio" type="radio" name="search_type" value="public_group">
-            <label> Public group</label>
+            <label> Search by group name</label>
 
             <input class = "radio" type="radio" name="search_type" value="friend">
-            <label> Friend</label>
+            <label> Search by friend ID</label>
 
         </form>
         
@@ -149,7 +149,7 @@
         <div class="notice">
         <p> You can search by:</p>
         <p> 1. Group name - explore public groups and join freely</p>
-        <p> 2. Group ID - join private group, ask the target group member for the group ID</p>
+        <p> 2. Group ID - join public group or private group (ask the target group member for the private group ID)</p>
         <p> 3. User ID - add friend, ask your friend for his/her user ID <br></p>
         </div>
         {% block form %}
@@ -158,8 +158,8 @@
         <p><br></p>
         <div id="app">
             <!--<div class="search-result" v-if="showList" >-->
-                <div class="listItem" @click="addGroup(item)" v-for="item in res_group_list" :key="item.group_name" >
-                    <p>[[item.group_name]]</p>
+                <div class="listItem" @click="addGroup(item)" v-for="item in res_group_list" :key="item" >
+                    <p>[[item]]</p>
                 </div>
             <!--</div>-->
         </div>
@@ -181,6 +181,7 @@
   <script>
       
     let res_group_list = JSON.parse(document.getElementById('res_group_list').textContent);
+    console.log(res_group_list)
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
@@ -194,7 +195,7 @@
                 console.log(item)
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                 const formData = new FormData();
-                formData.append('group_name', item.group_name);
+                formData.append('group_name', item);
                 formData.append('csrfmiddlewaretoken', csrftoken)
                 fetch("groupadd", {
                     headers:{'X-CSRFToken': csrftoken},
