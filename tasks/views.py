@@ -6,6 +6,11 @@ import json
 USER_TASK_DB = MONGO_CLIENT['csci3100']['task_list']
 # Create your views here.
 def tasklist(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        # messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
     return render(request, "task/task.html")
 
 def gettasklist(request):

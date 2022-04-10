@@ -26,18 +26,18 @@ def signup(request):
 
         if User.objects.filter(username=username):
             messages.error(request, "Username already exists.")
-            return redirect("signup")
+            return render(request, "auth/signup.html")
         if User.objects.filter(email=email):
             messages.error(request, "Email already exists.")
-            return redirect("signup")
+            return render(request, "auth/signup.html")
         if pass1 != pass2:
             messages.error(request, "Passwords are not the same.")
-            return redirect("signup")
+            return render(request, "auth/signup.html")
 
         real_auth_token = USER_AUTH_DB.find({"username":username})[0]["token"]
         if email_ver != real_auth_token:
             messages.error(request, "Invalid confirmation code")
-            return redirect("signup")
+            return render(request, "auth/signup.html")
 
         newUser = User.objects.create_user(username=username, email=email, password=pass1)
         newUser.first_name = fname
@@ -70,7 +70,7 @@ def signin(request):
             return redirect("../task/tasklist")
         else:
             messages.error(request, "You have not sign up yet")
-            return redirect("signup")
+            return render(request, "auth/signup.html")
     return render(request, "auth/signin.html")
 
 
@@ -95,7 +95,7 @@ def send_email(request):
     from_email = settings.EMAIL_HOST_USER
     to_list = [email]
 
-    if USER_AUTH_DB.find({"username":username}).count() == 0:
+    if USER_AUTH_DB.find({"username":username}).count() != 0:
         USER_AUTH_DB.delete_many({"username":username})
 
 
