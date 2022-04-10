@@ -182,6 +182,7 @@ html {
     list-style-type: none;
     padding-right: 5%;
     animation-delay: 5s;
+  box-sizing: content-box;
   }
 
 .list-menu li {

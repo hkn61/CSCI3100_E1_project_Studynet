@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <title>Studynet</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'task/task.css' %}" />
+      <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <meta http-equiv="refresh" content="300">
+    <meta name="msapplication-TileColor" content="#6371C5" />
+    <meta name="theme-color" content="#6371C5" />
+  </head>
+
+  <body>
+  {% csrf_token %}
+    <ul class = "list-menu">
+        <b id = "header" class = "header" >Studynet</b>
+        <li><a href="user/profile">My Profile</a> </li>
+        <li><a href="auth/signin">Begin Study!</a> </li>
+        <li><a href="support">Support Studynet</a> </li>
+        <li><a href="about">About Our Team</a> </li>
+        <li><a href="/">Homepage</a> </li>
+    </ul>
+    <div class="content-body">
+        <div id="myDIV" class="header">
+          <h2>My To Do List</h2>
+          <input type="text" id="myInput" placeholder="Title...">
+          <span onclick="newElement()" class="addBtn">Add</span>
+        </div>
+        <div class="tasklist">
+        <ul id="myUL">
+          <li>Hit the gym</li>
+          <li>Pay bills</li>
+          <li>Meet George</li>
+          <li>Buy eggs</li>
+          <li>Read a book</li>
+          <li>Organize office</li>
+        </ul>
+            </div>
+
+    </div>
+
+    <!-- Bottom line -->
+    <footer>
+
+      <span class="author">
+        Crafted with ❤️ by Studynet © 2022
+      </span>
+    </footer>
+    <!--  Bottom line -->
+  <script src="{% static 'task/task.js' %}">
+
+  </script>
+  </body>
+</html>
+
+
