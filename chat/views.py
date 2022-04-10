@@ -20,13 +20,13 @@ def save_to_database(db, collection, chat_message):
 # update db when create a group
 def create_a_group(db, collection, group_info):
     print('inside save_to_ group database====>', db, collection, group_info)
-    r = MONGO_CLIENT[db][collection].insert_one()
+    r = MONGO_CLIENT[db][collection].insert_one(group_info)
     return True, r.inserted_id
 
 
 def create_friend_chat(db, collection, friend_info):
     print('inside save_to_ friend_chat database====>', db, collection, friend_info)
-    r = MONGO_CLIENT[db][collection].insert_one()
+    r = MONGO_CLIENT[db][collection].insert_one(friend_info)
     return True, r.inserted_id
 
 
@@ -36,9 +36,11 @@ def add_a_group(db, collection, group_name, user_name):
     filter = { 'group_name': group_name }
     entry = MONGO_CLIENT[db][collection].find(filter)
     # ??? update member number
-    member_num = entry[0]['member_num'] + 1 
-    r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'member_num': member_num}}, upsert = True)
-    return True, r.inserted_id
+    member_num = entry[0]['memberNum'] + 1 
+    r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'memberNum': member_num}}, upsert = True)
+    filter = {'user_name': user_name}
+    r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'group_list': group_name}}, upsert = True)
+    return True
 
 
 def add_a_friend(db, collection, adder, added):
@@ -61,12 +63,13 @@ def group(request):
 def groupadd(request):
     # ??? add a group
     if request.method == "POST":
-        group_name = request.POST["groupname"]
+        group_name = request.POST.get("groupname")
 
         username = ''
         if request.user.is_authenticated:
             username = request.user
-            add_a_group('chat', 'group', group_name, username)
+        username = 'Wendy'
+        add_a_group('chat', 'group', group_name, username)
         
     return render(request, 'chat/groupadd.html', {})
 
@@ -188,6 +191,7 @@ def groupchat(request, room_name):
         previous_messages = []
         for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
             print(chat)
+            chat['_id'] = str(chat['_id'])
             chat['sender'] = str(chat['sender'])
             chat['time'] = chat['time']
             chat['message'] = chat['message']
@@ -201,6 +205,7 @@ def groupchat(request, room_name):
         previous_messages = []
         for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
             print(chat)
+            chat['_id'] = str(chat['_id'])
             chat['sender'] = str(chat['sender'])
             chat['time'] = chat['time']
             chat['message'] = chat['message']
@@ -210,6 +215,7 @@ def groupchat(request, room_name):
         sort_fields = [('time', -1)]
         for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
             print(chat)
+            chat['_id'] = str(chat['_id'])
             chat['sender'] = str(chat['sender'])
             chat['time'] = chat['time']
             chat['message'] = chat['message']
