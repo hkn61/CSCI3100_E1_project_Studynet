@@ -142,12 +142,12 @@ STATICFILES_DIRS = [
     # BASE_DIR / "vue_bb/dist/"
 
 ]
-ASGI_APPLICATION = 'chat.routing.application'
+ASGI_APPLICATION = 'csci3100.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('localhost', 6379)],
+            "hosts": [('127.0.0.1', 6379)],
         },
     },
 }
@@ -164,5 +164,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # session settings
 SESSION_COOKIE_AGE = 5 * 60
 SESSION_SAVE_EVERY_REQUEST = True
-
-ASGI_APPLICATION = 'chat.routing.application'

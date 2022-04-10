@@ -8,5 +8,5 @@ urlpatterns = [
     path('groupcreate', views.groupcreate, name='groupcreate'),
     path('groupsearch', views.groupsearch, name='groupsearch'),
     path('grouplist', views.grouplist, name='grouplist'),
-    re_path(r'^(?P<room_name>[^/]+)/$', views.groupchat, name='groupchat'),
+    path('<str:room_name>/', views.groupchat, name='groupchat'),
 ]
