@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Studynet</title>
+    <link rel="shortcut icon" href="1.jpg">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Redressed&family=Ubuntu&display=swap" rel="stylesheet">
+    <meta name="msapplication-TileColor" content="#6371C5" />
+    <meta name="theme-color" content="#6371C5" />
+  </head>
+
+  <body>
+    <div class="content-body">
+      <div class="form-wrapper">
+        <form class="bewhite" id="message" action="shopBar.php" method="get">  <!-- can change -->
+          <h1 class="text-title">Personal Information</h1>
+          <br/>
+
+          <div class="field-group">
+            <div id="head" ><img src="1.bmp" onclick="chooseimage()"  alt="selfie" style="border-radius:360px;" width=300 height=300 /></div> 
+          </div>
+
+          <div class="field-group">
+            <label class="label" >Email Address:</label>
+            <p id="email_text"></p>
+          </div>
+          <div class="field-group">
+            <label class="label" >User Name:</label>
+            <p id="user_name"></p>
+          </div>
+          <div class="field-group">
+            <label class="label" >Birthday</label>
+            <p id="birthday"></p>
+          </div>
+          <div class="field-group">
+            <label class="label" >Personal Description:</label>
+            <p id="personal_description"></p>
+          </div>
+
+
+        </form>
+
+        <div class="begrey">
+          <a href=change_text.html class="link-register">Change Personal information</a>
+          <small class="link-about">Notice:Click the head portrait to change it.</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom line -->
+    <footer>
+
+      <span class="author">
+        Crafted with ❤️ by Studynet © 2022
+      </span>
+    </footer>
+    <!--  Bottom line -->
+  </body>
+  <script type="text/javascript">
+    document.getElementById("email_text").innerHTML = "rt_vcoffice@cuhk.edu.hk"
+    document.getElementById("user_name").innerHTML = "DUAN Chongzhi"
+    document.getElementById("birthday").innerHTML = "1951/05/03"
+    document.getElementById("personal_description").innerHTML = "Vice-Chancellor  President Lee Quo Wei and Lee Yick Hoi Lun Professor of Tissue Engineering and Regenerative Medicine"
+    function chooseimage(){}
+  </script>
+</html>
