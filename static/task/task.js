@@ -3,6 +3,15 @@ var list = document.querySelector('.tasklist ul');
 list.addEventListener('click', function(ev) {
   if (ev.target.tagName === 'LI') {
     ev.target.classList.toggle('checked');
+    const formData = new FormData();
+    formData.append('taskname', ev.target.innerText);
+    formData.append('csrfmiddlewaretoken', csrftoken);
+    fetch("changefinishedstatus",{
+        headers:{'X-CSRFToken': csrftoken},
+        credentials: 'same-origin',
+        method: 'POST',
+        body: formData,
+    })
   }
 }, false);
 
@@ -23,6 +32,7 @@ function newElement() {
   var txt = document.createTextNode("\u00D7");
   span.className = "close";
   span.appendChild(txt);
+
   li.appendChild(span);
 
 

@@ -16,23 +16,18 @@
 
   <body>
     <ul class = "list-menu">
-        <b id = "header" class = "header" >Studynet</b>
+        <b id = "header" class = "header" >Studynet</b>>
         <li><a href="showfinishedtask">Finished Task</a> </li>
         <li><a href="showdeletedtask">Deleted Task</a> </li>
         <li><a href="tasklist">Task</a> </li>
     </ul>
     <div class="content-body">
-        <div id="myDIV" class="header">
-          <h2>My To Do List</h2>
-          <input type="text" id="myInput" placeholder="Title...">
-          <span onclick="newElement()" class="addBtn">Add</span>
-        </div>
         <div class="tasklist">
         <ul id="myUL">
                 {% csrf_token %}
             <script>
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                fetch("gettasklist", {
+                fetch("getfinishedtask", {
                     headers:{'X-CSRFToken': csrftoken},
                     method: 'POST',
                     credentials: 'same-origin',
@@ -46,15 +41,15 @@
                     var t = document.createTextNode(taskname);
                     li.appendChild(t);
                     var span = document.createElement("SPAN");
-                    var txt = document.createTextNode("\u00D7");
+                    var txt = document.createTextNode("Restore");
                     span.className = "close";
                     span.appendChild(txt);
-                    span.addEventListener("click",function deletetask(event){
+                    span.addEventListener("click",function restorefinished(event){
                         let s = this.parentElement;
                         s.style.display = "none";
                         const formData = new FormData();
                           formData.append('taskname', s.textContent);
-                        fetch("deletetask", {
+                        fetch("restorefinishedtask", {
                             headers:{'X-CSRFToken': csrftoken},
                             method: 'POST',
                             credentials: 'same-origin',
@@ -62,19 +57,9 @@
                         })
                     })
                     li.appendChild(span);
-
-                    if (isfinished == 1){
-                        li.classList.toggle('checked')
-                    }
                     document.getElementById("myUL").appendChild(li)
                 }))
             </script>
-<!--          <li>Hit the gym</li>-->
-<!--          <li>Pay bills</li>-->
-<!--          <li>Meet George</li>-->
-<!--          <li>Buy eggs</li>-->
-<!--          <li>Read a book</li>-->
-<!--          <li>Organize office</li>-->
         </ul>
             </div>
 
@@ -88,8 +73,6 @@
       </span>
     </footer>
     <!--  Bottom line -->
-
-      <script src="{% static 'task/task.js' %}"></script>
   </body>
 </html>
 

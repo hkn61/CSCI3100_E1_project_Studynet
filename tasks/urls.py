@@ -10,5 +10,13 @@ urlpatterns = [
     path('gettasklist', views.gettasklist, name="gettasklist"),
     path('inserttask', views.inserttask, name="inserttask"),
     path('deletetask', views.deletetask, name="deletetask"),
+    path('showfinishedtask', views.showfinishedtask, name="showfinishedtask"),
+    path('showdeletedtask', views.showdeletedtask, name="showdeletedtask"),
+    path('getfinishedtask', views.getfinishedtask, name="getfinishedtask"),
+    path('getdeletedtask', views.getdeletedtask, name="getdeletedtask"),
+    path('changefinishedstatus', views.changefinishedstatus, name="changefinishedstatus"),
+    path('restorefinishedtask', views.restorefinishedtask, name="restorefinishedtask"),
+    path('restoredeletetask', views.restoredeletetask, name="restoredeletetask"),
+
 
 ]

@@ -19,11 +19,12 @@ def gettasklist(request):
         USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
         return HttpResponse()
     else:
-        return JsonResponse(user_task_list[0]["tasklist"])
-def report(request):
-    if request.user.is_authenticated:
-        username = request.user
-
+        existing = user_task_list[0]["tasklist"]
+        unfinished_task = {}
+        for key, value in existing.items():
+            if value["isfinished"] == 0:
+                unfinished_task[key] = value
+        return JsonResponse(unfinished_task)
 
 def inserttask(request):
     if request.user.is_authenticated:
@@ -55,3 +56,87 @@ def deletetask(request):
     del existing["tasklist"][taskname]
     USER_TASK_DB.update_one({"username": str(username)}, {"$set": {"tasklist": existing["tasklist"],"deletedtask": existing["deletedtask"]}})
     return HttpResponse()
+
+def changefinishedstatus(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    taskname = request.POST["taskname"].split()[0]
+    user_task_list = USER_TASK_DB.find({"username": str(username)})
+    existing = user_task_list[0]
+    finished_status = existing["tasklist"][taskname]["isfinished"]
+    existing["tasklist"][taskname]["isfinished"] = 1- int(finished_status)
+    USER_TASK_DB.update_one({"username": str(username)},{"$set": {"tasklist": existing["tasklist"]}})
+    return HttpResponse()
+
+
+def showfinishedtask(request):
+    return render(request, "task/finishedtask.html")
+
+def getfinishedtask(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    user_task_list = USER_TASK_DB.find({"username":str(username)})
+    if user_task_list.count() == 0:
+        USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
+        return HttpResponse()
+    else:
+        existing = user_task_list[0]["tasklist"]
+        finished_task = {}
+        for key, value in existing.items():
+            if value["isfinished"] == 1:
+                finished_task[key] = value
+        return JsonResponse(finished_task)
+
+def restorefinishedtask(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    taskname = request.POST["taskname"][:-7]
+    user_task_list = USER_TASK_DB.find({"username": str(username)})
+    existing = user_task_list[0]
+    finished_status = existing["tasklist"][taskname]["isfinished"]
+    existing["tasklist"][taskname]["isfinished"] = 1- int(finished_status)
+    USER_TASK_DB.update_one({"username": str(username)},{"$set": {"tasklist": existing["tasklist"]}})
+    return HttpResponse()
+
+def showdeletedtask(request):
+    return render(request, "task/deletedtask.html")
+
+def getdeletedtask(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    user_task_list = USER_TASK_DB.find({"username":str(username)})
+    if user_task_list.count() == 0:
+        USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
+        return HttpResponse()
+    else:
+        return JsonResponse(user_task_list[0]["deletedtask"])
+
+
+def restoredeletetask(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    taskname = request.POST["taskname"][:-7]
+    user_task_list = USER_TASK_DB.find({"username": str(username)})
+    existing = user_task_list[0]
+    existing["tasklist"][taskname] = {"isfinished": 0, "timespent": 0}
+    del existing["deletedtask"][taskname]
+    USER_TASK_DB.update_one({"username": str(username)},
+                            {"$set": {"tasklist": existing["tasklist"], "deletedtask": existing["deletedtask"]}})
+    return HttpResponse()
+def report(request):
+    pass
