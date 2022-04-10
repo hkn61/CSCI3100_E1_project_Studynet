@@ -5,6 +5,7 @@ from importlib_metadata import re
 from csci3100.settings import MONGO_CLIENT
 from django.contrib import messages
 from bson.objectid import ObjectId
+import string
 # Create your views here.
 
 # update db when create a group
@@ -96,10 +97,11 @@ def groupsearch(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+    username = 'Wendy' #test!!!
     group_name = request.POST["groupname"]
     search_by = request.POST.get('search_type')
     res_group_list = []
-
+    #print(search_by)
     addedquery = {'user_name': username}
     user_record = MONGO_CLIENT['chat']['friend'].find(addedquery)
 
@@ -109,25 +111,32 @@ def groupsearch(request):
         added_group_list = user_record[0]['group_list']
         # generate (partial) matched result
         for record in result:
+            #print(record)
             if not record['private']:
                 res_group_list.append(record['group_name'])
 
     elif search_by == 'private_group': # search by id, matched result will be returned
-        myquery = {'_id': ObjectId(group_name)}
-        result = MONGO_CLIENT['chat']['group'].find(myquery)
-        added_group_list = user_record[0]['group_list']
-        for record in result:
-            res_group_list.append(result[0]['group_name'])
+        if not all(c in string.hexdigits for c in group_name):
+            pass
+        else:
+            myquery = {'_id': ObjectId(group_name)}
+            result = MONGO_CLIENT['chat']['group'].find(myquery)
+            added_group_list = user_record[0]['group_list']
+            for record in result:
+                res_group_list.append(result[0]['group_name'])
 
     else:
-        myquery = {'_id': ObjectId(group_name)} # friend id
-        result = MONGO_CLIENT['chat']['friend'].find(myquery)
-        added_group_list = user_record[0]['friend_list'] # added friend list
-        for record in result:
-            res_group_list.append(result[0]['user_name']) # matched user
-
+        if not all(c in string.hexdigits for c in group_name):
+            pass
+        else:
+            myquery = {'_id': ObjectId(group_name)} # friend id
+            result = MONGO_CLIENT['chat']['friend'].find(myquery)
+            added_group_list = user_record[0]['friend_list'] # added friend list
+            for record in result:
+                res_group_list.append(result[0]['user_name']) # matched user
+    #print(res_group_list)
     result_group_list = [i for i in res_group_list if i not in added_group_list]
-    
+    print(result_group_list)
     return render(request, 'chat/groupadd.html', {
         'res_group_list': result_group_list
         
@@ -135,10 +144,12 @@ def groupsearch(request):
 
 
 def groupchat(request, room_name):
+    room_name = 'groupone'
     print('inside room view ======>', room_name)
     username = ''
     if request.user.is_authenticated:
         username = request.user
+    username = 'Wendy' #test!!!!!!
     if not username:
         return HttpResponseRedirect('homepage/login/')
     filters = {'chat_room': room_name, 'deleted': {'$ne': True}}

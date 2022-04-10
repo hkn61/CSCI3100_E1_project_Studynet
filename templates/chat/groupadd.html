@@ -158,8 +158,8 @@
         <p><br></p>
         <div id="app">
             <!--<div class="search-result" v-if="showList" >-->
-                <div class="listItem" @click="addGroup(item)" v-for="item in res_group_list" :key="item.group_name" >
-                    <p>[[item.group_name]]</p>
+                <div class="listItem" @click="addGroup(item)" v-for="item in res_group_list" :key="item" >
+                    <p>[[item]]</p>
                 </div>
             <!--</div>-->
         </div>
@@ -194,7 +194,7 @@
                 console.log(item)
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                 const formData = new FormData();
-                formData.append('group_name', item.group_name);
+                formData.append('group_name', item);
                 formData.append('csrfmiddlewaretoken', csrftoken)
                 fetch("groupadd", {
                     headers:{'X-CSRFToken': csrftoken},
