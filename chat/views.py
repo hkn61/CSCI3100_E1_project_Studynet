@@ -1,12 +1,21 @@
+from os import times
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from asgiref.sync import async_to_sync
-from importlib_metadata import re
+#from importlib_metadata import re
 from csci3100.settings import MONGO_CLIENT
 from django.contrib import messages
 from bson.objectid import ObjectId
 import string
+import datetime
 # Create your views here.
+
+# test
+def save_to_database(db, collection, chat_message):
+    print('inside save_to_database====>', db, collection, chat_message)
+    r = MONGO_CLIENT[db][collection].insert_one(chat_message)
+    return True, r.inserted_id
+
 
 # update db when create a group
 def create_a_group(db, collection, group_info):
@@ -123,7 +132,7 @@ def groupsearch(request):
             result = MONGO_CLIENT['chat']['group'].find(myquery)
             added_group_list = user_record[0]['group_list']
             for record in result:
-                res_group_list.append(result[0]['group_name'])
+                res_group_list.append(record['group_name'])
 
     else:
         if not all(c in string.hexdigits for c in group_name):
@@ -133,9 +142,24 @@ def groupsearch(request):
             result = MONGO_CLIENT['chat']['friend'].find(myquery)
             added_group_list = user_record[0]['friend_list'] # added friend list
             for record in result:
-                res_group_list.append(result[0]['user_name']) # matched user
+                print(record)
+                res_group_list.append(record['user_name']) # matched user
     #print(res_group_list)
     result_group_list = [i for i in res_group_list if i not in added_group_list]
+
+    '''
+    ########## test ##########
+    timestamp = datetime.datetime.now()
+    chat_data = {'group_name': group_name, 'sender': 'hkn', 'time': timestamp, 'message': 'This is the second message.'}
+    status, inserted_id = save_to_database('chat', 'chat_message', chat_data)
+    print(chat_data)
+    if status:
+        print('chat saved to db successfully ====>', inserted_id)
+    else:
+        print('saving to db failed')
+    ########## test ##########
+    '''
+
     print(result_group_list)
     return render(request, 'chat/groupadd.html', {
         'res_group_list': result_group_list
@@ -143,30 +167,73 @@ def groupsearch(request):
     })
 
 
+
 def groupchat(request, room_name):
-    room_name = 'groupone'
+    type = room_name[:1]
+    room_name = room_name[1:]
+    room_name = 'groupthree'
+    print(type)
     print('inside room view ======>', room_name)
+    group_name = room_name
     username = ''
     if request.user.is_authenticated:
         username = request.user
     username = 'Wendy' #test!!!!!!
     if not username:
         return HttpResponseRedirect('homepage/login/')
-    filters = {'chat_room': room_name, 'deleted': {'$ne': True}}
-    sort_fields = [('time', -1)]
-    previous_messages = []
-    for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
-        chat['sender'] = str(chat['sender'])
-        chat['time'] = chat['time']
-        chat['message'] = chat['message']['text']
-        previous_messages.append(chat)
-    previous_messages = sorted(previous_messages, key=lambda s: s['time'])
+
+    if type == 'g':
+        filters = {'group_name': group_name}
+        sort_fields = [('time', -1)]
+        previous_messages = []
+        for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
+            print(chat)
+            chat['sender'] = str(chat['sender'])
+            chat['time'] = chat['time']
+            chat['message'] = chat['message']
+            previous_messages.append(chat)
+        previous_messages = sorted(previous_messages, key=lambda s: s['time'])
+
+    if type == 'f':
+        group_name = username + '&' + room_name
+        filters = {'group_name': group_name}
+        sort_fields = [('time', -1)]
+        previous_messages = []
+        for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
+            print(chat)
+            chat['sender'] = str(chat['sender'])
+            chat['time'] = chat['time']
+            chat['message'] = chat['message']
+            previous_messages.append(chat)
+
+        group_name = room_name + '&' + username
+        sort_fields = [('time', -1)]
+        for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
+            print(chat)
+            chat['sender'] = str(chat['sender'])
+            chat['time'] = chat['time']
+            chat['message'] = chat['message']
+            previous_messages.append(chat)
+
+        previous_messages = sorted(previous_messages, key=lambda s: s['time'])
+
+    for chat in previous_messages:
+        timestamp = chat['time']
+        day = timestamp.day
+        month = timestamp.month
+        year = timestamp.year
+        hour = timestamp.hour
+        minute = timestamp.minute
+        time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
+        chat['time'] = time
+        
     print('previous_messages =======>', previous_messages)
     return render(request, 'chat/groupchat.html', {
         'room_name': room_name,
         'prev_messages': previous_messages,
         'current_user': username
     })
+
 
 
 def friendadd(request):

@@ -164,3 +164,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # session settings
 SESSION_COOKIE_AGE = 5 * 60
 SESSION_SAVE_EVERY_REQUEST = True
+
+TIME_ZONE = 'Asia/Shanghai'
+# db does not use utc time
+USE_TZ = False

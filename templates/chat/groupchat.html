@@ -234,24 +234,13 @@
                         </div>
                 </div> 
                 <ul class="list-unstyled chat-list mt-2 mb-0">                                      
-                    <li class="clearfix">
+                    <li class="clearfix" @click="enterChatroom(group)" v-for="group in group_list" :key="group">
                         <div class="about">
-                            <div class="name">Group1</div>
+                            <div class="name">[[group]]</div>
                             <div class="status"> <i class="fa fa-circle online"></i> online </div>
                         </div>
                     </li>
-                    <li class="clearfix">
-                        <div class="about">
-                            <div class="name">Group2</div>
-                            <div class="status"> <i class="fa fa-circle online"></i> online </div>
-                        </div>
-                    </li>
-                    <li class="clearfix">
-                        <div class="about">
-                            <div class="name">Group3</div>
-                            <div class="status"> <i class="fa fa-circle offline"></i>  Oct 28 </div>
-                        </div>
-                    </li>
+                    
                 </ul>
             </div>
         <div class="chat-block">
@@ -306,7 +295,7 @@
         </div>
     </div>
     {{ room_name|json_script:"room_name" }}
-    {{ prev_messages|json_script:"prev_messages" }}
+    {{ previous_messages|json_script:"prev_messages" }}
 
 
 
@@ -377,6 +366,7 @@
                 prev_messages: prev_messages,
                 chatSocket: null,
                 myInput: "",
+                group_list: ['groupone','grouptwo','groupthree']
             }
         },
         methods: {
@@ -384,6 +374,10 @@
                 console.log(friend)
                 //chatSocket.send(JSON.stringify({roomName: friend.ID}))
             },*/
+            enterChatroom(group){
+                console.log(group)
+                window.location.pathname = '/chat/' + 'g' + group +'/'
+            },
             clickSend(){
                 if (this.myInput != ""){
                     console.log(this.myInput)
@@ -398,7 +392,7 @@
         },
         mounted: function(){
             console.log("Starting connection to WebSocket Server")
-            window.location.pathname = '/chat/' + room_name + '/';
+            
             this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
 
             this.chatSocket.onmessage = function(event) {
@@ -407,7 +401,6 @@
                 var message = data.message
                 if (message) {
                     this.prev_messages.push(message)
-                    //document.querySelector('#chat-log').value += (message + '\n');
                 }
             }
             
