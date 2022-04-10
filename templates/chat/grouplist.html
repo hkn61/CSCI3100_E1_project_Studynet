@@ -2,7 +2,9 @@
 
 {% block content %}
     <style>
-        
+        .sideBar-item-middle{
+            background: #c4dad8;
+        }
         .title{
         color: #a8b3be;
         }
@@ -112,8 +114,8 @@
                 <div class="listItem-friend"  @click="enterFriendChat(friend)"  v-for="friend in friend_list " :key="friend.ID">
                   <!--<img class = "photo" :src="require('../../assets/'+friend.photo )" />-->
                   <div class = "info">
-                    <p class="info-name">[[friend.name]]</p>
-                    <p class="info-ID">ID: [[friend.ID]]</p>
+                    <p class="info-name">[[friend.friend_name]]</p>
+                    <p class="info-ID">ID: [[friend.friend_id]]</p>
                   </div>
                 </div> 
             </div>
@@ -121,13 +123,15 @@
                 <p><br></p>
                 <h1>My groups</h1>
                 <div class="listItem-group" v-for="group in group_list " :key="group.ID">
-                  <p class="info-name">[[group.name]]</p>
-                  <p class="info-ID">ID: [[group.ID]]</p>
+                  <p class="info-name">[[group.group_name]]</p>
+                  <p class="info-ID">ID: [[group.group_id]]</p>
                 </div>
             </div>
         </div>
-          
-
+         <div>
+        
+    </div> 
+    
    
     {{ current_user|json_script:"current_user" }}
     {{ group_list|json_script:"group_list" }}
@@ -139,7 +143,8 @@
     let current_user = JSON.parse(document.getElementById('current_user').textContent);
     let group_list = JSON.parse(document.getElementById('group_list').textContent);
     let friend_list = JSON.parse(document.getElementById('friend_list').textContent);
-    
+    console.log(group_list)
+    console.log(friend_list[0])
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',

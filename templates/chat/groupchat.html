@@ -2,203 +2,206 @@
 
 {% block content %}
     <style>
-        
+        .sideBar-item-bottum{
+            background: #c4dad8;
+        }
         .people-list {
-    
-            width: 280px;
-            height: 450px;
-            padding: 20px;
         
+        width: 280px;
+        height: 450px;
+        padding: 20px;
+
+    position: absolute;
+
+
+    }
+
+
+    .people-list .chat-list{
+        overflow-y: scroll;
+        height: 200px;
+    }
+    .people-list .chat-list li {
+        padding: 10px 15px;
+        list-style: none;
+        border-radius: 3px
+    }
+
+    .people-list .chat-list li:hover {
+        background: #efefef;
+        cursor: pointer
+    }
+
+    .people-list .chat-list li.active {
+        background: #efefef
+    }
+
+    .people-list .chat-list li .name {
+        font-size: 15px
+    }
+
+    .people-list .chat-list img {
+        width: 45px;
+        border-radius: 50%;
+
+    }
+
+    .people-list img {
+        float: left;
+        border-radius: 50%;
+    }
+
+    .people-list .about {
+        display:inline-block;
+        padding-left: 8px;
+        margin-left: 10px;
+    }
+
+    .people-list .status {
+        color: #999;
+        font-size: 13px
+    }
+    .clearfix-title {
+        height: 20px;
+        border-top: #444;
+    }
+    .claerfix{
+        text-align: left;
+
+    }
+    .chat-block{
+        margin-left: 280px;
+        padding: 30px 30px 20px;
+        border-bottom: 2px solid white;
+        height: 500px;
+    }
+    .chat-header {
+        padding: 15px 20px;
+        border-bottom: 2px solid #f4f7f6;
+        height: 70px;
+    }
+
+    .chat-header img {
+        float: left;
+        border-radius: 40px;
+        width: 40px
+    }
+
+    .chat-header .chat-about {
+        float: left;
+        padding-left: 10px
+    }
+
+    .chat-history {
+        border-bottom: 2px solid white;
+        overflow-y: scroll;
+        height: 330px;
+    }
+
+    .chat-history ul {
+        padding: 0
+    }
+
+    .chat-history ul li {
+        list-style: none;
+        margin-bottom: 30px
+    }
+
+    .chat-history ul li:last-child {
+        margin-bottom: 0px
+    }
+
+    .chat-history .message-data {
+        margin-bottom: 15px;
+        display: block;
+        
+    }
+
+    .chat-history .message-data img {
+        border-radius: 40px;
+        width: 40px
+        
+    }
+
+    .chat-history .message-data-time {
+        color: #434651;
+        padding-left: 6px;
+        display: block;
+
+    margin-left: auto; 
+    margin-right: 0;
+    }
+
+    .chat-history .message {
+        color: #444;
+        padding: 18px 20px;
+        line-height: 26px;
+        font-size: 16px;
+        border-radius: 7px;
+        display: inline-block;
+        position: relative
+    }
+
+    .chat-history .message:after {
+        bottom: 100%;
+        left: 7%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
         position: absolute;
-        
+        pointer-events: none;
+        border-bottom-color: #fff;
+        border-width: 10px;
+        margin-left: -10px
+    }
 
-        }
+    .chat-history .my-message {
+        background: #efefef;
+        float: left;
+        text-align: left;
+    }
 
+    .chat-history .my-message:after {
+        bottom: 100%;
+        left: 30px;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-bottom-color: #efefef;
+        border-width: 10px;
+        margin-left: -10px
+    }
 
-        .people-list .chat-list{
-            overflow-y: scroll;
-            height: 200px;
-        }
-        .people-list .chat-list li {
-            padding: 10px 15px;
-            list-style: none;
-            border-radius: 3px
-        }
+    .chat-history .other-message {
+        background: #e8f1f3;
+        float: right;
+        margin-right:10px;
+        text-align: left;
+    }
 
-        .people-list .chat-list li:hover {
-            background: #efefef;
-            cursor: pointer
-        }
-
-        .people-list .chat-list li.active {
-            background: #efefef
-        }
-
-        .people-list .chat-list li .name {
-            font-size: 15px
-        }
-
-        .people-list .chat-list img {
-            width: 45px;
-            border-radius: 50%;
-
-        }
-
-        .people-list img {
-            float: left;
-            border-radius: 50%;
-        }
-
-        .people-list .about {
-            display:inline-block;
-            padding-left: 8px;
-            margin-left: 10px;
-        }
-
-        .people-list .status {
-            color: #999;
-            font-size: 13px
-        }
-        .clearfix-title {
-            height: 20px;
-            border-top: #444;
-        }
-        .claerfix{
-            text-align: left;
-
-        }
-        .chat-block{
-            margin-left: 280px;
-            padding: 30px 30px 20px;
-            border-bottom: 2px solid white;
-            height: 500px;
-        }
-        .chat-header {
-            padding: 15px 20px;
-            border-bottom: 2px solid #f4f7f6;
-            height: 70px;
-        }
-
-        .chat-header img {
-            float: left;
-            border-radius: 40px;
-            width: 40px
-        }
-
-        .chat-header .chat-about {
-            float: left;
-            padding-left: 10px
-        }
-
-        .chat-history {
-            border-bottom: 2px solid white;
-            overflow-y: scroll;
-            height: 330px;
-        }
-
-        .chat-history ul {
-            padding: 0
-        }
-
-        .chat-history ul li {
-            list-style: none;
-            margin-bottom: 30px
-        }
-
-        .chat-history ul li:last-child {
-            margin-bottom: 0px
-        }
-
-        .chat-history .message-data {
-            margin-bottom: 15px;
-            display: block;
-            
-        }
-
-        .chat-history .message-data img {
-            border-radius: 40px;
-            width: 40px
-            
-        }
-
-        .chat-history .message-data-time {
-            color: #434651;
-            padding-left: 6px;
-            display: block;
-
-        margin-left: auto; 
-        margin-right: 0;
-        }
-
-        .chat-history .message {
-            color: #444;
-            padding: 18px 20px;
-            line-height: 26px;
-            font-size: 16px;
-            border-radius: 7px;
-            display: inline-block;
-            position: relative
-        }
-
-        .chat-history .message:after {
-            bottom: 100%;
-            left: 7%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-            border-bottom-color: #fff;
-            border-width: 10px;
-            margin-left: -10px
-        }
-
-        .chat-history .my-message {
-            background: #efefef;
-            float: left;
-            text-align: left;
-        }
-
-        .chat-history .my-message:after {
-            bottom: 100%;
-            left: 30px;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-            border-bottom-color: #efefef;
-            border-width: 10px;
-            margin-left: -10px
-        }
-
-        .chat-history .other-message {
-            background: #e8f1f3;
-            float: right;
-            margin-right:10px;
-            text-align: left;
-        }
-
-        .chat-history .other-message:after {
-            border-bottom-color: #e8f1f3;
-            left: 93%
-        }
-        .chat-message {
-            padding: 20px
-        }
-        .text-right{
-            margin-right:10px;
-        }
+    .chat-history .other-message:after {
+        border-bottom-color: #e8f1f3;
+        left: 93%
+    }
+    .chat-message {
+        padding: 20px
+    }
+    .text-right{
+        margin-right:10px;
+    }
     </style>
 
-        <p><br></p>
-      <h1 class="title">StudyNet - ChatBox</h1>
-     <div class="chat"> 
-    <div id="plist" class="people-list ">
+    <p><br></p>
+    <h1 class="title">StudyNet - ChatBox</h1>
+    <div id="app">
+        <div class="chat"> 
+        <div id="plist" class="people-list ">
                 
-              <div class="clearfix clearfix-title">
+            <div class="clearfix clearfix-title">
                         <div class="about">
                             <div class="name"></div>
                         </div>
@@ -212,7 +215,7 @@
                         </div>
                     </div> 
                     
-                     
+                    
                 </div>
                 <div class="clearfix clearfix-title">
                         <div class="about">
@@ -255,7 +258,7 @@
                         
                     </div>
                 </div>
-      <div class="chat-history ">
+        <div class="chat-history ">
                     <ul class="m-b-0">
                         <li class="clearfix">
                             <div class="message-data text-right">
@@ -263,20 +266,15 @@
                             </div>
                             <div class="message other-message float-right"> Hi Alice, how are you? How is the project coming along? </div>
                         </li>
-                        <li class="clearfix">
-                            <div class="message-data">
-                                <span class="message-data-time">10:12 AM, Today</span>
+                        <li class="clearfix" v-for="message in prev_messages" :key="message.text">
+                            <div class="message-data  " >
+                                <span class="message-data-time">[[message.time]]</span>
                             </div>
-                            <div class="message my-message">Are we meeting today?</div>                                    
+                            <div class="message my-message">[[message.text]]</div>                                    
                         </li>                               
+                        
                         <li class="clearfix">
-                            <div class="message-data">
-                                <span class="message-data-time">10:15 AM, Today</span>
-                            </div>
-                            <div class="message my-message">Project has been already finished and I have results to show you.</div>
-                        </li>
-                        <li class="clearfix">
-                            <div class="message-data text-right">
+                            <div class="message-data " >
                                 <span class="message-data-time">10:20 AM, Today</span>
                             </div>
                             <div class="message other-message float-right"> Ok, that sounds great! </div>
@@ -295,79 +293,106 @@
                 </div>
         </div>
         </div>
+    </div>
+    {{ room_name|json_script:"room_name" }}
+    {{ prev_messages|json_script:"prev_messages" }}
 
- 
 
-  <script>
-      
-      /*
-        let room_name_json = 
-      var chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name_json + '/');
-      chatSocket.onmessage = function (e) {
-        var data = JSON.parse(e.data);
-        var message = data.message;
-        var typing = data.typing;
-        if (typing) {
-            var userName = data.username;
-            var outOfFocus = data.outoffocus;
-            if (currentUser !== userName) {
-                if (outOfFocus) {
-                    document.getElementById("typingNotification").innerHTML = ' ';
-                } else {
-                    document.getElementById("typingNotification").innerHTML = userName + ' is typing' + '\n';
-                }
+
+    <script>
+
+    let room_name = JSON.parse(document.getElementById('room_name').textContent);
+    let prev_messages = JSON.parse(document.getElementById('prev_messages').textContent);
+    const app =  Vue.createApp({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        
+        data() {
+            return {
+                
+                room_name: room_name,
+                prev_messages: prev_messages,
+            }
+        },
+        methods: {
+            enterFriendChat(friend){
+                console.log(friend)
+                chatSocket.send(JSON.stringify({roomName: friend.ID}))
+
+            }
+
+            
+        }
+    });
+    app.mount('#app');
+    /*
+    let room_name_json = 
+    var chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name_json + '/');
+    chatSocket.onmessage = function (e) {
+    var data = JSON.parse(e.data);
+    var message = data.message;
+    var typing = data.typing;
+    if (typing) {
+        var userName = data.username;
+        var outOfFocus = data.outoffocus;
+        if (currentUser !== userName) {
+            if (outOfFocus) {
+                document.getElementById("typingNotification").innerHTML = ' ';
+            } else {
+                document.getElementById("typingNotification").innerHTML = userName + ' is typing' + '\n';
             }
         }
-        if (message) {
-            document.querySelector('#chat-log').value += (message + '\n');
-        }
+    }
+    if (message) {
+        document.querySelector('#chat-log').value += (message + '\n');
+    }
     };
 
     chatSocket.onclose = function (e) {
-        console.error('Chat socket closed unexpectedly');
+    console.error('Chat socket closed unexpectedly');
     };
 
     //<!-- ############################# javascript events ############################# -->
 
     document.querySelector('#chat-message-input').focus();
     document.querySelector('#chat-message-input').onkeyup = function (e) {
-        if (e.keyCode === 13) {  // enter, return
-            document.querySelector('#chat-message-submit').click();
-            chatSocket.send(JSON.stringify({
-                username: currentUser,
-                typing: true,
-                outoffocus: true,
-                timestamp: getTimeStamp()
-            }));
-        } else {
-            chatSocket.send(JSON.stringify({
-                username: currentUser,
-                typing: true,
-                outoffocus: false,
-                timestamp: getTimeStamp()
-            }));
-        }
-    };
-
-    document.querySelector('#chat-message-input').onblur = function (e) {
-        console.log('on focus out event generated');
+    if (e.keyCode === 13) {  // enter, return
+        document.querySelector('#chat-message-submit').click();
         chatSocket.send(JSON.stringify({
             username: currentUser,
             typing: true,
-            outoffocus: true
+            outoffocus: true,
+            timestamp: getTimeStamp()
         }));
+    } else {
+        chatSocket.send(JSON.stringify({
+            username: currentUser,
+            typing: true,
+            outoffocus: false,
+            timestamp: getTimeStamp()
+        }));
+    }
+    };
+
+    document.querySelector('#chat-message-input').onblur = function (e) {
+    console.log('on focus out event generated');
+    chatSocket.send(JSON.stringify({
+        username: currentUser,
+        typing: true,
+        outoffocus: true
+    }));
     };
 
     document.querySelector('#chat-message-submit').onclick = function (e) {
-        var messageInputDom = document.querySelector('#chat-message-input');
-        var message = messageInputDom.value;
-        chatSocket.send(JSON.stringify({
-            message: message,
-            typing: true,
-            timestamp: getTimeStamp()
-        }));
-        messageInputDom.value = '';
+    var messageInputDom = document.querySelector('#chat-message-input');
+    var message = messageInputDom.value;
+    chatSocket.send(JSON.stringify({
+        message: message,
+        typing: true,
+        timestamp: getTimeStamp()
+    }));
+    messageInputDom.value = '';
     };*/
-    
-  </script>
+
+    </script>
 {% endblock %}
