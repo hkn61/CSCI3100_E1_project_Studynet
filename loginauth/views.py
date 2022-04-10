@@ -67,7 +67,7 @@ def signin(request):
             login(request, user_auth)
             fname = user_auth.first_name
             messages.success(request, "You have been successfully signed in.")
-            return render(request, "auth/index.html", {"fname": fname})
+            return redirect("../task/tasklist")
         else:
             messages.error(request, "You have not sign up yet")
             return redirect("signup")
@@ -95,11 +95,11 @@ def send_email(request):
     from_email = settings.EMAIL_HOST_USER
     to_list = [email]
 
-    if USER_AUTH_DB.find({"username":username}) is not None:
+    if USER_AUTH_DB.find({"username":username}).count() == 0:
         USER_AUTH_DB.delete_many({"username":username})
 
 
-    USER_AUTH_DB.insert({"username": username, "token": ran, })
+    USER_AUTH_DB.insert_one({"username": username, "token": ran, })
     send_mail(subject, message, from_email, to_list, fail_silently=True)
     return HttpResponse()
 

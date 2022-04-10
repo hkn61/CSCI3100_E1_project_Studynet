@@ -1,34 +1,3 @@
-// Create a "close" button and append it to each list item
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-fetch("gettasklist", {
-        headers:{'X-CSRFToken': csrftoken},
-        method: 'POST',
-    })
-
-
-
-
-var myNodelist = document.querySelectorAll(".tasklist ul li");
-console.log(myNodelist)
-var i;
-for (i = 0; i < myNodelist.length; i++) {
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  myNodelist[i].appendChild(span);
-}
-
-// Click on a close button to hide the current list item
-var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-  close[i].onclick = function() {
-    var div = this.parentElement;
-    div.style.display = "none";
-  }
-}
-
 // Add a "checked" symbol when clicking on a list item
 var list = document.querySelector('.tasklist ul');
 list.addEventListener('click', function(ev) {
@@ -55,6 +24,18 @@ function newElement() {
   span.className = "close";
   span.appendChild(txt);
   li.appendChild(span);
+
+
+  const formData = new FormData();
+  formData.append('taskname', inputValue);
+  formData.append('csrfmiddlewaretoken', csrftoken);
+
+  fetch("inserttask", {
+    headers:{'X-CSRFToken': csrftoken},
+    credentials: 'same-origin',
+    method: 'POST',
+    body: formData,
+  })
 
   for (i = 0; i < close.length; i++) {
     close[i].onclick = function() {

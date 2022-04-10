@@ -11,10 +11,10 @@
     <meta http-equiv="refresh" content="300">
     <meta name="msapplication-TileColor" content="#6371C5" />
     <meta name="theme-color" content="#6371C5" />
+
   </head>
 
   <body>
-  {% csrf_token %}
     <ul class = "list-menu">
         <b id = "header" class = "header" >Studynet</b>
         <li><a href="user/profile">My Profile</a> </li>
@@ -31,12 +31,52 @@
         </div>
         <div class="tasklist">
         <ul id="myUL">
-          <li>Hit the gym</li>
-          <li>Pay bills</li>
-          <li>Meet George</li>
-          <li>Buy eggs</li>
-          <li>Read a book</li>
-          <li>Organize office</li>
+                {% csrf_token %}
+            <script>
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                fetch("gettasklist", {
+                    headers:{'X-CSRFToken': csrftoken},
+                    method: 'POST',
+                    credentials: 'same-origin',
+                }).then(response=>response.json())
+                .then(data=>Object.keys(data).forEach(function(taskname){
+                    taskinfo = data[taskname]
+                    let isfinished = taskinfo["isfinished"]
+                    let timespend = taskinfo["timespent"]
+
+                    var li = document.createElement("li");
+                    var t = document.createTextNode(taskname);
+                    li.appendChild(t);
+                    var span = document.createElement("SPAN");
+                    var txt = document.createTextNode("\u00D7");
+                    span.className = "close";
+                    span.appendChild(txt);
+                    span.addEventListener("click",function deletetask(event){
+                        let s = this.parentElement;
+                        s.style.display = "none";
+                        const formData = new FormData();
+                          formData.append('taskname', s.textContent);
+                        fetch("deletetask", {
+                            headers:{'X-CSRFToken': csrftoken},
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            body: formData,
+                        })
+                    })
+                    li.appendChild(span);
+
+                    if (isfinished == 1){
+                        li.classList.toggle('checked')
+                    }
+                    document.getElementById("myUL").appendChild(li)
+                }))
+            </script>
+<!--          <li>Hit the gym</li>-->
+<!--          <li>Pay bills</li>-->
+<!--          <li>Meet George</li>-->
+<!--          <li>Buy eggs</li>-->
+<!--          <li>Read a book</li>-->
+<!--          <li>Organize office</li>-->
         </ul>
             </div>
 
@@ -50,9 +90,9 @@
       </span>
     </footer>
     <!--  Bottom line -->
-  <script src="{% static 'task/task.js' %}">
 
-  </script>
+
+      <script src="{% static 'task/task.js' %}"></script>
   </body>
 </html>
 
