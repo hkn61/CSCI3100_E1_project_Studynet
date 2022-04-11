@@ -37,12 +37,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print(text_data)
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-
+        sender = text_data_json['username']
 
         timestamp = datetime.datetime.now()
         group_name = self.scope['url_route']['kwargs']['room_name']
         #sender = event['username']
-        chat_data = {'group_name': group_name, 'sender': 'Wendy', 'time': timestamp, 'message': message}
+        chat_data = {'group_name': group_name, 'sender': sender, 'time': timestamp, 'message': message}
         status, inserted_id = save_to_database('chat', 'chat_message', chat_data)
         day = timestamp.day
         month = timestamp.month
