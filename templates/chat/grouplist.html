@@ -122,7 +122,7 @@
             <div class="list">
                 <p><br></p>
                 <h1>My groups</h1>
-                <div class="listItem-group" v-for="group in group_list " :key="group.ID">
+                <div class="listItem-group"  @click="enterGroupChat(friend)" v-for="group in group_list " :key="group.ID">
                   <p class="info-name">[[group.group_name]]</p>
                   <p class="info-ID">ID: [[group.group_id]]</p>
                 </div>
@@ -160,9 +160,12 @@
                 console.log(friend)
                 let room_name = friend.friend_name
                 window.location.pathname = '/chat/' + 'f' + room_name +'/'
-                //chatSocket.send(JSON.stringify({roomName: friend.ID}))
 
-                //this.friend_list.push({ 'name': 'Wendy', 'ID': 123456, 'photo': 'photo1.jpg' })
+            },
+            enterGroupChat(Group){
+                console.log(Group)
+                let room_name = group.group_name
+                window.location.pathname = '/chat/' + 'g' + room_name +'/'
             }
 
             
