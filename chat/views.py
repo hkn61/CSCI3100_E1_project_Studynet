@@ -34,12 +34,18 @@ def create_friend_chat(db, collection, friend_info):
 def add_a_group(db, collection, group_name, user_name):
     print('inside add_to_ group database====>', db, collection, group_name, user_name)
     filter = { 'group_name': group_name }
-    entry = MONGO_CLIENT[db][collection].find(filter)
+    entry = MONGO_CLIENT[db][collection].find_one(filter)
     # ??? update member number
-    member_num = entry[0]['memberNum'] + 1 
-    r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'memberNum': member_num}}, upsert = True)
-    filter = {'user_name': user_name}
-    r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'group_list': group_name}}, upsert = True)
+    if entry:
+        member_num = entry[0]['memberNum'] + 1 
+        r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'memberNum': member_num}}, upsert = True)
+        filter = {'user_name': user_name}
+        r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'group_list': group_name}}, upsert = True)
+    else:
+        filter = { 'user_name': group_name }
+        r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'friend_list': user_name}}, upsert = True)
+        filter = { 'user_name': user_name }
+        r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'friend_list': group_name}}, upsert = True)
     return True
 
 
