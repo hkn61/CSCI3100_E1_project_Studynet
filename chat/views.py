@@ -80,6 +80,7 @@ def groupadd(request):
     # ??? add a group
     username = ''
     status = True
+    indicator = 1
     if request.user.is_authenticated:
         username = request.user
     if request.method == "POST":
@@ -93,11 +94,14 @@ def groupadd(request):
             status = add_a_group('chat', 'group', group_name, username)
         if not status:
             print(status)
-            messages.error(request, "Request failed when adding {}.".format(group_name))
-            return redirect("groupadd")
-        
+            #messages.error(request, "Request failed when adding {}.".format(group_name))
+            #return redirect("groupadd")
+    if status:
+        indicator = 1
+    else:  
+        indicator = 0
     return render(request, 'chat/groupadd.html', {
-        "status": status
+        "indicator": indicator
     })
 
 
@@ -264,6 +268,8 @@ def groupchat(request, room_name):
     print("user: {}, friend list: {}, group list: {}".format(username, friend_list, group_list))
         
     print('previous_messages =======>', previous_messages)
+    if room_name_with_type == 'groupchat':
+        room_name = room_name_with_type
     return render(request, 'chat/groupchat.html', {
         'room_name': room_name,
         'friend_list': friend_list,
@@ -301,7 +307,8 @@ def grouplist(request):
     for i in range(len(group_list)):
         tmp = MONGO_CLIENT['chat']['group'].find({"group_name": group_list[i]})
         id = tmp[0]['_id']
-        dict = {"group_name": group_list[i], "group_id": str(id)}
+        memberNum = tmp[0]['memberNum']
+        dict = {"group_name": group_list[i], "group_id": str(id), "mumberNum": memberNum}
         group.append(dict)   
     print(group)
 

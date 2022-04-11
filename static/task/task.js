@@ -1,4 +1,21 @@
 // Create a new list item when clicking on the "Add" button
+let list = document.querySelector('.tasklist ul');
+    list.addEventListener('click', function(ev) {
+      if (ev.target.tagName === 'LI') {
+        ev.target.classList.toggle('checked');
+        ev.target.style.display = "none";
+        const formData = new FormData();
+        formData.append('taskname', ev.target.innerText);
+        formData.append('csrfmiddlewaretoken', csrftoken);
+        fetch("changedoingstatus",{
+            headers:{'X-CSRFToken': csrftoken},
+            credentials: 'same-origin',
+            method: 'POST',
+            body: formData,
+        })
+      }
+    }, false);
+
 function newElement() {
   var li = document.createElement("li");
   var inputValue = document.getElementById("myInput").value;

@@ -60,10 +60,21 @@
             border-radius: 10px;
             height: 75px;
             width: 350px;
-            margin-left:30%;
-            padding: 20px 20px;
-            margin-top: 20px;
+            padding: 5px 5px;
+            margin: 20px auto;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .listItem:hover{
+            background: #da9784;
+            cursor: pointer;
+        }
+        .listItem p{
+            font-size: 25px;
+            /*display:inline-block;*/
+            margin: 5px;
+            margin-top: 20px;
+            font-weight: bold;
         }
         .create {
             color: #123777;
@@ -85,7 +96,7 @@
 
     </style>
         <h1 class="title">StudyNet - Add Friend/Group</h1>
-        <h3>Find new study groups and friends below</h3>
+        <!--<h3>Find new study groups and friends below</h3>-->
         <div class = "search-form">
         <form  action="/chat/groupsearch" method="post">
             {% csrf_token %}
@@ -120,6 +131,7 @@
         {% block form %}
         
         {% endblock %}
+        <h2>Click the card to ADD group/friend  </h2>
         <div id="app">
             <!--<div class="search-result" v-if="showList" >-->
                 {% csrf_token %}
@@ -128,22 +140,26 @@
                 </div>
             <!--</div>-->
         </div>
+        
         <h2>No suitable group found? <a onclick="location.href='/chat/groupcreate';"  class="create">CREATE</a> a new group!</h2>
         
         <p><br></p>
-          
+
+    {{ status|json_script:"status" }}
     {{ res_group_list|json_script:"res_group_list" }}
     
 
   <script>
-      
+    let status = JSON.parse(document.getElementById('status').textContent);
     let res_group_list = JSON.parse(document.getElementById('res_group_list').textContent);
     console.log(res_group_list)
+    console.log(status)
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
         data() {
             return {
+                status: status,
                 res_group_list: res_group_list
             }
         },
@@ -159,6 +175,8 @@
                     body: formData,
                     credentials: 'same-origin'
                 })
+                window.alert("Add successfully. Please check your group/friend list")
+                location.href='/chat/groupadd'
             }
             
         },

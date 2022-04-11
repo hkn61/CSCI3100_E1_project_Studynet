@@ -8,6 +8,20 @@
     <meta http-equiv="refresh" content="300">
     <meta name="msapplication-TileColor" content="#6371C5" />
     <meta name="theme-color" content="#6371C5" />
+    <style>
+      .round_icon{
+        width: 120px;
+        height: 120px;
+        display: flex;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .form-wrapper {
+      margin-top: -10px;
+      }
+    </style>
   </head>
 
   <body>
@@ -15,22 +29,25 @@
       <div class="form-wrapper">
 
         <form class="bewhite" id="message" action="/user/profile" method="get">  <!-- can change -->
-          <h1 class="text-title">Personal Information</h1>
+          <h1 class="text-title">My Profile</h1>
           <br/>
-
+          {% csrf_token %}
           <div class="field-group">
-            <div id="head" ><img src='/{{user.image}}' alt="selfie" width=300 height=300 /></div> 
+            <div id="head" ><img src={{image}} class='round_icon' alt="selfie" width=300 height=300 /></div> 
           </div>
 
           <div class="field-group">
-            <label class="label" >Email Address:</label>
-            <p id="email_text"></p>
-          </div>
-          <div class="field-group">
-            <label class="label" >User Name:</label>
+            <label class="label" >User Name: {{username}}</label>
             <p id="user_name"></p>
           </div>
-          
+          <div class="field-group">
+            <label class="label" >User ID: {{id}}</label>
+            <p id="user_id"></p>
+          </div>
+          <div class="field-group">
+            <label class="label" >Your study report is {{status}} now.</label>
+            <p id="privacy"></p>
+          </div>
         </form>
 
         <form class="bewhite" id="message" action="/user/updatephoto" method="post">  <!-- can change -->
@@ -54,9 +71,29 @@
 
         </form>
 
+        <form class="bewhite" id="privacy" action="/user/updateprivacy" method="post">
+          {% csrf_token %}
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+          <div class="field-group">
+            <input class="form-check-input" type="radio" name="privacy" id="0" value="0" onclick="onlyOne(this)">
+            <label class="form-check-label" for="new-color-red">Set my study report to be private.</label>
+          </div>
+          <div class="field-group">
+            <input class="form-check-input" type="radio" name="privacy" id="1" value="1" onclick="onlyOne(this)">
+            <label class="form-check-label" for="new-color-green">Set my study report to be public to friends.</label>
+          </div>
+
+          <button class="btn-submit" id="set_privacy" type="submit">Update privacy</button>
+        </form>
+
         <div class="begrey">
           <a href=changepwd class="link-register">Change your password</a>
-          <small class="link-about">Notice: Click the head portrait to change it.</small>
         </div>
       </div>
     </div>
@@ -64,10 +101,20 @@
     <!-- Bottom line -->
     <footer>
 
-      <span class="author">
+      <span class="author">&nbsp;
         Crafted with ❤️ by Studynet © 2022
       </span>
     </footer>
     <!--  Bottom line -->
   </body>
 </html>
+
+<script>
+  function onlyOne(checkbox) {
+    var checkboxes = document.getElementsByName('new-color')
+    checkboxes.forEach((item) => {
+        if (item !== checkbox) item.checked = false
+    })
+
+}
+</script>
