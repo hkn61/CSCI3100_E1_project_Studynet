@@ -15,6 +15,7 @@ def save_to_database(db, collection, chat_message):
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
+        print("self room name: {}".format(self.room_name))
         #self.room_group_name = 'chat_%s' % self.room_name
         self.room_group_name = self.room_name[1:]
         # Join room group
@@ -41,6 +42,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         timestamp = datetime.datetime.now()
         group_name = self.scope['url_route']['kwargs']['room_name']
+        print("In websocket receive: {}".format(group_name))
+        type = group_name[:1]
+        group_name = group_name[1:]
+
+        if type == 'g':
+            pass
+        else: # type == 'f'
+            try_name = sender + '&' + group_name
+            filter = {"group_name": try_name}
+            if MONGO_CLIENT['chat']['friend_chat'].find_one(filter):
+                #print("------find: {}".format(MONGO_CLIENT['chat']['friend_chat'].find_one(filter)))
+                group_name = try_name
+            else:
+                group_name = group_name + '&' + sender
+                #print("------{}------".format(group_name))
+        
         #sender = event['username']
         chat_data = {'group_name': group_name, 'sender': sender, 'time': timestamp, 'message': message}
         status, inserted_id = save_to_database('chat', 'chat_message', chat_data)
@@ -55,6 +72,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         chat_data['time'] = time
 
         # Send message to room group
+        print("self.room_group_name: {}".format(self.room_group_name))
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -67,7 +85,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
-        print("here: {}".format(event))
+        print("In websocket chat_message: {}".format(event))
 
         await self.send(text_data=json.dumps({
             'message': message

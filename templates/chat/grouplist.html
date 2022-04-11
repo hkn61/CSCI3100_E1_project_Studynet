@@ -158,9 +158,9 @@
         methods: {
             enterFriendChat(friend){
                 console.log(friend)
-                let room_name = 'groupone'
+                let room_name = friend.friend_name
                 window.location.pathname = '/chat/' + 'f' + room_name +'/'
-                chatSocket.send(JSON.stringify({roomName: friend.ID}))
+                //chatSocket.send(JSON.stringify({roomName: friend.ID}))
 
                 //this.friend_list.push({ 'name': 'Wendy', 'ID': 123456, 'photo': 'photo1.jpg' })
             }

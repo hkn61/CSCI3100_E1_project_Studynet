@@ -84,10 +84,10 @@ def groupcreate(request):
         member = [username]
         membernum = 1
         description = request.POST["description"]
-        private = request.POST["private"]
+        private = request.POST.get("private")
 
         filter = { 'group_name': group_name }
-        if MONGO_CLIENT['chat']['group'].find(filter):
+        if MONGO_CLIENT['chat']['group'].find_one(filter):
             messages.error(request, "Group name already exists.")
             return redirect("groupcreate")
 
@@ -172,9 +172,9 @@ def groupsearch(request):
 
 
 def groupchat(request, room_name):
+    room_name_with_type = room_name
     type = room_name[:1]
     room_name = room_name[1:]
-    room_name = 'groupthree'
     print(type)
     print('inside room view ======>', room_name)
     group_name = room_name
@@ -200,19 +200,15 @@ def groupchat(request, room_name):
 
     if type == 'f':
         group_name = username + '&' + room_name
+        try_filter = {'group_name': group_name}
+        if MONGO_CLIENT['chat']['friend_chat'].find_one(try_filter):
+            pass
+        else:
+            group_name = room_name + '&' + username
+        print("friend chat name: {}".format(group_name))
         filters = {'group_name': group_name}
         sort_fields = [('time', -1)]
         previous_messages = []
-        for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
-            print(chat)
-            chat['_id'] = str(chat['_id'])
-            chat['sender'] = str(chat['sender'])
-            chat['time'] = chat['time']
-            chat['message'] = chat['message']
-            previous_messages.append(chat)
-
-        group_name = room_name + '&' + username
-        sort_fields = [('time', -1)]
         for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
             print(chat)
             chat['_id'] = str(chat['_id'])
@@ -235,7 +231,7 @@ def groupchat(request, room_name):
         
     print('previous_messages =======>', previous_messages)
     return render(request, 'chat/groupchat.html', {
-        'room_name': room_name,
+        'room_name': room_name_with_type,
         'prev_messages': previous_messages,
         'current_user': username
     })

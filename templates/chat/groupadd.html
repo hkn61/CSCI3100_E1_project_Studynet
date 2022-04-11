@@ -165,6 +165,13 @@
             <!--</div>-->
         </div>
         <p><br></p>
+        {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
         <h2>No suitable group found? <a onclick="location.href='/chat/groupcreate';"  class="create">CREATE</a> a new group!</h2>
         
         set to be private or public
