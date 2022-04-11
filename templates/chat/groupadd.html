@@ -5,12 +5,23 @@
         .sideBar-item-top{
             background: #c4dad8;
         }
-          
+        .groupMain {
+            padding-right: 7vw;
+        }
         .title{
-        color: #a8b3be;
+            color: #a8b3be;
+            padding-right: 50px;
+        }
+
+        h3 {
+            margin: 0;
+            padding-right: 50px;
         }
         .search-form {
             width: 450px;
+            align-self: center;
+            margin: auto;
+            text-align: left
         }
         input[type=text] {
             float: center;
@@ -18,29 +29,37 @@
             border: 2px solid lightgray;
             margin-top: 8px;
             margin-right: 16px;
+            margin-left:20px;
             font-size: 20px;
             width: 270px;
             border-radius: 10px;
             height: 40px;
+            align-self: center;
+        }
+        input[type="radio"]{
+            height: 15px;
         }
         .button {
             float: center;
             padding: 6px;
             border: 2px solid lightgray;;
-            margin-top: 8px;
+            margin-top: 25px;
+            padding-top:4px;
             margin-right: 16px;
             font-size: 17px;
-            width: 50px;
-            height: 40px;
+            width: 55px;
+            height: 55px;
             border-radius: 10px;
+        }
+        .button:hover{
+            cursor: pointer;
         }
         
         .listItem {
-            background: #c1beaf;
+            background: #eed1ac;
             border-radius: 10px;
             height: 75px;
             width: 350px;
-            left: 23%;
             margin-left:30%;
             padding: 20px 20px;
             margin-top: 20px;
@@ -48,36 +67,40 @@
         }
         .create {
             color: #123777;
+            font-size: 40px;
             
         }
         .create:hover{
+            cursor: pointer;
             color: #99adce;
         }
+        
         .notice{
             color:#123777;
             text-align: left;
-            margin-left:25%;
+            margin-left:40px;
+            line-height: 30px;
         }
 
 
-
     </style>
-  
         <h1 class="title">StudyNet - Add Friend/Group</h1>
-        <h3 >Find new study groups and friends below</h3>
-        <form class = "search-form" action="/chat/groupsearch" method="post">
+        <h3>Find new study groups and friends below</h3>
+        <div class = "search-form">
+        <form  action="/chat/groupsearch" method="post">
             {% csrf_token %}
-            <input class="input" name="groupname" type="text"  placeholder="Search..." required>
-            
-            <button  class="button" type="submit" >
-                <i class="bi bi-search"></i>
-            </button>
-
-            <p class="notice"> Please select a serach option:</p>
+            <div>
+                <input class="input" name="groupname" type="text"  placeholder="Search..." required>
+                
+                <button  class="button" type="submit" >
+                    <i class="bi bi-search" style="font-size: 30px"></i>
+                </button>
+            </div>
+            <p class="notice-start"> Please select a serach option:</p>
             <div class="option">
                 <input class = "radio" type="radio" name="search_type" value="private_group" required>
                 <label> Search by group ID</label>
-                <p class="notice"> - join public group or private group (ask the target group member for the private group ID)</p>
+                <p class="notice"> - join public group or private group <br>(ask the target group member for the private group ID)</p>
             </div>
             <div class="option">
                 <input class = "radio" type="radio" name="search_type" value="public_group" required>
@@ -91,12 +114,12 @@
             </div>
 
         </form>
+        </div>
         
         
         {% block form %}
-        <h1>No search result</h1>
+        
         {% endblock %}
-        <p><br></p>
         <div id="app">
             <!--<div class="search-result" v-if="showList" >-->
                 {% csrf_token %}
@@ -105,17 +128,9 @@
                 </div>
             <!--</div>-->
         </div>
-        <p><br></p>
         <h2>No suitable group found? <a onclick="location.href='/chat/groupcreate';"  class="create">CREATE</a> a new group!</h2>
         
-        set to be private or public
-        ask for group name 
-        create cancel
-        new group 
         <p><br></p>
-        <p><br></p>
-        <p><br></p>
-        
           
     {{ res_group_list|json_script:"res_group_list" }}
     
