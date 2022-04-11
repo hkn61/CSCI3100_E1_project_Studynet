@@ -22,7 +22,6 @@ def profile(request):
 
 
 def updatephoto(request):
-    user = UserModel()
     if request.method == 'GET':
         return render(request, 'user/profile.html')
     if request.method == "POST":
@@ -30,7 +29,7 @@ def updatephoto(request):
     # change profile photo if uploaded
         #if len(request.FILES) != 0:
         image = request.FILES.get('image')
-        user.objects.filter(username = username).update(image=image)
+        user = UserModel.objects.filter(username = username).update(image=image)
     
         return render(request, 'user/profile.html', {
             'user': user
