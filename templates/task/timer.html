@@ -12,24 +12,29 @@
     <meta name="msapplication-TileColor" content="#6371C5" />
     <meta name="theme-color" content="#6371C5" />
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">-->
 </head>
 <body>
-    <ul class = "list-menu">
-        <b id = "header" class = "header" >Studynet</b>
-        <li><a href="timer">Begin Task</a> </li>
-        <li><a href="showfinishedtask">Finished Task</a> </li>
-        <li><a href="showdeletedtask">Deleted Task</a> </li>
-        <li><a href="tasklist">Task</a> </li>
-    </ul>
+      <ul class = "navbar">
+          <li class = "nav_of_group"><a href="/task/tasklist">My Task</a></li>
+          <li ><a href="/chat/grouplist">My Friends/Groups</a></li>
+          <li><a href="/user/profile">My Profile</a></li>
+      </ul>
     <div class="content-body">
+         <div class="sideBar"  >
+              <div  class="sideBar-item" onclick="location.href='/task/tasklist'" ><p><br><i class="bi bi-person-plus-fill" style="font-size: 30px"></i><br>Task list</p></div>
+              <div  class="sideBar-item" onclick="location.href='/task/showdeletedtask'"><p><br><i class="bi bi-card-list" style="font-size: 30px"></i><br>Deleted Task</P></div>
+              <div  class="sideBar-item" onclick="location.href='/task/showfinishedtask'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Finished Task</P></div>
+            <div  class="sideBar-item" onclick="location.href='/task/timer'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Begin Task</P></div>
+            <div  class="sideBar-item" onclick="location.href='/task/report'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Report</P></div>
+          </div>
         <div class="header">
             <div id="timer">
               <span id="hours">00:</span>
               <span id="mins">00:</span>
               <span id="seconds">00</span>
             </div>
-            <div id="controls" class="d-flex justify-content-center">
+            <div id="controls" style="align-content: center">
                 {% csrf_token %}
                 <button class="addBtn" id="start" style="align-content: center">Start</button>
                 <button class="addBtn" id="stop" style="align-content: center">Stop</button>
@@ -78,12 +83,6 @@
                     document.getElementById("myUL").appendChild(li)
                 }))
             </script>
-<!--          <li>Hit the gym</li>-->
-<!--          <li>Pay bills</li>-->
-<!--          <li>Meet George</li>-->
-<!--          <li>Buy eggs</li>-->
-<!--          <li>Read a book</li>-->
-<!--          <li>Organize office</li>-->
         </ul>
             </div>
     </div>
@@ -116,7 +115,8 @@
             tasknames.push(tasks[i].textContent);
         }
         times = h*3600+m*60+s;
-        console.log(tasknames)
+
+        // console.log(tasknames)
             formData.append('tasknames', tasknames);
             formData.append("time",times)
             fetch("addtimespent", {
@@ -155,7 +155,11 @@
       if (ev.target.tagName === 'LI') {
         ev.target.classList.toggle('checked');
         const formData = new FormData();
+        const tzString = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const isoStr = new Date().toLocaleString("en-us",{timeZone: tzString})
+
         formData.append('taskname', ev.target.innerText);
+        formData.append('tmstp', isoStr);
         formData.append('csrfmiddlewaretoken', csrftoken);
         fetch("changefinishedstatus",{
             headers:{'X-CSRFToken': csrftoken},

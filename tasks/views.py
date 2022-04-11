@@ -173,10 +173,13 @@ def changefinishedstatus(request):
         messages.error(request, "Sign in Error")
         return redirect("../auth/signin")
     taskname = request.POST["taskname"].split()[0]
+    tmstp = request.POST["tmstp"]
+    datelist = tmstp.split(",")[0].split("/")
     user_task_list = USER_TASK_DB.find({"username": str(username)})
     existing = user_task_list[0]
     finished_status = existing["tasklist"][taskname]["isfinished"]
     existing["tasklist"][taskname]["isfinished"] = 1- int(finished_status)
+    existing["tasklist"][taskname]["FinishedTimestamp"] = datelist
     USER_TASK_DB.update_one({"username": str(username)},{"$set": {"tasklist": existing["tasklist"]}})
     return HttpResponse()
 
@@ -200,4 +203,22 @@ def addtimespent(request):
     return HttpResponse()
 
 def report(request):
-    pass
+    return render(request, "task/report.html")
+
+def get_report_data(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    date_str = request.POST.get("date")
+    date_info = date_str.split("-")
+    user_task_list = USER_TASK_DB.find({"username": str(username)})
+    existing = user_task_list[0]
+    finished_and_matched = []
+    for task,task_info in existing["tasklist"].items():
+        if task_info["FinishedTimestamp"] == 0:continue
+        elif int(task_info["FinishedTimestamp"][0]) == int(date_info[1]) and int(task_info["FinishedTimestamp"][1]) == int(date_info[2]) and int(task_info["FinishedTimestamp"][2]) == int(date_info[0]):
+            finished_and_matched.append({"taskname":task,"timespent":task_info["timespent"]})
+        else:continue
+    return JsonResponse(finished_and_matched,safe=False)

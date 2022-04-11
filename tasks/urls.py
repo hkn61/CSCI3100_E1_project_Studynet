@@ -29,5 +29,7 @@ urlpatterns = [
     path('getdoinglist', views.getdoinglist, name="getdoinglist"),
     path('addtimespent', views.addtimespent, name="addtimespent"),
 
+    # Report
     path('report', views.report, name="report"),
+    path('get_report_data', views.get_report_data, name="get_report_data"),
 ]
