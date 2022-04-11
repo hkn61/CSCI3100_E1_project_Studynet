@@ -30,9 +30,10 @@
               <span id="seconds">00</span>
             </div>
             <div id="controls" class="d-flex justify-content-center">
+                {% csrf_token %}
                 <button class="addBtn" id="start" style="align-content: center">Start</button>
                 <button class="addBtn" id="stop" style="align-content: center">Stop</button>
-                <button class="addBtn" id="reset" style="align-content: center">Reset</button>
+                <button class="addBtn" id="reset" style="align-content: center">Finished</button>
             </div>
         </div>
         <div class="tasklist">
@@ -40,7 +41,7 @@
                 {% csrf_token %}
             <script>
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                fetch("gettasklist", {
+                fetch("getdoinglist", {
                     headers:{'X-CSRFToken': csrftoken},
                     method: 'POST',
                     credentials: 'same-origin',
@@ -100,10 +101,31 @@
     });
 
     $('#reset').click(function(){
+        addtimespent(hours,mins,seconds);
           hours =0;      mins =0;      seconds =0;
       $('#hours','#mins').html('00:');
       $('#seconds').html('00');
     });
+
+    function addtimespent(h,m,s){
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const formData = new FormData();
+        let tasks = document.querySelectorAll("#myUL li");
+        let tasknames = [];
+        for (i=0; i<tasks.length; ++i){
+            tasknames.push(tasks[i].textContent);
+        }
+        times = h*3600+m*60+s;
+        console.log(tasknames)
+            formData.append('tasknames', tasknames);
+            formData.append("time",times)
+            fetch("addtimespent", {
+                headers:{'X-CSRFToken': csrftoken},
+                method: 'POST',
+                credentials: 'same-origin',
+                body: formData,
+            })
+    }
 
     function startTimer(){
       timex = setTimeout(function(){
