@@ -22,17 +22,23 @@ def profile(request):
 
 
 def updatephoto(request):
+    user = UserModel()
+    username = ''
+    if request.user.is_authenticated:
+        username = request.user
     if request.method == 'GET':
         return render(request, 'user/profile.html')
     if request.method == "POST":
-        username = 'request.POST.get("username")'
+        username = 'Wendy'
     # change profile photo if uploaded
         #if len(request.FILES) != 0:
-        image = request.FILES.get('image')
-        user = UserModel.objects.filter(username = username).update(image=image)
+        image = request.POST.get('image')
+        print(request)
+        print("image chosen:", image)
+        #user.objects.filter(username = username).update(image=image)
     
         return render(request, 'user/profile.html', {
-            'user': user
+            'user': username
         })
 
 

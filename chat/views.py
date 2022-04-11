@@ -79,6 +79,7 @@ def group(request):
 def groupadd(request):
     # ??? add a group
     username = ''
+    status = True
     if request.user.is_authenticated:
         username = request.user
     if request.method == "POST":
@@ -95,7 +96,9 @@ def groupadd(request):
             messages.error(request, "Request failed when adding {}.".format(group_name))
             return redirect("groupadd")
         
-    return render(request, 'chat/groupadd.html', {})
+    return render(request, 'chat/groupadd.html', {
+        "status": status
+    })
 
 
 def groupcreate(request):
@@ -262,7 +265,7 @@ def groupchat(request, room_name):
         
     print('previous_messages =======>', previous_messages)
     return render(request, 'chat/groupchat.html', {
-        'room_name': room_name_with_type,
+        'room_name': room_name,
         'friend_list': friend_list,
         'group_list': group_list,
         'prev_messages': previous_messages,
