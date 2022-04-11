@@ -1,20 +1,3 @@
-// Add a "checked" symbol when clicking on a list item
-var list = document.querySelector('.tasklist ul');
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
-    const formData = new FormData();
-    formData.append('taskname', ev.target.innerText);
-    formData.append('csrfmiddlewaretoken', csrftoken);
-    fetch("changefinishedstatus",{
-        headers:{'X-CSRFToken': csrftoken},
-        credentials: 'same-origin',
-        method: 'POST',
-        body: formData,
-    })
-  }
-}, false);
-
 // Create a new list item when clicking on the "Add" button
 function newElement() {
   var li = document.createElement("li");

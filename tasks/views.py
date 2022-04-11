@@ -143,5 +143,10 @@ def restoredeletetask(request):
     USER_TASK_DB.update_one({"username": str(username)},
                             {"$set": {"tasklist": existing["tasklist"], "deletedtask": existing["deletedtask"]}})
     return HttpResponse()
+
+def timer(request):
+    return render(request, "task/timer.html")
+
+
 def report(request):
     pass

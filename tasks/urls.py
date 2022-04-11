@@ -18,5 +18,6 @@ urlpatterns = [
     path('restorefinishedtask', views.restorefinishedtask, name="restorefinishedtask"),
     path('restoredeletetask', views.restoredeletetask, name="restoredeletetask"),
 
+    path('timer', views.timer, name="timer"),
 
 ]
