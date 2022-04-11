@@ -15,9 +15,9 @@ def profile(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
-    user = UserModel.objects.filter(username=username)
+    
     return render(request, "user/profile.html", {
-        "profile": user,
+        "profile": username,
     })
 
 

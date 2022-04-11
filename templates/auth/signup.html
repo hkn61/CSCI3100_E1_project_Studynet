@@ -9,10 +9,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      .form-wrapper {
+        margin-top: 10px;
+      }
+    </style>
   </head>
 
   <body>
-    <div class="content-body">
+    <div class="content-body" style="height:180vh;">
       <div class="form-wrapper">
         <form class="bewhite" id="message" action="/auth/signup" method="post">  <!-- can change -->
           {% csrf_token %}

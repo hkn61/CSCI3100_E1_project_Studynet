@@ -264,6 +264,8 @@ def groupchat(request, room_name):
     print("user: {}, friend list: {}, group list: {}".format(username, friend_list, group_list))
         
     print('previous_messages =======>', previous_messages)
+    if room_name_with_type == 'groupchat':
+        room_name = room_name_with_type
     return render(request, 'chat/groupchat.html', {
         'room_name': room_name,
         'friend_list': friend_list,
