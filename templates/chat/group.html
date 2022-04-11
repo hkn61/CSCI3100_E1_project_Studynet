@@ -56,18 +56,16 @@
           margin-left: 30px;
           margin-right: 30px;
           }
-
+         
           .sideBar {
-            width: 120px;
+            width: 10vw;
             height: 93vh;
-            padding: 0px;
             top: 7vh;
             position: fixed;
             border-left: 5px solid lightgray;
           }
           .sideBar-item{
           height: 33%;
-          /*border-top: 2px solid lightgray;*/
           border-bottom: 2px solid lightgray;
           border-right: 2px solid lightgray;
           vertical-align: middle;
@@ -75,19 +73,12 @@
           .sideBar-item:hover{
           background: #c4dad8;
           }
-          .sideBar-item p{
-          vertical-align: middle;
+       
+          .sideBar-item-bottom{
+            border-bottom: 0px ;
+            height: 34%;
           }
-          .sideBar-item-bottum{
-          height: 33%;
-          text-align: center;
-          /*border-top: 2px solid lightgray;*/
-          border-right: 2px solid lightgray;
-          border-bottom: 0px ;
-          }
-          .sideBar-item-bottum:hover{
-          background: #c4dad8;
-          }
+         
           .groupMain {
           margin-left: 150px;
           padding-right: 5%;
@@ -196,7 +187,7 @@
       
     <div class="body-content">
         <div class="sideBar"  >
-            <div  class="sideBar-item sideBar-item-top" onclick="clickAdd()" ><p><br><br><br><i class="bi bi-person-plus-fill" style="font-size: 30px"></i><br>Add</p></div>
+            <div  class="sideBar-item sideBar-item-top" onclick="location.href='/chat/groupadd'" ><p><br><br><br><i class="bi bi-person-plus-fill" style="font-size: 30px"></i><br>Add</p></div>
             <div  class="sideBar-item sideBar-item-middle" onclick="location.href='/chat/grouplist';"><p><br><br><br><i class="bi bi-card-list" style="font-size: 30px"></i><br>List</P></div>
             <div  class="sideBar-item sideBar-item-bottom" onclick="location.href='/chat/groupchat';"><p><br><br><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Chat</P></div>
         </div>
@@ -220,21 +211,6 @@
     -->
     </body>
 
-    <script>
-        function clickAdd(){
-            location.href='/chat/groupadd';
-            document.getElementsByClassName("sideBar-item-top").style.backgroundColor = "#adb9bf"; 
-
-        }
-        function clickList(){
-            location.href='/chat/grouplist';
-            document.querySelector(".sideBar-item-middle").style.backgroundColor = "#adb9bf"; 
-        }
-        function clickChat(){
-            location.href='/chat/groupchat';
-            document.querySelector(".sideBar-item-bottum").style.backgroundColor = "#adb9bf"; 
-        }
-      //var chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/');
-    </script>
+    
 </html>
 
