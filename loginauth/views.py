@@ -8,7 +8,7 @@ from csci3100 import settings
 import random
 import string
 from csci3100.settings import MONGO_CLIENT
-from user_profile.models import UserModel
+from user_profile.models import Image
 # Create your views here.
 
 USER_AUTH_DB = MONGO_CLIENT['csci3100']['user_auth']
@@ -46,7 +46,7 @@ def signup(request):
         messages.success(request, "Your account has been successfully created.")
         newUser.save()
 
-        FRIEND_DB.insert({"user_name": username, "friend_list": [], "group_list":[],"profile":"profile/default.png"})
+        FRIEND_DB.insert({"user_name": username, "friend_list": [], "group_list":[], "profile":"/static/default.png"})
 
         # user = UserModel()
         # user.username = username
@@ -54,7 +54,7 @@ def signup(request):
         # #user.image = 'static/default.png'
         # user.save()
 
-        return render(request, "auth/signin.html")
+        return index(request)
     return render(request, "auth/signup.html")
 
 def signin(request):
@@ -79,7 +79,11 @@ def signout(request):
     messages.success(request, "Logged out successfully.")
     return redirect("../")
 
-
+def index(request):
+    if request.user.is_authenticated:
+        user = request.user
+        messages.success(request, f"Hello {user}, You have been successfully signed in.")
+    return render(request,"auth/index.html")
 
 def send_email(request):
     username = request.POST["name"]

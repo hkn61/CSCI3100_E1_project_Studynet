@@ -10,8 +10,8 @@
     <meta name="theme-color" content="#6371C5" />
     <style>
       .round_icon{
-        width: 100px;
-        height: 100px;
+        width: 120px;
+        height: 120px;
         display: flex;
         border-radius: 50%;
         align-items: center;
@@ -19,7 +19,7 @@
         overflow: hidden;
       }
       .form-wrapper {
-      margin-top: 30px;
+      margin-top: -10px;
       }
     </style>
   </head>
@@ -29,19 +29,19 @@
       <div class="form-wrapper">
 
         <form class="bewhite" id="message" action="/user/profile" method="get">  <!-- can change -->
-          <h1 class="text-title">Personal Information</h1>
+          <h1 class="text-title">My Profile</h1>
           <br/>
-
+          {% csrf_token %}
           <div class="field-group">
-            <div id="head" ><img src='https://avatars.githubusercontent.com/u/80053260?v=4' class='round_icon' alt="selfie" width=300 height=300 /></div> 
+            <div id="head" ><img src={{image}} class='round_icon' alt="selfie" width=300 height=300 /></div> 
           </div>
 
           <div class="field-group">
-            <label class="label" >Email Address:</label>
+            <label class="label" >User Name: {{username}}</label>
             <p id="email_text"></p>
           </div>
           <div class="field-group">
-            <label class="label" >User Name:</label>
+            <label class="label" >User ID: {{id}}</label>
             <p id="user_name"></p>
           </div>
           
@@ -78,7 +78,7 @@
     <!-- Bottom line -->
     <footer>
 
-      <span class="author">
+      <span class="author">&nbsp;
         Crafted with ❤️ by Studynet © 2022
       </span>
     </footer>

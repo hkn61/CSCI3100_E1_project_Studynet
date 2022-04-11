@@ -15,11 +15,14 @@ class Image(models.Model):
     image = models.ImageField(upload_to='static/form', default='default.png')
 
 '''
-class UserModel(models.Model):
+MEDIA_ADDR = 'http://localhost:8011/media/'
+
+class Image(models.Model):
     class Meta:
-        app_label = 'django.contrib.auth'
+        app_label = 'profile'
+        db_table = 'Image'
 
     username = models.TextField(max_length=100)
-    email = models.TextField(max_length=100)
-    image = models.ImageField(upload_to='static/form', null=True, blank=True, default='default.png')
+    #email = models.TextField(max_length=100)
+    image = models.ImageField(upload_to='avatar', null=True, blank=True, default='default.png')
 

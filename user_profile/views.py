@@ -8,37 +8,55 @@ from csci3100 import settings
 import random
 import string
 from csci3100.settings import MONGO_CLIENT
-from .models import UserModel
+from .models import Image
 # Create your views here.
 
 def profile(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
-    
+    username = "hkn"
+    filter = {'user_name': username}
+    record = MONGO_CLIENT['chat']['friend'].find_one(filter)
+    print(record)
+    id = str(record['_id'])
+    image = record['profile']
     return render(request, "user/profile.html", {
-        "profile": username,
+        'username': username,
+        'id': id,
+        "image": image
     })
 
 
 def updatephoto(request):
-    user = UserModel()
     username = ''
     if request.user.is_authenticated:
         username = request.user
     if request.method == 'GET':
         return render(request, 'user/profile.html')
     if request.method == "POST":
-        username = 'Wendy'
+        username = 'hkn'
     # change profile photo if uploaded
         #if len(request.FILES) != 0:
         image = request.POST.get('image')
-        print(request)
-        print("image chosen:", image)
+        #print(request)
         #user.objects.filter(username = username).update(image=image)
-    
+        #images = Image(username=username, image=image)
+        #print(images.image)
+        #images.save()
+        image = '/static/' + image
+        print("image chosen:", image)
+        filter = {'user_name': username}
+        MONGO_CLIENT['chat']['friend'].update_one(filter, {"$set": {'profile': image}}, upsert = True)
+
+        record = MONGO_CLIENT['chat']['friend'].find_one(filter)
+        print(record)
+        id = str(record['_id'])
+
         return render(request, 'user/profile.html', {
-            'user': username
+            'username': username,
+            'id': id,
+            "image": image
         })
 
 
