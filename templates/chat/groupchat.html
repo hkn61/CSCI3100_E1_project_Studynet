@@ -292,8 +292,10 @@ margin-right: 0;
 
     let room_name = JSON.parse(document.getElementById('room_name').textContent);
     let prev_messages = JSON.parse(document.getElementById('prev_messages').textContent);
+    let current_user = JSON.parse(document.getElementById('current_user').textContent);
     console.log(room_name);
     console.log( prev_messages);
+    console.log( current_user)
     
 
     const app =  Vue.createApp({
@@ -315,7 +317,7 @@ margin-right: 0;
             
             enterFriendChatroom(friend){
                 console.log(friend)
-                window.location.pathname = '/chat/' + 'g' + group +'/'
+                window.location.pathname = '/chat/' + 'f' + friend +'/'
             },
             enterGroupChatroom(group){
                 console.log(group)
@@ -325,8 +327,8 @@ margin-right: 0;
                 if (this.myInput != ""){
                     console.log(this.myInput)
                     this.chatSocket.send(JSON.stringify({
-                        message: this.myInput
-                        //username: 
+                        message: this.myInput,
+                        username: this.current_user
                     }))
                     this.myInput = ""
                 }
