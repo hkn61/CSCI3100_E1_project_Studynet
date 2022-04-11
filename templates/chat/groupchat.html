@@ -215,29 +215,29 @@ margin-right: 0;
                         <div class="name"></div>
                     </div>
             </div>  
-            <!--
+            
             <div class="chat-list">
-                <div class="clearfix" v-for="friend in friends " :key="friend.ID">
-                    <img :src="require('../../assets/'+friend.photo )">
+                <div class="clearfix" @click="enterFriendChatroom(friend)" v-for="friend in friend_list " :key="friend">
+                    <!--<img :src="require('../../assets/'+friend.photo )">-->
                     <div class="about" >
-                        <div class="name">{{friend.name}}</div>
-                        <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                        <div class="name">[[friend]]</div>
+                        <!--<div class="status"> <i class="fa fa-circle online"></i> online </div>-->
                     </div>
                 </div> 
                 
                 
             </div>
--->
+
             <div class="clearfix clearfix-title">
                     <div class="about">
                         <div class="name"></div>
                     </div>
             </div> 
             <ul class="list-unstyled chat-list mt-2 mb-0">                                      
-                <li class="clearfix" @click="enterChatroom(group)" v-for="group in group_list" :key="group">
+                <li class="clearfix" @click="enterGroupChatroom(group)" v-for="group in group_list" :key="group">
                     <div class="about">
                         <div class="name">[[group]]</div>
-                        <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                        <!--<div class="status"> <i class="fa fa-circle online"></i> online </div>-->
                     </div>
                 </li>
                 
@@ -248,7 +248,7 @@ margin-right: 0;
                 <div class="row">
                     <div class="col-lg-6">
                         <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                            <img src="../../assets/photo2.jpg" alt="avatar">
+                            <!--<img src="../../assets/photo2.jpg" alt="avatar">-->
                         </a>
                         <div class="chat-about">
                             <h6 class="m-b-0">Alice</h6>
@@ -284,6 +284,7 @@ margin-right: 0;
 
     {{ room_name|json_script:"room_name" }}
     {{ prev_messages|json_script:"prev_messages" }}
+    {{ current_user|json_script:"current_user" }}
 
 
 
@@ -294,57 +295,7 @@ margin-right: 0;
     console.log(room_name);
     console.log( prev_messages);
     
-     /*
-    
 
-    chatSocket.onmessage = function (e) {
-    var data = JSON.parse(e.data);
-    var message = data.message;
-    /*var typing = data.typing;
-    if (typing) {
-        var userName = data.username;
-        var outOfFocus = data.outoffocus;
-        if (currentUser !== userName) {
-            if (outOfFocus) {
-                document.getElementById("typingNotification").innerHTML = ' ';
-            } else {
-                document.getElementById("typingNotification").innerHTML = userName + ' is typing' + '\n';
-            }
-        }
-    }
-        if (message) {
-            document.querySelector('#chat-log').value += (message + '\n');
-        }
-    };
-
-    chatSocket.onclose = function (e) {
-        console.error('Chat socket closed unexpectedly');
-    };
-
-    document.querySelector('#chat-message-input').onkeyup = function (e) {
-    if (e.keyCode === 13) {  // enter, return
-        document.querySelector('#chat-message-submit').click();
-    };
-/*
-    document.querySelector('#chat-message-input').onblur = function (e) {
-    console.log('on focus out event generated');
-    chatSocket.send(JSON.stringify({
-        username: currentUser,
-        typing: true,
-        outoffocus: true
-    }));
-    };
-
-    document.querySelector('#chat-message-submit').onclick = function (e) {
-        var messageInputDom = document.querySelector('#chat-message-input');
-        var message = messageInputDom.value;
-        chatSocket.send(JSON.stringify({
-            message: message,
-            timestamp: getTimeStamp()
-        }));
-        messageInputDom.value = '';
-    };
-*/
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
@@ -352,29 +303,31 @@ margin-right: 0;
         data() {
             return {
                 room_name: room_name,
-                current_user: 'Wendy',
+                current_user: current_user,
                 prev_messages: prev_messages,
                 chatSocket: null,
                 myInput: "",
-                group_list: ['groupone','grouptwo','groupthree']
+                group_list: ['groupone','grouptwo','groupthree'],
+                friend_list: ['hkn', 'hsd','sxp','kdy'],
             }
         },
         methods: {
-            /*enterFriendChat(friend){
+            
+            enterFriendChatroom(friend){
                 console.log(friend)
-                //chatSocket.send(JSON.stringify({roomName: friend.ID}))
-            },*/
-            enterChatroom(group){
+                window.location.pathname = '/chat/' + 'g' + group +'/'
+            },
+            enterGroupChatroom(group){
                 console.log(group)
                 window.location.pathname = '/chat/' + 'g' + group +'/'
             },
             clickSend(){
                 if (this.myInput != ""){
                     console.log(this.myInput)
-                    //this.chatSocket.send(JSON.stringify({
-                    //    message: myInput,
-                    //    timestamp: getTimeStamp()
-                    //}))
+                    this.chatSocket.send(JSON.stringify({
+                        message: this.myInput
+                        //username: 
+                    }))
                     this.myInput = ""
                 }
                 
@@ -385,12 +338,13 @@ margin-right: 0;
             
             this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
 
-            this.chatSocket.onmessage = function(event) {
+            this.chatSocket.onmessage = (event) => {
                 console.log(event)
-                var data = JSON.parse(e.data)
+                var data = JSON.parse(event.data)
                 var message = data.message
                 if (message) {
                     this.prev_messages.push(message)
+                    console.log(this.prev_messages)
                 }
             }
             
