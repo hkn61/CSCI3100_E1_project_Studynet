@@ -15,16 +15,25 @@ def profile(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
-    username = "hkn"
+    username = "1"
     filter = {'user_name': username}
     record = MONGO_CLIENT['chat']['friend'].find_one(filter)
     print(record)
     id = str(record['_id'])
     image = record['profile']
+
+    filter = {'username': username}
+    record = MONGO_CLIENT['csci3100']['task_list'].find_one(filter)
+    privacy = record['privacy']
+    status = "private"
+    if privacy == 1:
+        status = "public"
+
     return render(request, "user/profile.html", {
         'username': username,
         'id': id,
-        "image": image
+        "image": image,
+        "status": status
     })
 
 
@@ -35,7 +44,7 @@ def updatephoto(request):
     if request.method == 'GET':
         return render(request, 'user/profile.html')
     if request.method == "POST":
-        username = 'hkn'
+        username = '1'
     # change profile photo if uploaded
         #if len(request.FILES) != 0:
         image = request.POST.get('image')
@@ -44,7 +53,7 @@ def updatephoto(request):
         #images = Image(username=username, image=image)
         #print(images.image)
         #images.save()
-        image = '/static/' + image
+        image = '/static/profile/' + image
         print("image chosen:", image)
         filter = {'user_name': username}
         MONGO_CLIENT['chat']['friend'].update_one(filter, {"$set": {'profile': image}}, upsert = True)
@@ -53,11 +62,49 @@ def updatephoto(request):
         print(record)
         id = str(record['_id'])
 
+        filter = {'username': username}
+        record = MONGO_CLIENT['csci3100']['task_list'].find_one(filter)
+        privacy = record['privacy']
+        status = "private"
+        if privacy == 1:
+            status = "public"
+
         return render(request, 'user/profile.html', {
             'username': username,
             'id': id,
-            "image": image
+            "image": image,
+            "status": status
         })
+
+
+def updateprivacy(request):
+    username = ''
+    if request.user.is_authenticated:
+        username = request.user
+    if request.method == "POST":
+        username = '1'
+        privacy = request.POST.get("privacy")
+        filter = {"username": username}
+        if privacy == "0":
+            MONGO_CLIENT['csci3100']['task_list'].update_one(filter, {"$set": {'privacy': 0}}, upsert = True)
+            status = "private"
+        else:
+            MONGO_CLIENT['csci3100']['task_list'].update_one(filter, {"$set": {'privacy': 1}}, upsert = True)
+            status = "public"
+
+        filter = {"user_name": username}
+        record = MONGO_CLIENT['chat']['friend'].find_one(filter)
+        id = str(record['_id'])
+        image = record['profile']
+
+        return render(request, 'user/profile.html', {
+            'username': username,
+            'id': id,
+            "image": image,
+            "status": status
+        })
+
+
 
 
 def changepwd(request):

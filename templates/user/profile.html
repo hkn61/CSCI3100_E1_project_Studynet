@@ -38,13 +38,16 @@
 
           <div class="field-group">
             <label class="label" >User Name: {{username}}</label>
-            <p id="email_text"></p>
+            <p id="user_name"></p>
           </div>
           <div class="field-group">
             <label class="label" >User ID: {{id}}</label>
-            <p id="user_name"></p>
+            <p id="user_id"></p>
           </div>
-          
+          <div class="field-group">
+            <label class="label" >Your study report is {{status}} now.</label>
+            <p id="privacy"></p>
+          </div>
         </form>
 
         <form class="bewhite" id="message" action="/user/updatephoto" method="post">  <!-- can change -->
@@ -68,9 +71,29 @@
 
         </form>
 
+        <form class="bewhite" id="privacy" action="/user/updateprivacy" method="post">
+          {% csrf_token %}
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+          <div class="field-group">
+            <input class="form-check-input" type="radio" name="privacy" id="0" value="0" onclick="onlyOne(this)">
+            <label class="form-check-label" for="new-color-red">Set my study report to be private.</label>
+          </div>
+          <div class="field-group">
+            <input class="form-check-input" type="radio" name="privacy" id="1" value="1" onclick="onlyOne(this)">
+            <label class="form-check-label" for="new-color-green">Set my study report to be public to friends.</label>
+          </div>
+
+          <button class="btn-submit" id="set_privacy" type="submit">Update privacy</button>
+        </form>
+
         <div class="begrey">
           <a href=changepwd class="link-register">Change your password</a>
-          <small class="link-about">Notice: Click the head portrait to change it.</small>
         </div>
       </div>
     </div>
@@ -85,3 +108,13 @@
     <!--  Bottom line -->
   </body>
 </html>
+
+<script>
+  function onlyOne(checkbox) {
+    var checkboxes = document.getElementsByName('new-color')
+    checkboxes.forEach((item) => {
+        if (item !== checkbox) item.checked = false
+    })
+
+}
+</script>
