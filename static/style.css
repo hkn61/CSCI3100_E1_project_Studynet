@@ -40,6 +40,7 @@ html {
     -webkit-background-clip: text;
     color: transparent;
     padding:5%;
+    font-family: 'Dancing Script', cursive;
 
 }
 
@@ -264,15 +265,10 @@ html {
 
   .author{
     position: fixed;
-
     left: 0px;
-    
     bottom: 0px;
-    
     width: 100%;
-    
     height: 3vh;
-    
     background-color: #eee;
     z-index: 9999;
       }
