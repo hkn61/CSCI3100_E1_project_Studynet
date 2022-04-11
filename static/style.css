@@ -1,5 +1,5 @@
 html {
-    font-size: 16px;
+    font-size: 1.1vw;
     word-spacing: 1px;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
@@ -8,14 +8,13 @@ html {
     box-sizing: border-box;
     background-color: rgb(242, 245, 247);
     color: #4d5068;
-    font-family: 'Open Sans', sans-serif;
   }
 
   *{margin:0;padding:0}
   ol, ul ,li{list-style: none;margin:0;padding:0;}
 
   .content-body {
-    min-height: 100vh;
+    height: 100vh;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -47,12 +46,108 @@ html {
     -o-background-size: cover;
 
   }
-  .form-wrapper {
+
+  .header{
+
+    font-size:2.5rem;
+    font-weight: 600;
+    background: linear-gradient(to right, red, blue);
+    -webkit-background-clip: text;
+    color: transparent;
+    padding:5%;
+
+}
+
+.list-menu{
+  background: #ffffff;
+    list-style-type: none;
+    padding-right: 5%;
+    animation-delay: 5s;
+    height: 7vh;
+  }
+
+.list-menu li {
+    font-size:1.2rem;
+    float: right;
+
+    height: 7vh;
+    position: relative;
+    text-align: center;
+    }
+.list-menu li a {
+      font-size:1.2rem;
+      display: block;
+      height: 7vh;
+      width: 10vw;
+      padding-top:15px;
+      text-align: center;
+      color: #000000;
+      text-decoration: none;
+      }
+/*when point the li*/
+  .list-menu li:hover {
+    background:  #c4dad8;
+    cursor : pointer;
+    }
+
+  .list-menu li:hover ul{
+    display: block;
+    }
+
+  /*.list-menu li:hover a{
+    color: #ffffff;
+    }*/
+  
+.image{
+    border:0;
+    alt:"picture";
+    position: absolute;
+    left:0;
+    top:5vh;
+    width: 46vw;
+    height: 65vh;
+    margin-left: 9%;
+    border-radius:30px;
+   }
+
+.introduction{
+  font-size:1.7rem;
+  text-align: center;
+  background: linear-gradient(to right,#ff9966b7, rgba(0, 0, 255, 0.692) );
+  -webkit-background-clip: text;
+  color: transparent;
+  /*border:2px #210be965 solid;*/
+  border:2px #210be965 solid;
+  width:30vw;
+  height: 20vh;
+  line-height: 5vh;
+  position: absolute;
+  left:17vw;
+  top:75vh;
+  border-radius:30px;
+}
+
+.content-list{
+  position: absolute;
+  font-size:1.7rem;
+  color: #000080;
+  border-width: 3px 0px 3px 0px;
+  border-style: solid solid double solid;
+  border-color:black green black black;
+
+  /*border-width: 0px 0px 2px 2px;*/
+  left:60vw;
+  top:13vh;
+  display: none;
+}
+ /*============================================================================*/
+   /*sign in or up*/
+   .form-wrapper {
     width: 350px;
     margin: 0 auto;
   }
   
-  @media screen and (max-width: 640px) {
+  @media screen and (min-width: 640px) {
     .form-wrapper {
       margin-top: 200px;
     }
@@ -63,7 +158,8 @@ html {
       width: 90%;
     }
   }
-  
+
+
   .bewhite {
     width: 100%;
     background-color: #fff;
@@ -136,7 +232,6 @@ html {
   }
 
   .btn-send {
-
     background-color: #a963c5;
     color: #fff;
     padding: 0.7em;
@@ -147,7 +242,6 @@ html {
     cursor: pointer;
     box-sizing: border-box;
   }
-  
   
   .link-register {
     background-color: #fff;
@@ -165,85 +259,4 @@ html {
     color: #4d5068;
     text-decoration: underline;
   }
-
-  .header{
-
-    font-size:2.5rem;
-    font-weight: 600;
-    background: linear-gradient(to right, red, blue);
-    -webkit-background-clip: text;
-    color: transparent;
-    padding:5%;
-
-}
-
-.list-menu{
-  background: #ffffff;
-    list-style-type: none;
-    padding-right: 5%;
-    animation-delay: 5s;
-  box-sizing: content-box;
-  }
-
-.list-menu li {
-    font-size:10px;
-    float: right;
-
-    height: 50px;
-    position: relative;
-    text-align: center;
-    }
-.list-menu li a {
-
-      display: block;
-      width: 160px;
-      padding-top:15px;
-      text-align: center;
-      color: #000000;
-      text-decoration: none;
-      }
-/*划过那个li 哪个li就变红*/
-.list-menu li:hover {
-  background: #000000;
-  }
-.list-menu li:hover ul{
-  display: block;
-  }
-
-  .list-menu li:hover a{
-    color: #ffffff;
-    }
-  
-.image{
-    border:0;
-    alt:"picture";
-    position: absolute;
-    left:0;
-    top:50px;
-    width: 500px;
-    height: 330px;
-    margin-left: 15%;
-    border:5px #ff9966b7 solid;
-    border-radius:30px;
-   }
-
-.introduction{
-  font-size:2.3rem;
-  text-align: center;
-  background: linear-gradient(to right,#ff9966b7, rgba(0, 0, 255, 0.692) );
-  -webkit-background-clip: text;
-  color: transparent;
-  border:5px #210be965 solid;
-  width:550px;
-  height: 330px;
-  line-height: 65px;
-  position: absolute;
-  left:800px;
-  top:300px;
-  border-radius:30px;
-  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-
-
-#head{ margin:10px auto} 
-#head img{ border-radius:50%} 
+    /*sign in or up*/
