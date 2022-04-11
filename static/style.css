@@ -13,22 +13,7 @@ html {
   *{margin:0;padding:0}
   ol, ul ,li{list-style: none;margin:0;padding:0;}
 
-  .content-body {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    background-image: url("10.jpg") ;
-    background-position-x: center;
-    background-position-y: center;
-    background-repeat: no-repeat;
-    position: relative;
-    background-size: cover;
-    -webkit-background-size: cover;
-    -o-background-size: cover;
-
-  }
+ 
   
   .content-bodyh {
     min-height: 100vh;
@@ -140,8 +125,25 @@ html {
   top:13vh;
   display: none;
 }
+
  /*============================================================================*/
    /*sign in or up*/
+   .content-body {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url("10.jpg") ;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    position: relative;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+  }
+
    .form-wrapper {
     width: 350px;
     margin: 0 auto;
@@ -259,4 +261,19 @@ html {
     color: #4d5068;
     text-decoration: underline;
   }
+
+  .author{
+    position: fixed;
+
+    left: 0px;
+    
+    bottom: 0px;
+    
+    width: 100%;
+    
+    height: 3vh;
+    
+    background-color: #eee;
+    z-index: 9999;
+      }
     /*sign in or up*/
