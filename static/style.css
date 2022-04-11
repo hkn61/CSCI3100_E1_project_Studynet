@@ -14,13 +14,13 @@ html {
   *{margin:0;padding:0}
   ol, ul ,li{list-style: none;margin:0;padding:0;}
 
- body {
-            font-family: 'Ubuntu', sans-serif;
-            text-align: center;
-            color: #2c3e50;
-            margin: 0;
-            padding: 0;
-          }
+ /*body {*/
+ /*           font-family: 'Ubuntu', sans-serif;*/
+ /*           text-align: center;*/
+ /*           color: #2c3e50;*/
+ /*           margin: 0;*/
+ /*           padding: 0;*/
+ /*         }*/
           .content-body {
             background-image: url("10.jpg");
             background-size: cover;

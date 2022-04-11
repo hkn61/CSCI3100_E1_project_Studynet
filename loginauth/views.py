@@ -54,7 +54,7 @@ def signup(request):
         # #user.image = 'static/default.png'
         # user.save()
 
-        return index(request)
+        return render(request, "auth/signin.html")
     return render(request, "auth/signup.html")
 
 def signin(request):
@@ -79,11 +79,7 @@ def signout(request):
     messages.success(request, "Logged out successfully.")
     return redirect("../")
 
-def index(request):
-    if request.user.is_authenticated:
-        user = request.user
-        messages.success(request, f"Hello {user}, You have been successfully signed in.")
-    return render(request,"auth/index.html")
+
 
 def send_email(request):
     username = request.POST["name"]

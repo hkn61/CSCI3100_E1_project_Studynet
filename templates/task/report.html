@@ -8,6 +8,7 @@
     <script src="{% static 'task/report.js' %}"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -32,7 +33,7 @@
             <input type="date" id="report_date" name="date" >
 
             <canvas id="myChart" style="height:400px; width:1200px" ></canvas>
-            <canvas id="pieChart" style="height:200px; width:1500px" ></canvas>
+<!--            <canvas id="pieChart" style="height:200px; width:1500px" ></canvas>-->
 
         </div>
     </div>
@@ -50,7 +51,8 @@
                 body: formData,
             }).then(response=>response.json())
                 .then(data=>{
-                              var chartjsData = [];
+                    var chartjsData = [];
+
             for (var i = 0; i < data.length; i++) {
                 chartjsData.push(data[i].timespent);
             }
@@ -59,13 +61,16 @@
                 chartjslabel.push(data[i].taskname);
             }
         //生成图表
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
+        $('#myChart').remove(); // this is my <canvas> element
+        $('.header').append('<canvas id="myChart" style="height:400px; width:1200px" ></canvas>');
+            ctx = document.getElementById("myChart").getContext("2d");
+                    var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: chartjslabel,
                 datasets:  [
                         {
+                            label: "Finished tasks",
                             fillColor : "rgba(220,280,220,0.5)",
                             strokeColor : "rgba(220,220,220,1)",
                             data : chartjsData
@@ -94,6 +99,7 @@
                 }
             }
         });
+
 
             })
         }
