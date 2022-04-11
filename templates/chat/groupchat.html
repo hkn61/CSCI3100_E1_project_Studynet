@@ -95,22 +95,24 @@
     height: 80vh;
 }
 .chat-header {
-    padding: 0px 0px;
+    
     border: 2px solid white;
     height: 8vh;
     background: #eee3e0;
-}
 
+}
+.chat-header p{
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 2vh;
+}
 .chat-header img {
     float: left;
     border-radius: 40px;
     width: 40px
+    
 }
 
-.chat-header h6 {
-    float: left;
-    padding-left: 10px
-}
 
 
 .chat-history {
@@ -153,6 +155,7 @@
     display: block;
     margin-left: auto; 
     margin-right: 0;
+    font-size: 13px;
 }
 
 .chat-history .message {
@@ -213,14 +216,15 @@
 .chat-message {
     padding: 0px;
     height: 6vh;
+    align-items: left;
 }
 .chat-message input{
-    width: 89%;
-    float: right;
+    width: 85%;
     height: 6vh;
     border-radius: 5px;
     font-size: 20px;
     border: 3px solid lightgray;
+    display:flex;
 
 }
 .chat-message span{
@@ -229,7 +233,7 @@
     height: 6vh;
     border: 3px solid lightgray;
     border-radius: 5px;
-    
+    margin-left: 3px;
 }
 .textright{
     margin-right:10px;
@@ -267,7 +271,7 @@
         <div class="chat-block">
             <div class="chat-header">
                 <!--<img src="../../assets/photo2.jpg" alt="avatar">-->            
-                <h3 >[[room_name]]</h3>
+                <p >[[room_name]]</p>
             </div>
             
             <div class="chat-history ">
