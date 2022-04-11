@@ -168,7 +168,7 @@
         {% if messages %}
               <ul class="messages">
                   {% for message in messages %}
-                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</li>
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:rgb(102, 64, 64)">{{ message }}</li>
                   {% endfor %}
               </ul>
           {% endif %}
@@ -182,13 +182,15 @@
         <p><br></p>
         <p><br></p>
         
-          
+        
+    {{ search_by|json_script:"search_by" }}
     {{ res_group_list|json_script:"res_group_list" }}
     
 
   <script>
       
     let res_group_list = JSON.parse(document.getElementById('res_group_list').textContent);
+    let search_by = JSON.parse(document.getElementById('search_by').textContent);
     console.log(res_group_list)
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
@@ -204,6 +206,7 @@
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                 const formData = new FormData();
                 formData.append('groupname', item);
+                formData.append("search_by", search_by)
                 fetch("groupadd", {
                     headers:{'X-CSRFToken': csrftoken},
                     method: 'POST',

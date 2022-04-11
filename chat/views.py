@@ -34,19 +34,14 @@ def create_friend_chat(db, collection, friend_info):
 def add_a_group(db, collection, group_name, user_name):
     print('inside add_to_ group database====>', db, collection, group_name, user_name)
     filter = { 'group_name': group_name }
-    entry = MONGO_CLIENT[db][collection].find_one(filter)
+    entry = MONGO_CLIENT[db][collection].find(filter)
     # ??? update member number
-    if entry:
-        member_num = entry[0]['memberNum'] + 1 
-        r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'memberNum': member_num}}, upsert = True)
-        filter = {'user_name': user_name}
-        r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'group_list': group_name}}, upsert = True)
-    else:
-        filter = { 'user_name': group_name }
-        r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'friend_list': user_name}}, upsert = True)
-        filter = { 'user_name': user_name }
-        r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'friend_list': group_name}}, upsert = True)
+    member_num = entry[0]['memberNum'] + 1 
+    r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'memberNum': member_num}}, upsert = True)
+    filter = {'user_name': user_name}
+    r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'group_list': group_name}}, upsert = True)
     return True
+
 
 
 def add_a_friend(db, collection, adder, added):
@@ -70,12 +65,20 @@ def groupadd(request):
     # ??? add a group
     if request.method == "POST":
         group_name = request.POST.get("groupname")
+        search_by = request.POST.get("search_by")
 
         username = ''
         if request.user.is_authenticated:
             username = request.user
         username = 'Wendy'
-        add_a_group('chat', 'group', group_name, username)
+        if search_by == 'friend':
+            status = add_a_friend('chat', 'friend', username, group_name)
+        else:
+            status = add_a_group('chat', 'group', group_name, username)
+        if status:
+            messages.success(request, "You successfully added {}.".format(group_name))
+        else:
+            messages.error(request, "Request failed when adding {}.".format(group_name))
         
     return render(request, 'chat/groupadd.html', {})
 
@@ -171,6 +174,7 @@ def groupsearch(request):
 
     print(result_group_list)
     return render(request, 'chat/groupadd.html', {
+        'search_by': search_by,
         'res_group_list': result_group_list
         
     })
