@@ -46,13 +46,13 @@ def signup(request):
         messages.success(request, "Your account has been successfully created.")
         newUser.save()
 
-        FRIEND_DB.insert({"user_name": username, "friend_list": [], "group_list":[]})
+        FRIEND_DB.insert({"user_name": username, "friend_list": [], "group_list":[],"profile":"profile/default.png"})
 
-        user = UserModel()
-        user.username = username
-        user.email = email
-        #user.image = 'static/default.png'
-        user.save()
+        # user = UserModel()
+        # user.username = username
+        # user.email = email
+        # #user.image = 'static/default.png'
+        # user.save()
 
         return index(request)
     return render(request, "auth/signup.html")
