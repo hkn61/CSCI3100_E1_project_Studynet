@@ -31,13 +31,13 @@
             <div  class="sideBar-item" onclick="location.href='/task/timer'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Begin Task</P></div>
             <div  class="sideBar-item" onclick="location.href='/task/report'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Report</P></div>
           </div>
-        <div id="myDIV" class="header">
+        <div id="myDIV" class="header" style="margin-left: 150px;">
           <h2>My To Do List</h2>
 
           <input type="text" id="myInput" placeholder="Title...">
           <span onclick="newElement()" class="addBtn">Add</span>
         </div>
-        <div class="tasklist">
+        <div class="tasklist" style="margin-left: 150px;">
         <ul id="myUL">
                 {% csrf_token %}
             <script>

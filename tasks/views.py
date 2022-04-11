@@ -217,7 +217,7 @@ def get_report_data(request):
     existing = user_task_list[0]
     finished_and_matched = []
     for task,task_info in existing["tasklist"].items():
-        if task_info["FinishedTimestamp"] == 0:continue
+        if task_info["FinishedTimestamp"] == 0 or task_info["isfinished"] == 0:continue
         elif int(task_info["FinishedTimestamp"][0]) == int(date_info[1]) and int(task_info["FinishedTimestamp"][1]) == int(date_info[2]) and int(task_info["FinishedTimestamp"][2]) == int(date_info[0]):
             finished_and_matched.append({"taskname":task,"timespent":task_info["timespent"]})
         else:continue

@@ -20,7 +20,7 @@
           <li ><a href="/chat/grouplist">My Friends/Groups</a></li>
           <li><a href="/user/profile">My Profile</a></li>
       </ul>
-    <div class="content-body">
+    <div class="content-body" >
          <div class="sideBar"  >
               <div  class="sideBar-item" onclick="location.href='/task/tasklist'" ><p><br><i class="bi bi-person-plus-fill" style="font-size: 30px"></i><br>Task list</p></div>
               <div  class="sideBar-item" onclick="location.href='/task/showdeletedtask'"><p><br><i class="bi bi-card-list" style="font-size: 30px"></i><br>Deleted Task</P></div>
@@ -28,20 +28,20 @@
             <div  class="sideBar-item" onclick="location.href='/task/timer'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Begin Task</P></div>
             <div  class="sideBar-item" onclick="location.href='/task/report'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Report</P></div>
           </div>
-        <div class="header">
+        <div class="header" style="margin-left: 150px;">
             <div id="timer">
               <span id="hours">00:</span>
               <span id="mins">00:</span>
               <span id="seconds">00</span>
             </div>
-            <div id="controls" style="align-content: center">
+            <div id="controls" style="text-align: center;margin-left: 150px;">
                 {% csrf_token %}
-                <button class="addBtn" id="start" style="align-content: center">Start</button>
-                <button class="addBtn" id="stop" style="align-content: center">Stop</button>
-                <button class="addBtn" id="reset" style="align-content: center">Finished</button>
+                <button class="addBtn" id="start" >Start</button>
+                <button class="addBtn" id="stop" >Stop</button>
+                <button class="addBtn" id="reset" >Finished</button>
             </div>
         </div>
-        <div class="tasklist">
+        <div class="tasklist" style="margin-left: 150px;">
         <ul id="myUL">
                 {% csrf_token %}
             <script>

@@ -21,36 +21,36 @@ html {
  /*           margin: 0;*/
  /*           padding: 0;*/
  /*         }*/
-          .content-body {
-            background-image: url("10.jpg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            top: 7vh;
-            /*min-height: 110vh;*/
-            /*  min-width: 100vw;*/
-            text-align: center;
-            display:flex;
-            /*overflow-x: hidden;*/
-              flex: auto;
-          }
+ /*         .content-body {*/
+ /*           background-image: url("10.jpg");*/
+ /*           background-size: cover;*/
+ /*           background-repeat: no-repeat;*/
+ /*           background-position: center;*/
+ /*           !*top: 7vh;*!*/
+ /*           !*min-height: 110vh;*!*/
+ /*           !*  min-width: 100vw;*!*/
+ /*           text-align: center;*/
+ /*           display:flex;*/
+ /*           !*overflow-x: hidden;*!*/
+ /*           !*  flex: auto;*!*/
+ /*         }*/
   
-  /*.content-body {*/
-  /*  min-height: 100vh;*/
-  /*  width: 100%;*/
-  /*  display: flex;*/
-  /*  justify-content: center;*/
-  /*  flex-direction: column;*/
-  /*  background-image: url("10.jpg") ;*/
-  /*  background-position-x: center;*/
-  /*  background-position-y: center;*/
-  /*  background-repeat: no-repeat;*/
-  /*  position: relative;*/
-  /*  background-size: cover;*/
-  /*  -webkit-background-size: cover;*/
-  /*  -o-background-size: cover;*/
+  .content-body {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url("10.jpg") ;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    position: relative;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
 
-  /*}*/
+  }
 
   .header{
 
@@ -346,7 +346,7 @@ cursor: pointer
 background: #a8c8b1;
 }
 .sideBar {
-width: 10vw;
+width: 150px;
 height: 93vh;
 top: 7vh;
 position: fixed;
