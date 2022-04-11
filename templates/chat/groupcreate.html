@@ -7,6 +7,13 @@
     <div class = "form" >
         <form action="/chat/groupcreate" method="post">
             {% csrf_token %}
+            {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:rgb(126, 49, 49)">{{ message }}</li>
+                  {% endfor %}
+              </ul>
+            {% endif %}
             <label>Group Name: <br></label>
             <input type="text" required name="groupname">
 

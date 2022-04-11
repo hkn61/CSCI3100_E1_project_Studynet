@@ -159,19 +159,19 @@
         <div id="app">
             <!--<div class="search-result" v-if="showList" >-->
                 {% csrf_token %}
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:rgb(102, 64, 64)">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 <div class="listItem" @click="addGroup(item)" v-for="item in res_group_list" :key="item" >
                     <p>[[item]]</p>
                 </div>
             <!--</div>-->
         </div>
         <p><br></p>
-        {% if messages %}
-              <ul class="messages">
-                  {% for message in messages %}
-                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:rgb(102, 64, 64)">{{ message }}</li>
-                  {% endfor %}
-              </ul>
-          {% endif %}
         <h2>No suitable group found? <a onclick="location.href='/chat/groupcreate';"  class="create">CREATE</a> a new group!</h2>
         
         set to be private or public
