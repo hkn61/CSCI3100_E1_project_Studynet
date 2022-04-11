@@ -3,49 +3,67 @@
 {% block content %}
 <style>
     .title{
-        padding-top: 2vh;
-        padding-bottom: 2vh;
+        padding:0;
+        margin:2vh 0;
     }
     .sideBar-item-bottom{
     background: #c4dad8;
     }
     .people-list {
-    /*display: none;*/
-    width: 250px;
-    height: 450px;
-    padding-right: 20px;
-
-    position: absolute;
-    border: 2px solid gray;
-}
+        /*display: none;*/
+        width: 250px;
+        height: 80vh;
+        position: absolute;
+        border: 2px solid white;
+    }
 
 .chat{
     border-radius: 3px;
-    background: rgba(248, 250, 251, 0.7);
-    border: 2px solid gray;
+    background: rgba(248, 250, 251, 0.4);
+    width: 85vw;
+    margin-bottom: 3vh;
+    height: 80vh;
 }
+.people-list .list-title{
+    background: #eae7e2;
+    color: #728796;
+    font-size: 20px;
+    text-align: left;
+    height: 6vh;
+    border: 2px solid #e8f1f3;
+}
+.people-list .list-title p{
+    margin: 1vh;
+}
+
 .people-list .chat-list{
     overflow-y: scroll;
-    height: 200px;
-    border: 2px solid gray;
+    height: 32.5vh;
+    border: 2px solid white;
+    margin: 0;
+    padding: 0;
 }
 .people-list .chat-list li {
     padding: 10px 15px;
     list-style: none;
-    border-radius: 3px
+    text-align: left;
+    border-bottom: 2px solid lightgrey;
+    height: 5vh;
+    vertical-align: middle;
 }
+.people-list .chat-list li p{
+    margin: auto;
+    padding-top: 1vh; 
 
+}
+.people-list .chat-list li div{
+    margin: auto;
+    padding-top: 1vh; 
+
+}
 .people-list .chat-list li:hover {
     background: #efefef;
     cursor: pointer
-}
-
-.people-list .chat-list li.active {
-    background: #efefef
-}
-
-.people-list .chat-list li .name {
-    font-size: 15px
 }
 
 .people-list .chat-list img {
@@ -54,21 +72,15 @@
 
 }
 
-.people-list img {
-    float: left;
-    border-radius: 50%;
+@media screen and (max-width: 700px) {
+    .people-list {
+        display: none !important;
+    }
+    .chat-block{
+        margin-left: 0px !important;
+    }
 }
 
-.people-list .about {
-    display:inline-block;
-    padding-left: 8px;
-    margin-left: 10px;
-}
-
-.people-list .status {
-    color: #999;
-    font-size: 13px
-}
 .clearfix-title {
     height: 20px;
     border-top: #444;
@@ -79,31 +91,34 @@
 }
 .chat-block{
     margin-left: 250px;
-    border: 2px solid gray;
-    border-bottom: 2px solid gray;
-    height: 77vh;
+    border: 2px solid white;
+    height: 80vh;
 }
 .chat-header {
-    padding: 0px 0px;
-    border: 2px solid gray;
-    height: 10vh;
-}
+    
+    border: 2px solid white;
+    height: 8vh;
+    background: #eee3e0;
 
+}
+.chat-header p{
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 2vh;
+}
 .chat-header img {
     float: left;
     border-radius: 40px;
     width: 40px
+    
 }
 
-.chat-header .chat-about {
-    float: left;
-    padding-left: 10px
-}
+
 
 .chat-history {
-    border-bottom: 2px solid grey;
+    border-bottom: 2px solid white;
     overflow-y: scroll;
-    height: 60vh;
+    height: 64vh;
 }
 
 .chat-history ul {
@@ -112,11 +127,14 @@
 
 .chat-history ul li {
     list-style: none;
-    margin-bottom: 30px
+    height: 50px;
+    margin-bottom: 50px;
+    margin-left: 13px;
+    margin-right: 13px;
 }
 
 .chat-history ul li:last-child {
-    margin-bottom: 0px
+    padding-bottom: 10px;
 }
 
 .chat-history .message-data {
@@ -135,18 +153,18 @@
     color: #434651;
     padding-left: 6px;
     display: block;
-
-margin-left: auto; 
-margin-right: 0;
+    margin-left: auto; 
+    margin-right: 0;
+    font-size: 13px;
 }
 
 .chat-history .message {
     color: #444;
-    padding: 18px 20px;
+    padding: 13px 20px;
     line-height: 26px;
     font-size: 16px;
     border-radius: 7px;
-    display: inline-block;
+    display:  block;
     position: relative
 }
 
@@ -164,13 +182,13 @@ margin-right: 0;
     margin-left: -10px
 }
 
-.chat-history .myMessage {
+.chat-history .otherMessage {
     background: #efefef;
     float: left;
     text-align: left;
 }
 
-.chat-history .myMessage:after {
+.chat-history .otherMessage:after {
     bottom: 100%;
     left: 30px;
     border: solid transparent;
@@ -184,120 +202,119 @@ margin-right: 0;
     margin-left: -10px
 }
 
-.chat-history .otherMessage {
+.chat-history .myMessage {
     background: #e8f1f3;
     float: right;
     margin-right:10px;
     text-align: left;
 }
 
-.chat-history .otherMessage:after {
+.chat-history .myMessage:after {
     border-bottom-color: #e8f1f3;
-    left: 93%
+    left: 90%
 }
 .chat-message {
     padding: 0px;
-    height: 7vh;
+    height: 6vh;
+    align-items: left;
+}
+.chat-message input{
+    width: 85%;
+    height: 6vh;
+    border-radius: 5px;
+    font-size: 20px;
+    border: 3px solid lightgray;
+    display:flex;
+
+}
+.chat-message span{
+    float: left;
+    width: 8%;
+    height: 6vh;
+    border: 3px solid lightgray;
+    border-radius: 5px;
+    margin-left: 3px;
 }
 .textright{
     margin-right:10px;
 }
 </style>
 
-<p><br></p>
-<h1 class="title">StudyNet - ChatBox</h1>
 <div id="app">
+    <h1 class="title">StudyNet - [[current_user]] -ChatBox</h1>
     <div class="chat"> 
-    <div id="plist" class="people-list ">
-            
-        <div class="clearfix clearfix-title">
-                    <div class="about">
-                        <div class="name"></div>
-                    </div>
+        <div id="plist" class="people-list ">
+                
+            <div class="list-title">
+                <p>Friends:</p>
             </div>  
-            
-            <div class="chat-list">
-                <div class="clearfix" @click="enterFriendChatroom(friend)" v-for="friend in friend_list " :key="friend">
-                    <!--<img :src="require('../../assets/'+friend.photo )">-->
-                    <div class="about" >
-                        <div class="name">[[friend]]</div>
-                        <!--<div class="status"> <i class="fa fa-circle online"></i> online </div>-->
-                    </div>
-                </div> 
                 
-                
-            </div>
+            <ul class="chat-list">
+                <li class="list-item" @click="enterFriendChatroom(friend)" v-for="friend in friend_list " :key="friend">
+                        <!--<img :src="require('../../assets/'+friend.photo )">-->
+                    <p class="friend-name">[[friend]]</p>
+                    <!--<div class="status"> <i class="fa fa-circle online"></i> online </div>-->     
+                </li> 
+            </ul>
 
-            <div class="clearfix clearfix-title">
-                    <div class="about">
-                        <div class="name"></div>
-                    </div>
-            </div> 
-            <ul class="list-unstyled chat-list mt-2 mb-0">                                      
-                <li class="clearfix" @click="enterGroupChatroom(group)" v-for="group in group_list" :key="group">
-                    <div class="about">
-                        <div class="name">[[group]]</div>
-                        <!--<div class="status"> <i class="fa fa-circle online"></i> online </div>-->
-                    </div>
-                </li>
-                
+            <div class="list-title">
+                <p>Groups:</p>
+            </div>  
+            <ul class="chat-list">                                      
+                <li class="list-item"  @click="enterGroupChatroom(group)" v-for="group in group_list" :key="group">   
+                    <div class="group-name">[[group]]</div>
+                    <!--<div class="status"> <i class="fa fa-circle online"></i> online </div>-->
+                </li>  
             </ul>
         </div>
-    <div class="chat-block">
-        <div class="chat-header clearfix">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                            <!--<img src="../../assets/photo2.jpg" alt="avatar">-->
-                        </a>
-                        <div class="chat-about">
-                            <h6 class="m-b-0">Alice</h6>
-                            <small>Online</small>
-                        </div>
-                    </div>
-                    
-                </div>
+
+        <div class="chat-block">
+            <div class="chat-header">
+                <!--<img src="../../assets/photo2.jpg" alt="avatar">-->            
+                <p >[[room_name]]</p>
             </div>
-    <div class="chat-history ">
-                <ul class="m-b-0">
-                    <li class="clearfix"  v-for="mes in prev_messages" :key="mes.message">
-                        <div class="message-data" :class="{textright: mes.sender == current_user}">
+            
+            <div class="chat-history ">
+                <ul class="history-list">
+                    <li class="history-item"  v-for="mes in prev_messages" :key="mes.message">
+                        <div class="message-data" >
+                            <!--:class="{textright: mes.sender == current_user}"-->
                             <span class="message-data-time">[[mes.time]]</span>
                         </div>
-                        <div class="message " :class="{otherMessage: mes.sender == current_user , myMessage: mes.sender != current_user}">[[mes.message]]</div>                                    
+                        <div class="message " :class="{otherMessage: mes.sender != current_user , myMessage: mes.sender == current_user}">[[mes.message]]</div>                                    
                     </li>                               
-
                 </ul>
-                
-    </div>
-    <div class="chat-message">
-                <div class="input-group mb-0">
+            </div>
+
+            <div class="chat-message">
+                <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" @click="clickSend"><i class="bi bi-send-fill"></i></span>
+                        <span class="input-group-text" @click="clickSend"><i class="bi bi-send-fill" style="font-size: 5vh"></i></span>
                     </div>
                     <input v-model="myInput" @keyup.enter="clickSend" type="text" class="form-control" placeholder="Enter text here...">                                    
                 </div>
             </div>
-    </div>
+        </div>
     </div>
 </div>
 
     {{ room_name|json_script:"room_name" }}
     {{ prev_messages|json_script:"prev_messages" }}
     {{ current_user|json_script:"current_user" }}
+    {{ group_list|json_script:"group_list" }}
+    {{ friend_list|json_script:"friend_list" }}
 
-
-
-    <script>
+<script>
 
     let room_name = JSON.parse(document.getElementById('room_name').textContent);
     let prev_messages = JSON.parse(document.getElementById('prev_messages').textContent);
     let current_user = JSON.parse(document.getElementById('current_user').textContent);
+    let group_list = JSON.parse(document.getElementById('group_list').textContent);
+    let friend_list = JSON.parse(document.getElementById('friend_list').textContent);
     console.log(room_name);
     console.log( prev_messages);
     console.log( current_user)
     
-
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
@@ -309,12 +326,11 @@ margin-right: 0;
                 prev_messages: prev_messages,
                 chatSocket: null,
                 myInput: "",
-                group_list: ['groupone','grouptwo','groupthree'],
-                friend_list: ['hkn', 'hsd','sxp','kdy'],
+                group_list: group_list,
+                friend_list: friend_list
             }
         },
         methods: {
-            
             enterFriendChatroom(friend){
                 console.log(friend)
                 window.location.pathname = '/chat/' + 'f' + friend +'/'
@@ -361,5 +377,5 @@ margin-right: 0;
     });
     app.mount('#app');
 
-    </script>
+</script>
 {% endblock %}

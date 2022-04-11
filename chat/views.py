@@ -37,9 +37,16 @@ def add_a_group(db, collection, group_name, user_name):
     entry = MONGO_CLIENT[db][collection].find(filter)
     # ??? update member number
     member_num = entry[0]['memberNum'] + 1 
-    r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'memberNum': member_num}}, upsert = True)
+    if user_name not in entry[0]['member']:
+        r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'memberNum': member_num}}, upsert = True)
+    else:
+        return False
     filter = {'user_name': user_name}
-    r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'group_list': group_name}}, upsert = True)
+    entry = MONGO_CLIENT[db]['friend'].find(filter)
+    if group_name not in entry[0]['group_list']:
+        r = MONGO_CLIENT[db]['friend'].update_one(filter, {'$push': {'group_list': group_name}}, upsert = True)
+    else:
+        return False
     return True
 
 
@@ -47,13 +54,21 @@ def add_a_group(db, collection, group_name, user_name):
 def add_a_friend(db, collection, adder, added):
     print('inside add_to_ friend database====>', db, collection, adder, added)
     filter = { 'user_name': adder }
-    r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'friend_list': added}}, upsert = True)
+    entry = MONGO_CLIENT[db][collection].find(filter)
+    if added not in entry[0]['friend_list']:
+        r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'friend_list': added}}, upsert = True)
+    else:
+        return False
     filter = { 'user_name': added }
-    r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'friend_list': adder}}, upsert = True)
+    entry = MONGO_CLIENT[db][collection].find(filter)
+    if adder not in entry[0]['friend_list']:
+        r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'friend_list': adder}}, upsert = True)
+    else:
+        return False
     group_name = adder + '&' + added
     group_info = {'group_name': group_name, 'adder': adder, 'added': added}
     status, inserted_id = create_friend_chat('chat', 'friend_chat', group_info)
-    return status, inserted_id
+    return True
 
 
 def group(request):
@@ -63,24 +78,27 @@ def group(request):
 
 def groupadd(request):
     # ??? add a group
+    username = ''
+    status = True
+    if request.user.is_authenticated:
+        username = request.user
     if request.method == "POST":
         group_name = request.POST.get("groupname")
         search_by = request.POST.get("search_by")
 
-        username = ''
-        if request.user.is_authenticated:
-            username = request.user
         username = 'Wendy'
         if search_by == 'friend':
             status = add_a_friend('chat', 'friend', username, group_name)
         else:
             status = add_a_group('chat', 'group', group_name, username)
-        if status:
-            messages.success(request, "You successfully added {}.".format(group_name))
-        else:
+        if not status:
+            print(status)
             messages.error(request, "Request failed when adding {}.".format(group_name))
+            return redirect("groupadd")
         
-    return render(request, 'chat/groupadd.html', {})
+    return render(request, 'chat/groupadd.html', {
+        "status": status
+    })
 
 
 def groupcreate(request):
@@ -238,10 +256,18 @@ def groupchat(request, room_name):
         minute = timestamp.minute
         time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
         chat['time'] = time
+
+    filter = {'user_name': username}
+    result = MONGO_CLIENT['chat']['friend'].find(filter)
+    friend_list = result[0]['friend_list']
+    group_list = result[0]['group_list']
+    print("user: {}, friend list: {}, group list: {}".format(username, friend_list, group_list))
         
     print('previous_messages =======>', previous_messages)
     return render(request, 'chat/groupchat.html', {
-        'room_name': room_name_with_type,
+        'room_name': room_name,
+        'friend_list': friend_list,
+        'group_list': group_list,
         'prev_messages': previous_messages,
         'current_user': username
     })
@@ -262,7 +288,11 @@ def friendadd(request):
 
 def grouplist(request):
     #username = request.session.get('username') or ''
-    username = "test"
+    username = ''
+    if request.user.is_authenticated:
+        username = request.user
+    username = "Wendy"
+
     filter = {'user_name': username}
     user_record = MONGO_CLIENT['chat']['friend'].find(filter)
     group_list = user_record[0]['group_list']
