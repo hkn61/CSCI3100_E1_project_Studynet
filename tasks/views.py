@@ -27,7 +27,7 @@ def gettasklist(request):
         existing = user_task_list[0]["tasklist"]
         unfinished_task = {}
         for key, value in existing.items():
-            if value["isfinished"] == 0:
+            if value["isfinished"] == 0 and value["isworking"] == 0 :
                 unfinished_task[key] = value
         return JsonResponse(unfinished_task)
 
@@ -41,10 +41,10 @@ def inserttask(request):
     user_task_list = USER_TASK_DB.find({"username":str(username)})
     # print(user_task_list[0])
     if user_task_list.count() == 0:
-        USER_TASK_DB.insert_one({"username":username,"tasklist":{taskname:{"isfinished":0,"timespent":0}}, "deletedtask":{}})
+        USER_TASK_DB.insert_one({"username":username,"tasklist":{taskname:{"isworking":0,"isfinished":0,"timespent":0,"FinishedTimestamp":0,}}, "deletedtask":{}})
     else:
         existing = user_task_list[0]
-        existing["tasklist"][taskname] = {"isfinished":0,"timespent":0}
+        existing["tasklist"][taskname] = {"isworking":0,"isfinished":0,"timespent":0,"FinishedTimestamp":0,}
         USER_TASK_DB.update_one({"username":str(username)},{"$set":{"tasklist":existing["tasklist"]}})
     return HttpResponse()
 
@@ -57,23 +57,24 @@ def deletetask(request):
     taskname = request.POST["taskname"][:-1]
     user_task_list = USER_TASK_DB.find({"username": str(username)})
     existing = user_task_list[0]
-    existing["deletedtask"][taskname] = {"isfinished": 0, "timespent": 0}
+    existing["deletedtask"][taskname] = {"isworking":0,"isfinished":0,"timespent":0,"FinishedTimestamp":0,}
     del existing["tasklist"][taskname]
     USER_TASK_DB.update_one({"username": str(username)}, {"$set": {"tasklist": existing["tasklist"],"deletedtask": existing["deletedtask"]}})
     return HttpResponse()
 
-def changefinishedstatus(request):
+
+def changedoingstatus(request):
     if request.user.is_authenticated:
         username = request.user
     else:
         messages.error(request, "Sign in Error")
         return redirect("../auth/signin")
-    taskname = request.POST["taskname"].split()[0]
+    taskname = request.POST["taskname"][:-1]
     user_task_list = USER_TASK_DB.find({"username": str(username)})
     existing = user_task_list[0]
-    finished_status = existing["tasklist"][taskname]["isfinished"]
-    existing["tasklist"][taskname]["isfinished"] = 1- int(finished_status)
-    USER_TASK_DB.update_one({"username": str(username)},{"$set": {"tasklist": existing["tasklist"]}})
+    finished_status = existing["tasklist"][taskname]["isworking"]
+    existing["tasklist"][taskname]["isworking"] = 1 - int(finished_status)
+    USER_TASK_DB.update_one({"username": str(username)}, {"$set": {"tasklist": existing["tasklist"]}})
     return HttpResponse()
 
 
@@ -138,7 +139,7 @@ def restoredeletetask(request):
     taskname = request.POST["taskname"][:-7]
     user_task_list = USER_TASK_DB.find({"username": str(username)})
     existing = user_task_list[0]
-    existing["tasklist"][taskname] = {"isfinished": 0, "timespent": 0}
+    existing["tasklist"][taskname] = {"isworking":0,"isfinished":0,"timespent":0,"FinishedTimestamp":0,}
     del existing["deletedtask"][taskname]
     USER_TASK_DB.update_one({"username": str(username)},
                             {"$set": {"tasklist": existing["tasklist"], "deletedtask": existing["deletedtask"]}})
@@ -147,6 +148,77 @@ def restoredeletetask(request):
 def timer(request):
     return render(request, "task/timer.html")
 
+def getdoinglist(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    user_task_list = USER_TASK_DB.find({"username":str(username)})
+    if user_task_list.count() == 0:
+        USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
+        return HttpResponse()
+    else:
+        existing = user_task_list[0]["tasklist"]
+        unfinished_task = {}
+        for key, value in existing.items():
+            if value["isfinished"] == 0 and value["isworking"] == 1 :
+                unfinished_task[key] = value
+        return JsonResponse(unfinished_task)
+
+def changefinishedstatus(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    taskname = request.POST["taskname"].split()[0]
+    tmstp = request.POST["tmstp"]
+    datelist = tmstp.split(",")[0].split("/")
+    user_task_list = USER_TASK_DB.find({"username": str(username)})
+    existing = user_task_list[0]
+    finished_status = existing["tasklist"][taskname]["isfinished"]
+    existing["tasklist"][taskname]["isfinished"] = 1- int(finished_status)
+    existing["tasklist"][taskname]["FinishedTimestamp"] = datelist
+    USER_TASK_DB.update_one({"username": str(username)},{"$set": {"tasklist": existing["tasklist"]}})
+    return HttpResponse()
+
+
+def addtimespent(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    tasknames = request.POST.get("tasknames").split(",")
+    timespent = request.POST.get("time")
+    user_task_list = USER_TASK_DB.find({"username": str(username)})
+    existing = user_task_list[0]
+    # print(timespent)
+    for task in tasknames:
+        task = task[:-1]
+        existing_time = existing["tasklist"][task]["timespent"]
+        existing["tasklist"][task]["timespent"] = existing_time + int(timespent)
+    USER_TASK_DB.update_one({"username": str(username)}, {"$set": {"tasklist": existing["tasklist"]}})
+    return HttpResponse()
 
 def report(request):
-    pass
+    return render(request, "task/report.html")
+
+def get_report_data(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    date_str = request.POST.get("date")
+    date_info = date_str.split("-")
+    user_task_list = USER_TASK_DB.find({"username": str(username)})
+    existing = user_task_list[0]
+    finished_and_matched = []
+    for task,task_info in existing["tasklist"].items():
+        if task_info["FinishedTimestamp"] == 0 or task_info["isfinished"] == 0:continue
+        elif int(task_info["FinishedTimestamp"][0]) == int(date_info[1]) and int(task_info["FinishedTimestamp"][1]) == int(date_info[2]) and int(task_info["FinishedTimestamp"][2]) == int(date_info[0]):
+            finished_and_matched.append({"taskname":task,"timespent":task_info["timespent"]})
+        else:continue
+    return JsonResponse(finished_and_matched,safe=False)
