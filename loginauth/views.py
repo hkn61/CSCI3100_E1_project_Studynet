@@ -96,7 +96,7 @@ def send_email(request):
     from_email = settings.EMAIL_HOST_USER
     to_list = [email]
 
-    if USER_AUTH_DB.find({"username":username}).count() != 0:
+    if USER_AUTH_DB.find_one({"username":username}) is not None:
         USER_AUTH_DB.delete_many({"username":username})
 
 
