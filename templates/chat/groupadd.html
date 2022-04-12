@@ -103,7 +103,6 @@
 
     </style>
         <h1 class="title">StudyNet - Add Friend/Group</h1>
-        <!--<h3>Find new study groups and friends below</h3>-->
         <div class = "search-form">
         <form  action="/chat/groupsearch" method="post">
             {% csrf_token %}
@@ -176,7 +175,7 @@
                 console.log(item)
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                 const formData = new FormData();
-                formData.append('groupname', item.group_name);
+                formData.append("groupname", item.group_name);
                 fetch("groupadd", {
                     headers:{'X-CSRFToken': csrftoken},
                     method: 'POST',
@@ -194,12 +193,7 @@
     });
     app.mount('#app');
 
-      //document.getElementById("listItem-friend").onclick =  function (e){
-      //  console.log(e);
-      //  friend_list.push({ 'name': 'Wendy', 'ID': 123456, 'photo': 'photo1.jpg' });
-      //console.log(friend_list);
-      //}
-    
+
       
   </script>
 {% endblock %}
