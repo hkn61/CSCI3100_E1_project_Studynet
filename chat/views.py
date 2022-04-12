@@ -78,7 +78,7 @@ def group(request):
 
 
 def groupadd(request):
-    # ??? add a group
+    # add a group
     username = ''
     status = True
     indicator = 1
@@ -88,7 +88,7 @@ def groupadd(request):
         group_name = request.POST.get("groupname")
         search_by = request.POST.get("search_by")
 
-        username = 'Wendy'
+        #username = 'Wendy'
         if search_by == 'friend':
             status = add_a_friend('chat', 'friend', username, group_name)
         else:
@@ -107,7 +107,7 @@ def groupadd(request):
 
 
 def groupcreate(request):
-    # ??? create a group
+    # create a group
     username = ''
     if request.user.is_authenticated:
         username = request.user
@@ -141,7 +141,7 @@ def groupsearch(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
-    username = 'hkn' #test!!!
+    #username = 'hkn' #test!!!
     group_name = request.POST["groupname"]
     search_by = request.POST.get('search_type')
     res_group_list = []
@@ -236,7 +236,7 @@ def groupchat(request, room_name):
     username = ''
     if request.user.is_authenticated:
         username = request.user
-    username = 'Wendy' #test!!!!!!
+    #username = 'Wendy' #test!!!!!!
     if not username:
         return HttpResponseRedirect('homepage/login/')
 
@@ -283,7 +283,7 @@ def groupchat(request, room_name):
         minute = timestamp.minute
         time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
         chat['time'] = time
-        img_filter = {'user_name': username}
+        img_filter = {'user_name': chat['sender']}
         img_record = MONGO_CLIENT['chat']['friend'].find_one(img_filter)
         image = img_record['profile']
         chat['image'] = image
@@ -291,9 +291,16 @@ def groupchat(request, room_name):
 
     filter = {'user_name': username}
     result = MONGO_CLIENT['chat']['friend'].find(filter)
-    friend_list = result[0]['friend_list']
+    friend_list_tmp = result[0]['friend_list']
     group_list = result[0]['group_list']
-    print("user: {}, friend list: {}, group list: {}".format(username, friend_list, group_list))
+    print("user: {}, friend list: {}, group list: {}".format(username, friend_list_tmp, group_list))
+    friend_list = []
+
+    for friend in friend_list_tmp:
+        fri_filter = {'user_name': friend}
+        fri_record = MONGO_CLIENT['chat']['friend'].find_one(fri_filter)
+        dict = {"username": friend, 'image': fri_record['profile']}
+        friend_list.append(dict)
         
     print('previous_messages =======>', previous_messages)
     if room_name_with_type == 'groupchat':
@@ -344,7 +351,8 @@ def grouplist(request):
     for i in range(len(friend_list)):
         tmp = MONGO_CLIENT['chat']['friend'].find({"user_name": friend_list[i]})
         id = tmp[0]['_id']
-        dict = {"friend_name": friend_list[i], "friend_id": str(id)}
+        image = tmp[0]['profile']
+        dict = {"friend_name": friend_list[i], "friend_id": str(id), 'image': image}
         friend.append(dict)
     print(friend)
 

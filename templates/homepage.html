@@ -15,15 +15,26 @@
     <meta name="msapplication-TileColor" content="#6371C5" />
     <meta name="theme-color" content="#6371C5" />
   </head>
+  <style>
+    .header{
 
+      font-size:2.5rem;
+      background: linear-gradient(to right, rgb(122, 165, 138), rgb(124, 145, 184));
+      -webkit-background-clip: text;
+      color: transparent;
+      padding:5%;
+      font-family: 'Dancing Script', cursive;
+      }
+
+  </style>
   <body>  
     <ul class = "list-menu">
         <b id = "header" class = "header" >Studynet</b>
         <li><a href="admin/">Admin</a> </li>
         <li><a href="auth/signin">Begin Study!</a> </li>
-        <li id="supportbar"><a onclick="support()">Support Studynet</a> </li>
+        <li id="supportbar"><a onclick="support()">Support</a> </li>
 
-        <li id="aboutbar"><a onclick="about()">About Our Team</a> </li>
+        <li id="aboutbar"><a onclick="about()">About Us</a> </li>
         <li style="background:  #c4dad8" id="homebar"><a href="/">Homepage</a> </li>
     </ul>   
 
@@ -42,7 +53,7 @@
               <dd>- Operate the stored list</dd><br>
               <dd>- Generate your weekly study report</dd><br>
               </dl> 
-              <dl class="content-list" id="list2" style="top: 60vh;  border-left:2px ;border-top-width:2px ;">
+              <dl class="content-list" id="list2" style="top: 60vh;  border-left:2px ;border-top-width:2px; color: rgb(124, 145, 184);">
               <dt>Chat Function</dt><br>
               <dd>- Create your own study group</dd><br>
               <dd>- Add your friend to study together</dd><br>
@@ -52,8 +63,8 @@
 
       <table  class = "content-table"  style="text-align:center;"><!--the support page-->
         
-      <pre class="introduction" id="support" style="display:none;width:76vw;height:45vh;font-size:1.5rem;top:20vh;left:10%; line-height: 5vh;" >
-Your support is vital and helps the Museum to share the value with the world.
+      <p class="introduction" id="support" style="display:none;width:76vw;height:45vh;font-size:1.5rem;top:20vh;left:10%; line-height: 5vh;" >
+<br><br>Your support is vital and helps the Museum to share the value with the world.
 The Studynet relies on support from a wide range of sources.
 There are many ways that you can donate to help us:
 You can donate as an individual,through a foundation, trust or company. 
@@ -61,7 +72,7 @@ Your support helps us to do the following:
 1.Create world-wide platform to enhance the communication.
 2.Care for, study and share the efficient study experience
 3.Engage local and global communities with what we do
-</pre>
+</p>
       </table>
 
       <table class = "content-table" style="text-align:center"><!--the about page-->
