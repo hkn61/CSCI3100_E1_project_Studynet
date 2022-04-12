@@ -12,7 +12,7 @@ from .models import Image
 # Create your views here.
 
 def profile(request):
-    username = ''
+    # username = ''
     if request.user.is_authenticated:
         username = request.user
         username = str(username)

@@ -2,14 +2,12 @@
 
 CSCI3100 Project of Group E1
 
-
-
 ## Installation
 
 1. Create virtual environment.
    
    ```python
-   conda create -n csci3100groupE1 python=3.9
+   conda create -n csci3100groupE1 --file condaenv.txt python=3.9
    conda activate csci3100groupE1
    ```
 
@@ -19,10 +17,12 @@ CSCI3100 Project of Group E1
    pip install -r requirement.txt
    ```
 
-3.  Run server
+3. Run server
    
    ```python
    python manage.py runserver
    ```
 
-4. Visit the server via http://127.0.0.1:8000/ (default)
+4. Install and run Redis on port 6379  [Installing Redis | Redis](https://redis.io/docs/getting-started/installation/)
+
+5. Visit the server via http://127.0.0.1:8000/ (default)
