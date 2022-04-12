@@ -165,6 +165,7 @@ def groupsearch(request):
     search_by = request.POST.get('search_type')
     res_group_list = []
     #print(search_by)
+    print(type(group_name))
     addedquery = {'user_name': username}
     user_record = MONGO_CLIENT['chat']['friend'].find(addedquery)
 
@@ -180,7 +181,7 @@ def groupsearch(request):
                 res_group_list.append(record['group_name'])
 
     elif search_by == 'private_group': # search by id, matched result will be returned
-        if not all(c in string.hexdigits for c in group_name):
+        if len(group_name) != 24 or not all(c in string.hexdigits for c in group_name):
             pass
         else:
             myquery = {'_id': ObjectId(group_name)}
@@ -191,7 +192,7 @@ def groupsearch(request):
                 res_group_list.append(record['group_name'])
 
     else:
-        if not all(c in string.hexdigits for c in group_name):
+        if len(group_name) != 24 or not all(c in string.hexdigits for c in group_name):
             pass
         else:
             myquery = {'_id': ObjectId(group_name)} # friend id
@@ -221,20 +222,6 @@ def groupsearch(request):
             for record in result:
                 dict = {'group_name': i, 'description': record['description']}
                 result_group_list.append(dict)
-
-
-    '''
-    ########## test ##########
-    timestamp = datetime.datetime.now()
-    chat_data = {'group_name': group_name, 'sender': 'hkn', 'time': timestamp, 'message': 'This is the second message.'}
-    status, inserted_id = save_to_database('chat', 'chat_message', chat_data)
-    print(chat_data)
-    if status:
-        print('chat saved to db successfully ====>', inserted_id)
-    else:
-        print('saving to db failed')
-    ########## test ##########
-    '''
 
     print(result_group_list)
     return render(request, 'chat/groupadd.html', {

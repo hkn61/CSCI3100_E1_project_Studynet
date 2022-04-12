@@ -49,6 +49,7 @@
       <li><a href="/task/tasklist">My Task</a></li>
       <li><a href="/chat/grouplist">My Friends/Groups</a></li>
       <li class = "nav_of_group"><a href="/user/profile">My Profile</a></li>
+      <li><a href="/">Sign Out</a></li>
   </ul>
     <div class="content-body">
       <div class="form-wrapper">
@@ -57,6 +58,14 @@
           <h1 class="text-title">My Profile</h1>
           <br/>
           {% csrf_token %}
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:rgb(172, 103, 103)">{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+
           <div class="field-group">
             <div id="head" ><img src={{image}} class='round_icon' alt="selfie" width=300 height=300 /></div> 
           </div>
@@ -76,15 +85,7 @@
         </form>
 
         <form class="bewhite" id="message" action="/user/updatephoto" method="post">  <!-- can change -->
-          {% csrf_token %}
-          {% if messages %}
-              <ul class="messages">
-                  {% for message in messages %}
-                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</li>
-                  {% endfor %}
-              </ul>
-          {% endif %}
-
+  
           <div class="field-group">
             <label class="label" for="">Upload a new profile photo</label>
             <input class="form-control" type="file" id="image" name="image">
@@ -97,14 +98,6 @@
         </form>
 
         <form class="bewhite" id="privacy" action="/user/updateprivacy" method="post">
-          {% csrf_token %}
-          {% if messages %}
-              <ul class="messages">
-                  {% for message in messages %}
-                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:red">{{ message }}</li>
-                  {% endfor %}
-              </ul>
-          {% endif %}
           <div class="field-group">
             <input class="form-check-input" type="radio" name="privacy" id="0" value="0" onclick="onlyOne(this)">
             <label class="form-check-label" for="new-color-red">Set my study report to be private.</label>
