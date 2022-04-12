@@ -176,7 +176,8 @@
                 console.log(item)
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                 const formData = new FormData();
-                formData.append('groupname', item);
+                formData.append("groupname", item.group_name);
+                console.log(formData)
                 fetch("groupadd", {
                     headers:{'X-CSRFToken': csrftoken},
                     method: 'POST',
