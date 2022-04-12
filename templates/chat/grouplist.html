@@ -70,6 +70,8 @@
             width: 60px;
             float: left;
             border-radius: 50%;
+            margin-top: 10px;
+            margin-left: 20px;
         }
         
         .info{
@@ -86,6 +88,7 @@
         }
         .listItem-friend .info-name{
             margin-top: 20px;
+            padding-right: 50px;
         }
         .info-ID{
             color: gray;
@@ -110,14 +113,14 @@
         
         <div id = "app">
             
-            <h1 class="title" >StudyNet - [[current_user]] - Friends/Groups List</h1>
+            <h1 class="title" >Studynet - [[current_user]] - Friends/Groups List</h1>
             <p class="notice"><span>Mouseover</span> group card: &nbsp;&nbsp;show <span>group ID</span> </p> 
             <p class="notice"><span>Click</span> the card: &nbsp;&nbsp;enter <span>Chatroom</span></p> 
             <div class="row">
             <div class="list">
                 <h1 >My friends</h1>
                 <div class="listItem-friend"  @click="enterFriendChat(friend)"  v-for="friend in friend_list " :key="friend.ID">
-                  <!--<img class = "photo" :src="require('../../assets/'+friend.photo )" />-->
+                    <img class="photo" :src="friend.image">
                     <p class="info-name" >[[friend.friend_name]]</p>
                 </div> 
             </div>
@@ -146,7 +149,7 @@
     let group_list = JSON.parse(document.getElementById('group_list').textContent);
     let friend_list = JSON.parse(document.getElementById('friend_list').textContent);
     console.log(group_list)
-    console.log(friend_list[0])
+    console.log(friend_list)
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
