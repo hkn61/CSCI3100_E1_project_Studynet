@@ -126,6 +126,8 @@ def changepwd(request):
                     u.set_password(pass1)
                     u.save()
                     messages.success(request, "Your password is changed successfully.")
+                    logout(request)
+                    return render(request, "auth/signin.html")
                 else:
                     messages.error(request, "New passwords are not the same.")
                     return redirect("profile")
