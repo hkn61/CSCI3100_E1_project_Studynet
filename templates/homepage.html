@@ -19,11 +19,12 @@
   <body>  
     <ul class = "list-menu">
         <b id = "header" class = "header" >Studynet</b>
+        <li><a href="admin/">Admin</a> </li>
         <li><a href="auth/signin">Begin Study!</a> </li>
-        <li><a onclick="support()">Support Studynet</a> </li>
+        <li id="supportbar"><a onclick="support()">Support Studynet</a> </li>
 
-        <li><a onclick="about()">About Our Team</a> </li>
-        <li><a href="/">Homepage</a> </li>
+        <li id="aboutbar"><a onclick="about()">About Our Team</a> </li>
+        <li style="background:  #c4dad8" id="homebar"><a href="/">Homepage</a> </li>
     </ul>   
 
 
@@ -100,6 +101,9 @@ Client Service, Excellence, Integrity, and Partnership.
       $("#main").fadeOut();
       $("#support").fadeOut();
       $("#about").fadeIn();
+      $('#aboutbar').css('background-color', '#c4dad8');
+      $('#supportbar').css('background-color', '#ffffff');
+      $('#homebar').css('background-color', '#ffffff');
     }
   
     function support() {
@@ -108,6 +112,9 @@ Client Service, Excellence, Integrity, and Partnership.
       $("#main").fadeOut();
       $("#about").fadeOut();
       $("#support").fadeIn();
+      $('#supportbar').css('background-color', '#c4dad8');
+      $('#aboutbar').css('background-color', '#ffffff');
+      $('#homebar').css('background-color', '#ffffff');
     }
   
 
