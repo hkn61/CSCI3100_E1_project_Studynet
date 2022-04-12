@@ -12,7 +12,16 @@
     <meta name="msapplication-TileColor" content="#6371C5" />
     <meta name="theme-color" content="#6371C5" />
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+    <!--font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Redressed&family=Ubuntu&display=swap" rel="stylesheet">
+    <style>
+      input {
+        font-family: 'Ubuntu', sans-serif;
+        color: #2c3e50;
+      }
+    </style>
   </head>
 
   <body>
@@ -34,7 +43,7 @@
         <div id="myDIV" class="header" style="margin-left: 150px;">
           <h2>My To Do List</h2>
 
-          <input type="text" id="myInput" placeholder="Title...">
+          <input type="text" id="myInput" placeholder="Please input a task here ...">
           <span onclick="newElement()" class="addBtn">Add</span>
         </div>
         <div class="tasklist" style="margin-left: 150px;">

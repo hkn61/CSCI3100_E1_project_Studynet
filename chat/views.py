@@ -82,10 +82,9 @@ def group(request):
 def groupadd(request):
     # add a group
     username = ''
-    search_by = ''
     status = True
     indicator = 1
-    print('++++++++++++++++')
+    print('++++++++++++++++', request.POST)
     if request.user.is_authenticated:
         username = request.user
         username = str(username)
@@ -93,14 +92,13 @@ def groupadd(request):
         return redirect("/auth/signin")
     if request.method == "POST":
         group_name = request.POST.get("groupname")
-        #search_by = request.POST.get("search_by")
-        print('---------g---------', group_name)
+        search_by = request.POST.get("search_by")
+        #print('---------g---------', group_name)
         #print('---------s---------', search_by)
         #username = 'Wendy'
         if search_by == 'friend':
             status = add_a_friend('chat', 'friend', username, group_name)
         else:
-            print('------------------=========', username,group_name)
             status = add_a_group('chat', 'group', group_name, username)
         if not status:
             print(status)
@@ -326,6 +324,7 @@ def groupchat(request, room_name):
         dict = {"username": friend, 'image': fri_record['profile']}
         friend_list.append(dict)
         
+    print('-----------friend list----', friend_list)
     print('previous_messages =======>', previous_messages)
     if room_name_with_type == 'groupchat':
         room_name_with_type = 'g' + room_name_with_type
