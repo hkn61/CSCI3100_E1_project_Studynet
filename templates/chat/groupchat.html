@@ -354,6 +354,7 @@
             },
         },
         mounted: function(){
+            this.room_name = this.room_name.substring(1)
             console.log("Starting connection to WebSocket Server")
             
             this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
