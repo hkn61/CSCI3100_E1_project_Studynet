@@ -2,6 +2,7 @@ from os import times
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from asgiref.sync import async_to_sync
+from numpy import rec
 #from importlib_metadata import re
 from csci3100.settings import MONGO_CLIENT
 from django.contrib import messages
@@ -140,7 +141,7 @@ def groupsearch(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
-    username = 'Wendy' #test!!!
+    username = 'hkn' #test!!!
     group_name = request.POST["groupname"]
     search_by = request.POST.get('search_type')
     res_group_list = []
@@ -156,6 +157,7 @@ def groupsearch(request):
         for record in result:
             #print(record)
             if not record['private']:
+                #dict = {'group_name': record['group_name'], 'description': record['description']}
                 res_group_list.append(record['group_name'])
 
     elif search_by == 'private_group': # search by id, matched result will be returned
@@ -166,6 +168,7 @@ def groupsearch(request):
             result = MONGO_CLIENT['chat']['group'].find(myquery)
             added_group_list = user_record[0]['group_list']
             for record in result:
+                #dict = {'group_name': record['group_name'], 'description': record['description']}
                 res_group_list.append(record['group_name'])
 
     else:
@@ -177,9 +180,29 @@ def groupsearch(request):
             added_group_list = user_record[0]['friend_list'] # added friend list
             for record in result:
                 print(record)
+                #dict = {'group_name': record['user_name'], 'description': ''}
                 res_group_list.append(record['user_name']) # matched user
     #print(res_group_list)
-    result_group_list = [i for i in res_group_list if i not in added_group_list]
+
+    unadded_group_list = [i for i in res_group_list if i not in added_group_list]
+    result_group_list = []
+
+    for i in unadded_group_list:
+        if search_by == 'friend':
+            myquery = {'_id': ObjectId(group_name)}
+            result = MONGO_CLIENT['chat']['friend'].find(myquery)
+            for record in result:
+                print(record)
+                dict = {'group_name': i, 'description': ''}
+                result_group_list.append(dict)
+        else:
+            myquery = {'group_name': i}
+            result = MONGO_CLIENT['chat']['group'].find(myquery)
+            added_group_list = user_record[0]['group_list']
+            for record in result:
+                dict = {'group_name': i, 'description': record['description']}
+                result_group_list.append(dict)
+
 
     '''
     ########## test ##########

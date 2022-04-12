@@ -12,7 +12,7 @@
         .create-form{
             color:#9ea0b2;
             width: 400px;
-            height: 400px;
+            height: 435px;
             padding: 20px;
             margin-top: 100px;
             margin-left: 20vw;
@@ -101,6 +101,13 @@
 <div class="backdrop" >
         <form class="create-form" action="/chat/groupcreate" method="post">
             {% csrf_token %}
+            {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color:rgb(126, 49, 49)">{{ message }}</li>
+                  {% endfor %}
+              </ul>
+            {% endif %}
             <label>Group Name: <br></label>
             <input type="text" required name="groupname">
 

@@ -8,6 +8,12 @@
     <meta http-equiv="refresh" content="300">
     <meta name="msapplication-TileColor" content="#6371C5" />
     <meta name="theme-color" content="#6371C5" />
+    
+    <!--font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Redressed&family=Ubuntu&display=swap" rel="stylesheet">
+
     <style>
       .round_icon{
         width: 120px;
@@ -21,10 +27,29 @@
       .form-wrapper {
       margin-top: -10px;
       }
+      body {
+        font-family: 'Ubuntu', sans-serif;
+        text-align: center;
+        color: #2c3e50;
+        margin: 0;
+        padding: 0;
+      }
+      button {
+        font-family: 'Ubuntu', sans-serif;
+        text-align: center;
+        color: #2c3e50;
+        margin: 0;
+        padding: 0;
+      }
     </style>
   </head>
 
   <body>
+    <ul class = "navbar">
+      <li><a href="/task/tasklist">My Task</a></li>
+      <li><a href="/chat/grouplist">My Friends/Groups</a></li>
+      <li class = "nav_of_group"><a href="/user/profile">My Profile</a></li>
+  </ul>
     <div class="content-body">
       <div class="form-wrapper">
 
