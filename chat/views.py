@@ -260,6 +260,11 @@ def groupchat(request, room_name):
         minute = timestamp.minute
         time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
         chat['time'] = time
+        img_filter = {'user_name': username}
+        img_record = MONGO_CLIENT['chat']['friend'].find_one(img_filter)
+        image = img_record['profile']
+        chat['image'] = image
+
 
     filter = {'user_name': username}
     result = MONGO_CLIENT['chat']['friend'].find(filter)
@@ -269,9 +274,9 @@ def groupchat(request, room_name):
         
     print('previous_messages =======>', previous_messages)
     if room_name_with_type == 'groupchat':
-        room_name = room_name_with_type
+        room_name_with_type = 'g' + room_name_with_type
     return render(request, 'chat/groupchat.html', {
-        'room_name': room_name,
+        'room_name': room_name_with_type,
         'friend_list': friend_list,
         'group_list': group_list,
         'prev_messages': previous_messages,
