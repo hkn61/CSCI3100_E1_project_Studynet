@@ -12,6 +12,14 @@ def save_to_database(db, collection, chat_message):
     r = MONGO_CLIENT[db][collection].insert_one(chat_message)
     return True, r.inserted_id
 
+
+def find_image(username):
+    filter = {'user_name': username}
+    img_record = MONGO_CLIENT['chat']['friend'].find_one(filter)
+    image = img_record['profile']
+    return image
+
+
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -70,9 +78,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send message to WebSocket
         chat_data['_id'] = str(chat_data['_id'])
         chat_data['time'] = time
+        chat_data['image'] = find_image(sender)
 
         # Send message to room group
-        print("self.room_group_name: {}".format(self.room_group_name))
+        print("self.room_group_name: {}, chat message: {}".format(self.room_group_name, chat_data))
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -86,7 +95,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         message = event['message']
         print("In websocket chat_message: {}".format(event))
-
+        print("message in func chat_message: {}".format(message))
         await self.send(text_data=json.dumps({
             'message': message
         }))
