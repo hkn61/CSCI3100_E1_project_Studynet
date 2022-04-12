@@ -69,13 +69,20 @@
             background: #da9784;
             cursor: pointer;
         }
-        .listItem p{
+        .listItem .info-name{
             font-size: 25px;
             /*display:inline-block;*/
             margin: 5px;
-            margin-top: 20px;
+            margin-top: 10px;
             font-weight: bold;
         }
+        .listItem .info-des{
+            color: gray;
+            font-size:18px;
+            /*display:inline-block;*/
+            margin:5px;
+        }
+        
         .create {
             color: #123777;
             font-size: 40px;
@@ -136,7 +143,8 @@
             <!--<div class="search-result" v-if="showList" >-->
                 {% csrf_token %}
                 <div class="listItem" @click="addGroup(item)" v-for="item in res_group_list" :key="item" >
-                    <p>[[item]]</p>
+                    <p class="info-name">[[item.group_name]]</p>
+                    <p class="info-des">[[item.description]]</p>
                 </div>
             <!--</div>-->
         </div>
