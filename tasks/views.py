@@ -21,16 +21,16 @@ def gettasklist(request):
         messages.error(request, "Sign in Error")
         return redirect("../auth/signin")
     user_task_list = USER_TASK_DB.find({"username":str(username)})
-    if user_task_list.count() == 0:
-        USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
-        return HttpResponse()
-    else:
-        existing = user_task_list[0]["tasklist"]
-        unfinished_task = {}
-        for key, value in existing.items():
-            if value["isfinished"] == 0 and value["isworking"] == 0 :
-                unfinished_task[key] = value
-        return JsonResponse(unfinished_task)
+    # if user_task_list.count() == 0:
+    #     USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
+    #     return HttpResponse()
+    # else:
+    existing = user_task_list[0]["tasklist"]
+    unfinished_task = {}
+    for key, value in existing.items():
+        if value["isfinished"] == 0 and value["isworking"] == 0 :
+            unfinished_task[key] = value
+    return JsonResponse(unfinished_task)
 
 def inserttask(request):
     if request.user.is_authenticated:
@@ -41,12 +41,12 @@ def inserttask(request):
     taskname = request.POST["taskname"]
     user_task_list = USER_TASK_DB.find({"username":str(username)})
     # print(user_task_list[0])
-    if user_task_list.count() == 0:
-        USER_TASK_DB.insert_one({"username":username,"tasklist":{taskname:{"isworking":0,"isfinished":0,"timespent":0,"FinishedTimestamp":0,}}, "deletedtask":{}})
-    else:
-        existing = user_task_list[0]
-        existing["tasklist"][taskname] = {"isworking":0,"isfinished":0,"timespent":0,"FinishedTimestamp":0,}
-        USER_TASK_DB.update_one({"username":str(username)},{"$set":{"tasklist":existing["tasklist"]}})
+    # if user_task_list.count() == 0:
+    #     USER_TASK_DB.insert_one({"username":username,"tasklist":{taskname:{"isworking":0,"isfinished":0,"timespent":0,"FinishedTimestamp":0,}}, "deletedtask":{}})
+    # else:
+    existing = user_task_list[0]
+    existing["tasklist"][taskname] = {"isworking":0,"isfinished":0,"timespent":0,"FinishedTimestamp":0,}
+    USER_TASK_DB.update_one({"username":str(username)},{"$set":{"tasklist":existing["tasklist"]}})
     return HttpResponse()
 
 def deletetask(request):
@@ -89,16 +89,16 @@ def getfinishedtask(request):
         messages.error(request, "Sign in Error")
         return redirect("../auth/signin")
     user_task_list = USER_TASK_DB.find({"username":str(username)})
-    if user_task_list.count() == 0:
-        USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
-        return HttpResponse()
-    else:
-        existing = user_task_list[0]["tasklist"]
-        finished_task = {}
-        for key, value in existing.items():
-            if value["isfinished"] == 1:
-                finished_task[key] = value
-        return JsonResponse(finished_task)
+    # if user_task_list.count() == 0:
+    #     USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
+    #     return HttpResponse()
+    # else:
+    existing = user_task_list[0]["tasklist"]
+    finished_task = {}
+    for key, value in existing.items():
+        if value["isfinished"] == 1:
+            finished_task[key] = value
+    return JsonResponse(finished_task)
 
 def restorefinishedtask(request):
     if request.user.is_authenticated:
@@ -124,11 +124,11 @@ def getdeletedtask(request):
         messages.error(request, "Sign in Error")
         return redirect("../auth/signin")
     user_task_list = USER_TASK_DB.find({"username":str(username)})
-    if user_task_list.count() == 0:
-        USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
-        return HttpResponse()
-    else:
-        return JsonResponse(user_task_list[0]["deletedtask"])
+    # if user_task_list.count() == 0:
+    #     USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
+    #     return HttpResponse()
+    # else:
+    return JsonResponse(user_task_list[0]["deletedtask"])
 
 
 def restoredeletetask(request):
