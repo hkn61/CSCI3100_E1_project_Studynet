@@ -152,21 +152,21 @@
         
         <p><br></p>
 
-    {{ status|json_script:"status" }}
+    {{ search_by|json_script:"search_by" }}
     {{ res_group_list|json_script:"res_group_list" }}
     
 
   <script>
-    let status = JSON.parse(document.getElementById('status').textContent);
+    let search_by = JSON.parse(document.getElementById('search_by').textContent);
     let res_group_list = JSON.parse(document.getElementById('res_group_list').textContent);
     console.log(res_group_list)
-    console.log(status)
+    console.log(search_by)
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
         data() {
             return {
-                status: status,
+                search_by: search_by,
                 res_group_list: res_group_list
             }
         },
@@ -176,6 +176,7 @@
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                 const formData = new FormData();
                 formData.append("groupname", item.group_name);
+                formData.append("search_by", this.search_by);
                 fetch("groupadd", {
                     headers:{'X-CSRFToken': csrftoken},
                     method: 'POST',

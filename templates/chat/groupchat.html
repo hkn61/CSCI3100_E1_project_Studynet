@@ -269,7 +269,7 @@
             
             <div class="chat-history ">
                 <ul class="history-list">
-                    <li class="history-item"  v-for="mes in prev_messages" :key="mes.message">
+                    <li class="history-item"  v-for="mes in prev_messages" :key="mes._id">
                         <div class="message-data" >
                             <img :src="mes.image" alt="selfie" :class="{otherImage: mes.sender != current_user , myImage: mes.sender == current_user}">
                             <!--:class="{textright: mes.sender == current_user}"-->
