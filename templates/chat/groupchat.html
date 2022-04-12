@@ -50,12 +50,13 @@
     list-style: none;
     text-align: left;
     border-bottom: 2px solid lightgrey;
-    height: 5vh;
+    height: 40px;
     vertical-align: middle;
 }
 .people-list .chat-list li p{
     margin: auto;
-    padding-top: 1vh; 
+    padding-top: 10px; 
+    padding-left: 65px;
 
 }
 .people-list .chat-list li div{
@@ -71,6 +72,7 @@
 .people-list .chat-list img {
     width: 45px;
     border-radius: 50%;
+    float: left;
 
 }
 
@@ -83,14 +85,6 @@
     }
 }
 
-.clearfix-title {
-    height: 20px;
-    border-top: #444;
-}
-.claerfix{
-    text-align: left;
-
-}
 .chat-block{
     margin-left: 250px;
     border: 2px solid white;
@@ -108,14 +102,6 @@
     font-weight: bold;
     margin-top: 2vh;
 }
-.chat-header img {
-    float: left;
-    border-radius: 40px;
-    width: 40px
-    
-}
-
-
 
 .chat-history {
     border-bottom: 2px solid white;
@@ -129,8 +115,8 @@
 
 .chat-history ul li {
     list-style: none;
-    height: 50px;
-    margin-bottom: 50px;
+    height: 90px;
+    margin-bottom: 40px;
     margin-left: 13px;
     margin-right: 13px;
 }
@@ -138,17 +124,22 @@
 .chat-history ul li:last-child {
     padding-bottom: 10px;
 }
-
 .chat-history .message-data {
     margin-bottom: 15px;
     display: block;
     
 }
-
-.chat-history .message-data img {
+.myImage {
     border-radius: 40px;
-    width: 40px
+    width: 40px;
+    float: right;
+    margin-right: 16px;
     
+}
+.otherImage{
+    border-radius: 40px;
+    width: 40px;
+    float: left;
 }
 
 .chat-history .message-data-time {
@@ -158,6 +149,10 @@
     margin-left: auto; 
     margin-right: 0;
     font-size: 13px;
+    padding-bottom: 25px;
+    float: center;
+    padding-left: 40px;
+    padding-right: 56px;
 }
 
 .chat-history .message {
@@ -172,7 +167,6 @@
 
 .chat-history .message:after {
     bottom: 100%;
-    left: 7%;
     border: solid transparent;
     content: " ";
     height: 0;
@@ -192,7 +186,6 @@
 
 .chat-history .otherMessage:after {
     bottom: 100%;
-    left: 30px;
     border: solid transparent;
     content: " ";
     height: 0;
@@ -201,7 +194,8 @@
     pointer-events: none;
     border-bottom-color: #efefef;
     border-width: 10px;
-    margin-left: -10px
+    margin-left: -10px;
+    left: 20px;
 }
 
 .chat-history .myMessage {
@@ -213,7 +207,7 @@
 
 .chat-history .myMessage:after {
     border-bottom-color: #e8f1f3;
-    left: 90%
+    right: 15px;
 }
 .chat-message {
     padding: 0px;
@@ -253,9 +247,8 @@
                 
             <ul class="chat-list">
                 <li class="list-item" @click="enterFriendChatroom(friend)" v-for="friend in friend_list " :key="friend">
-                        <!--<img :src="require('../../assets/'+friend.photo )">-->
-                    <p class="friend-name">[[friend]]</p>
-                    <!--<div class="status"> <i class="fa fa-circle online"></i> online </div>-->     
+                    <img :src="friend.image">
+                    <p class="friend-name">[[friend.username]]</p>    
                 </li> 
             </ul>
 
@@ -265,14 +258,12 @@
             <ul class="chat-list">                                      
                 <li class="list-item"  @click="enterGroupChatroom(group)" v-for="group in group_list" :key="group">   
                     <div class="group-name">[[group]]</div>
-                    <!--<div class="status"> <i class="fa fa-circle online"></i> online </div>-->
                 </li>  
             </ul>
         </div>
 
         <div class="chat-block">
-            <div class="chat-header">
-                <!--<img src="../../assets/photo2.jpg" alt="avatar">-->            
+            <div class="chat-header">       
                 <p >[[room_name]]</p>
             </div>
             
@@ -280,9 +271,11 @@
                 <ul class="history-list">
                     <li class="history-item"  v-for="mes in prev_messages" :key="mes.message">
                         <div class="message-data" >
+                            <img :src="mes.image" alt="selfie" :class="{otherImage: mes.sender != current_user , myImage: mes.sender == current_user}">
                             <!--:class="{textright: mes.sender == current_user}"-->
                             <span class="message-data-time">[[mes.time]]</span>
                         </div>
+                        
                         <div class="message " :class="{otherMessage: mes.sender != current_user , myMessage: mes.sender == current_user}">[[mes.message]]</div>                                    
                     </li>                               
                 </ul>
@@ -355,6 +348,7 @@
         },
         mounted: function(){
             this.room_name = this.room_name.substring(1)
+            this.prev_messages = this.prev_messages.reverse();
             console.log("Starting connection to WebSocket Server")
             
             this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
@@ -364,7 +358,7 @@
                 var data = JSON.parse(event.data)
                 var message = data.message
                 if (message) {
-                    this.prev_messages.push(message)
+                    this.prev_messages.unshift(message)
                     console.log(this.prev_messages)
                 }
             }
