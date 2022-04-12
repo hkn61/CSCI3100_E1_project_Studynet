@@ -32,7 +32,6 @@ def create_friend_chat(db, collection, friend_info):
 
 # update db when add a group
 def add_a_group(db, collection, group_name, user_name):
-    print('--------------------- {}'.format(group_name))
     print('inside add_to_ group database====>', db, collection, group_name, user_name)
     print(type(group_name))
     filter = { 'group_name': group_name }
@@ -84,7 +83,6 @@ def groupadd(request):
     username = ''
     status = True
     indicator = 1
-    print('++++++++++++++++', request.POST)
     if request.user.is_authenticated:
         username = request.user
         username = str(username)
@@ -93,8 +91,6 @@ def groupadd(request):
     if request.method == "POST":
         group_name = request.POST.get("groupname")
         search_by = request.POST.get("search_by")
-        #print('---------g---------', group_name)
-        #print('---------s---------', search_by)
         #username = 'Wendy'
         if search_by == 'friend':
             status = add_a_friend('chat', 'friend', username, group_name)
