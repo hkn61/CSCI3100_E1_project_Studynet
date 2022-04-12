@@ -32,4 +32,5 @@ urlpatterns = [
     # Report
     path('report', views.report, name="report"),
     path('get_report_data', views.get_report_data, name="get_report_data"),
+    path('get_friend_list', views.get_friend_list, name="get_friend_list"),
 ]

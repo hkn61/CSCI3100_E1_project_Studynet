@@ -89,7 +89,7 @@
             <label class="label" for="">Comfirmation</label>
             <span>
             <input class="input" type="text" id="email_ver" name="email_ver" placeholder="Enter Comfirmation code" Required>
-            <input class="btn-send" id="btn" type="button" onclick="email_r();send();" value="Send">
+            <input class="btn-send" id="btn" type="button" onclick="send();" value="Send">
             </span>
           </div>
 
@@ -119,10 +119,10 @@
     function amy(){}
     function send(){
         a = 10;
+        email_r();
         document.getElementById("btn").style="cursor:default";
         timeVar=setInterval(function(){setTime()},1000);
-        document.getElementById("btn").onclick="any()";
-        var email = document.getElementById("txt-Comfirmation").value;
+
 
 }
     function setTime(){
@@ -130,7 +130,6 @@
         a=a-1;
         if(a<=0) {        
         document.getElementById("btn").value= "Send";
-        document.getElementById("btn").onclick="send()";
         document.getElementById("btn").style="cursor:pointer";
         clearInterval(timeVar);}
     }

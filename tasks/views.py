@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 import json
 USER_TASK_DB = MONGO_CLIENT['csci3100']['task_list']
+FRIEND_DB = MONGO_CLIENT['chat']['friend']
 # Create your views here.
 def tasklist(request):
     if request.user.is_authenticated:
@@ -211,14 +212,43 @@ def get_report_data(request):
     else:
         messages.error(request, "Sign in Error")
         return redirect("../auth/signin")
+    selected_user = request.POST.get("user")
+
     date_str = request.POST.get("date")
     date_info = date_str.split("-")
-    user_task_list = USER_TASK_DB.find({"username": str(username)})
-    existing = user_task_list[0]
     finished_and_matched = []
-    for task,task_info in existing["tasklist"].items():
-        if task_info["FinishedTimestamp"] == 0 or task_info["isfinished"] == 0:continue
-        elif int(task_info["FinishedTimestamp"][0]) == int(date_info[1]) and int(task_info["FinishedTimestamp"][1]) == int(date_info[2]) and int(task_info["FinishedTimestamp"][2]) == int(date_info[0]):
-            finished_and_matched.append({"taskname":task,"timespent":task_info["timespent"]})
-        else:continue
+    if selected_user == "Me":
+        user_task_list = USER_TASK_DB.find({"username": str(username)})
+        existing = user_task_list[0]
+        for task,task_info in existing["tasklist"].items():
+            if task_info["FinishedTimestamp"] == 0 or task_info["isfinished"] == 0:continue
+            elif int(task_info["FinishedTimestamp"][0]) == int(date_info[1]) and int(task_info["FinishedTimestamp"][1]) == int(date_info[2]) and int(task_info["FinishedTimestamp"][2]) == int(date_info[0]):
+                finished_and_matched.append({"taskname":task,"timespent":task_info["timespent"]})
+            else:continue
+    else:
+        username = selected_user
+        user_task_list = USER_TASK_DB.find({"username": str(username)})
+        existing = user_task_list[0]
+        if existing["privacy"] == 0:
+            messages.error(request,"The privacy setting for your friend is false")
+            print("Error")
+            return JsonResponse(-1,safe=False)
+        else:
+
+            for task,task_info in existing["tasklist"].items():
+                if task_info["FinishedTimestamp"] == 0 or task_info["isfinished"] == 0:continue
+                elif int(task_info["FinishedTimestamp"][0]) == int(date_info[1]) and int(task_info["FinishedTimestamp"][1]) == int(date_info[2]) and int(task_info["FinishedTimestamp"][2]) == int(date_info[0]):
+                    finished_and_matched.append({"taskname":task,"timespent":task_info["timespent"]})
+                else:continue
+
     return JsonResponse(finished_and_matched,safe=False)
+
+def get_friend_list(request):
+    if request.user.is_authenticated:
+        username = request.user
+    else:
+        messages.error(request, "Sign in Error")
+        return redirect("../auth/signin")
+    user_friend_list = FRIEND_DB.find({"user_name": str(username)})
+    friend_list = user_friend_list[0]["friend_list"]
+    return JsonResponse(friend_list,safe=False)
