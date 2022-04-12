@@ -218,14 +218,6 @@ html {
     box-sizing: border-box;
   }
 
-  .input-send {
-    padding: 0.5em 0 0.5em 1em;
-    width: 75%;
-    border: 1px solid #e5e7ec;
-    border-radius: 5px;
-    outline: 0;
-    box-sizing: border-box;
-  }
   
   .btn-submit {
     background-color: #6371c5;
