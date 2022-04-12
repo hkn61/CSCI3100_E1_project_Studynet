@@ -26,11 +26,17 @@
             <div  class="sideBar-item" onclick="location.href='/task/report'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Report</P></div>
           </div>
         <div class="header">
-            <h2 style="color: #6371c5"> Report</h2>
+            <h2> Report</h2>
+            <br>
+            {% csrf_token %}
+            <label for="friend_list" style="color: #6371c5;">Select a user</label>
+            <select id="friend_list" required>
+                <option value="Me">Me</option>
+              </select>
             <br>
             {% csrf_token %}
             <label for="report_date" style="color: #6371c5">Select a date</label>
-            <input type="date" id="report_date" name="date" >
+            <input type="date" id="report_date" name="date">
 
             <canvas id="myChart" style="height:400px; width:1200px" ></canvas>
 <!--            <canvas id="pieChart" style="height:200px; width:1500px" ></canvas>-->
@@ -38,12 +44,33 @@
         </div>
     </div>
     <script>
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        fetch("get_friend_list", {
+            headers: {'X-CSRFToken': csrftoken},
+            method: 'POST',
+            credentials: 'same-origin',
+        }).then(response=>response.json())
+            .then(data=>{
+                console.log(data)
+                let select_e = document.querySelector('select');
+                for (let i = 0; i < data.length; ++i) {
+                    let opt = document.createElement('option');
+                    opt.value = data[i];
+                    opt.innerText = data[i];
+                    select_e.appendChild(opt);
+                    }
+                }
+            )
+
         document.querySelector('#report_date').addEventListener('input',getdatedata)
 
         function getdatedata(e){
+            let user_selected =document.querySelector("#friend_list").value;
+
             const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             const formData = new FormData();
             formData.append('date', e.target.value);
+            formData.append("user", user_selected);
             fetch("get_report_data", {
                 headers:{'X-CSRFToken': csrftoken},
                 method: 'POST',
@@ -51,55 +78,63 @@
                 body: formData,
             }).then(response=>response.json())
                 .then(data=>{
-                    var chartjsData = [];
-
-            for (var i = 0; i < data.length; i++) {
-                chartjsData.push(data[i].timespent);
-            }
-            var chartjslabel = [];
-            for (var i = 0; i < data.length; i++) {
-                chartjslabel.push(data[i].taskname);
-            }
-        //生成图表
-        $('#myChart').remove(); // this is my <canvas> element
-        $('.header').append('<canvas id="myChart" style="height:400px; width:1200px" ></canvas>');
-            ctx = document.getElementById("myChart").getContext("2d");
-                    var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: chartjslabel,
-                datasets:  [
-                        {
-                            label: "Finished tasks",
-                            fillColor : "rgba(220,280,220,0.5)",
-                            strokeColor : "rgba(220,220,220,1)",
-                            data : chartjsData
-                        }
-                    ]
-            },
-            options: {
-                layout:{
-                   padding: {
-                        left:400,
-                        top:100
-                    },
-                },
-                responsive:false,
-                plugins:{
-                    title:{
-                    display:true,
-                    text:"Task Time"
-                },
-
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
+                    if (data==-1){
+                        let head = document.querySelector('.header');
+                        let message = document.createElement('h4');
+                        message.innerText = "The privacy settings of your friend is false.";
+                        message.style= "color: red";
+                        head.appendChild(message);
                     }
-                }
-            }
-        });
+                    else{
+                        var chartjsData = [];
 
+                        for (var i = 0; i < data.length; i++) {
+                            chartjsData.push(data[i].timespent);
+                            }
+                        var chartjslabel = [];
+                        for (var i = 0; i < data.length; i++) {
+                            chartjslabel.push(data[i].taskname);
+                            }
+                        //生成图表
+                        $('#myChart').remove(); // this is my <canvas> element
+                        $('.header').append('<canvas id="myChart" style="height:400px; width:1200px" ></canvas>');
+                            ctx = document.getElementById("myChart").getContext("2d");
+                                    var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: chartjslabel,
+                                datasets:  [
+                                        {
+                                            label: "Finished tasks",
+                                            fillColor : "rgba(220,280,220,0.5)",
+                                            strokeColor : "rgba(220,220,220,1)",
+                                            data : chartjsData
+                                        }
+                                    ]
+                            },
+                            options: {
+                                layout:{
+                                   padding: {
+                                        left:400,
+                                        top:100
+                                    },
+                                },
+                                responsive:false,
+                                plugins:{
+                                    title:{
+                                    display:true,
+                                    text:"Task Time"
+                                },
+
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    }
 
             })
         }
