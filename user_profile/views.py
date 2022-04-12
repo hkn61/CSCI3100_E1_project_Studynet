@@ -15,6 +15,7 @@ def profile(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+        username = str(username)
     #username = "1"
     filter = {'user_name': username}
     record = MONGO_CLIENT['chat']['friend'].find_one(filter)
@@ -41,6 +42,7 @@ def updatephoto(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+        username = str(username)
     if request.method == 'GET':
         return render(request, 'user/profile.html')
     if request.method == "POST":
@@ -81,6 +83,7 @@ def updateprivacy(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+        username = str(username)
     if request.method == "POST":
         #username = '1'
         privacy = request.POST.get("privacy")

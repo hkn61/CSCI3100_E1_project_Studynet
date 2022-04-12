@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from pymysql import NULL
 from csci3100 import settings
 import random
 import string
@@ -46,7 +47,7 @@ def signup(request):
         messages.success(request, "Your account has been successfully created.")
         newUser.save()
 
-        FRIEND_DB.insert_one({"user_name": username, "friend_list": [], "group_list":[], "profile":"/static/profile/default.png"})
+        FRIEND_DB.insert_one({"user_name": username, "friend_list": [], "group_list": [], "profile":"/static/profile/default.png"})
         USER_TASK_DB.insert_one({"username": username, "privacy":0, "tasklist": {"taskname": {"isworking": 0, "isfinished": 0, "timespent": 0, "FinishedTimestamp": 0, }}, "deletedtask": {}})
 
         # user = UserModel()

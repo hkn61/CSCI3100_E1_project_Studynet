@@ -1,4 +1,5 @@
 from os import times
+from re import search
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from asgiref.sync import async_to_sync
@@ -31,12 +32,15 @@ def create_friend_chat(db, collection, friend_info):
 
 # update db when add a group
 def add_a_group(db, collection, group_name, user_name):
+    print('--------------------- {}'.format(group_name))
     print('inside add_to_ group database====>', db, collection, group_name, user_name)
+    print(type(group_name))
     filter = { 'group_name': group_name }
-    entry = MONGO_CLIENT[db][collection].find(filter)
-    # ??? update member number
-    member_num = entry[0]['memberNum'] + 1 
-    if user_name not in entry[0]['member']:
+    entry = MONGO_CLIENT[db][collection].find_one(filter)
+    # ??? update member number 
+    group_name = str(group_name)
+    member_num = entry['memberNum'] + 1 
+    if user_name not in entry['member']:
         r = MONGO_CLIENT[db][collection].update_one(filter, {'$push': {'member': user_name}, "$set": {'memberNum': member_num}}, upsert = True)
     else:
         return False
@@ -78,20 +82,25 @@ def group(request):
 def groupadd(request):
     # add a group
     username = ''
+    search_by = ''
     status = True
     indicator = 1
+    print('++++++++++++++++')
     if request.user.is_authenticated:
         username = request.user
+        username = str(username)
     else:
         return redirect("/auth/signin")
     if request.method == "POST":
         group_name = request.POST.get("groupname")
-        search_by = request.POST.get("search_by")
-
+        #search_by = request.POST.get("search_by")
+        print('---------g---------', group_name)
+        #print('---------s---------', search_by)
         #username = 'Wendy'
         if search_by == 'friend':
             status = add_a_friend('chat', 'friend', username, group_name)
         else:
+            print('------------------=========', username,group_name)
             status = add_a_group('chat', 'group', group_name, username)
         if not status:
             print(status)
@@ -111,6 +120,7 @@ def groupcreate(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+        username = str(username)
     else:
         return redirect("/auth/signin")
     if request.method == "POST":
@@ -120,12 +130,18 @@ def groupcreate(request):
         description = request.POST["description"]
         private = request.POST.get("private")
 
+        if private is not None:
+            private = 1
+        else:
+            private = 0
+
         filter = { 'group_name': group_name }
         if MONGO_CLIENT['chat']['group'].find_one(filter):
             messages.error(request, "Group name already exists.")
             return redirect("groupcreate")
 
-        group_info = {'group_name': group_name, 'member': member, 'member_num': membernum, 'description': description, 'private': private}
+        group_info = {'group_name': group_name, 'member': member, 'memberNum': membernum, 'description': description, 'private': private}
+        print(group_info)
         status, inserted_id = create_a_group('chat', 'group', group_info)
         if status:
             print('new group saved to db successfully ====>', inserted_id)
@@ -143,6 +159,7 @@ def groupsearch(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+        username = str(username)
     else:
         return redirect("/auth/signin")
     #username = 'hkn' #test!!!
@@ -240,6 +257,7 @@ def groupchat(request, room_name):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+        username = str(username)
     else:
         return redirect("/auth/signin")
     #username = 'Wendy' #test!!!!!!
@@ -327,6 +345,7 @@ def friendadd(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+        username = str(username)
         add_a_friend('chat', 'friend', username, friend_name)
     else:
         return redirect("/auth/signin")
@@ -340,12 +359,15 @@ def grouplist(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+        username = str(username)
     else:
         return redirect("/auth/signin")
-    username = "Wendy"
-
+    #username = "Wendy"
+    print(type(str(username)))
+    username = str(username)
     filter = {'user_name': username}
     user_record = MONGO_CLIENT['chat']['friend'].find(filter)
+    print(user_record)
     group_list = user_record[0]['group_list']
     friend_list = user_record[0]['friend_list']
     group = []
@@ -370,5 +392,5 @@ def grouplist(request):
         'group_list': group,
         'friend_list': friend,
         #'current_user': request.session['username']
-        'current_user': "test"
+        'current_user': username
     })
