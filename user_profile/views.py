@@ -69,12 +69,12 @@ def updatephoto(request):
         if privacy == 1:
             status = "public"
 
-        return render(request, 'user/profile.html', {
-            'username': username,
-            'id': id,
-            "image": image,
-            "status": status
-        })
+    return render(request, 'user/profile.html', {
+        'username': username,
+        'id': id,
+        "image": image,
+        "status": status
+    })
 
 
 def updateprivacy(request):
@@ -97,12 +97,12 @@ def updateprivacy(request):
         id = str(record['_id'])
         image = record['profile']
 
-        return render(request, 'user/profile.html', {
-            'username': username,
-            'id': id,
-            "image": image,
-            "status": status
-        })
+    return render(request, 'user/profile.html', {
+        'username': username,
+        'id': id,
+        "image": image,
+        "status": status
+    })
 
 
 
