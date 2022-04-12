@@ -2,8 +2,6 @@ from os import times
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from asgiref.sync import async_to_sync
-from numpy import rec
-#from importlib_metadata import re
 from csci3100.settings import MONGO_CLIENT
 from django.contrib import messages
 from bson.objectid import ObjectId
@@ -84,6 +82,8 @@ def groupadd(request):
     indicator = 1
     if request.user.is_authenticated:
         username = request.user
+    else:
+        return redirect("/auth/signin")
     if request.method == "POST":
         group_name = request.POST.get("groupname")
         search_by = request.POST.get("search_by")
@@ -111,6 +111,8 @@ def groupcreate(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+    else:
+        return redirect("/auth/signin")
     if request.method == "POST":
         group_name = request.POST["groupname"]
         member = [username]
@@ -141,6 +143,8 @@ def groupsearch(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+    else:
+        return redirect("/auth/signin")
     #username = 'hkn' #test!!!
     group_name = request.POST["groupname"]
     search_by = request.POST.get('search_type')
@@ -236,6 +240,8 @@ def groupchat(request, room_name):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+    else:
+        return redirect("/auth/signin")
     #username = 'Wendy' #test!!!!!!
     if not username:
         return HttpResponseRedirect('homepage/login/')
@@ -322,6 +328,8 @@ def friendadd(request):
     if request.user.is_authenticated:
         username = request.user
         add_a_friend('chat', 'friend', username, friend_name)
+    else:
+        return redirect("/auth/signin")
         
     return render(request, 'chat/groupadd.html', {})
 
@@ -332,6 +340,8 @@ def grouplist(request):
     username = ''
     if request.user.is_authenticated:
         username = request.user
+    else:
+        return redirect("/auth/signin")
     username = "Wendy"
 
     filter = {'user_name': username}
