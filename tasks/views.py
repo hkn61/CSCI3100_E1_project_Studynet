@@ -156,16 +156,16 @@ def getdoinglist(request):
         messages.error(request, "Sign in Error")
         return redirect("../auth/signin")
     user_task_list = USER_TASK_DB.find({"username":str(username)})
-    if user_task_list.count() == 0:
-        USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
-        return HttpResponse()
-    else:
-        existing = user_task_list[0]["tasklist"]
-        unfinished_task = {}
-        for key, value in existing.items():
-            if value["isfinished"] == 0 and value["isworking"] == 1 :
-                unfinished_task[key] = value
-        return JsonResponse(unfinished_task)
+    # if user_task_list.count() == 0:
+    #     USER_TASK_DB.insert_one({"username": str(username),"tasklist":{},"deletedtask":{}})
+    #     return HttpResponse()
+    # else:
+    existing = user_task_list[0]["tasklist"]
+    unfinished_task = {}
+    for key, value in existing.items():
+        if value["isfinished"] == 0 and value["isworking"] == 1 :
+            unfinished_task[key] = value
+    return JsonResponse(unfinished_task)
 
 def changefinishedstatus(request):
     if request.user.is_authenticated:
