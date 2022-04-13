@@ -10,11 +10,32 @@
     <link rel="stylesheet" href="{% static 'style.css' %}" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
     <!--font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Redressed&family=Ubuntu&display=swap" rel="stylesheet">
 </head>
+<style>
+    
+    .selectFriend{
+        width: 150px; 
+        height: 40px;
+        font-size: 20px; 
+        border-radius: 5px;
+        border: 2px solid lightgray;
+        font-family: 'Ubuntu', sans-serif;
+    }
+    .selectDate{
+        width: 150px; 
+        height: 40px;
+        font-size: 20px; 
+        border-radius: 5px;
+        border: 2px solid lightgray;
+        font-family: 'Ubuntu', sans-serif;
+    }
+</style>
 <body>
       <ul class = "navbar">
           <li class = "nav_of_group"><a href="/task/tasklist">My Task</a></li>
@@ -23,29 +44,30 @@
           <li><a href="/signout">Sign Out</a></li>
       </ul>
 <div class="content-body">
-        <div class="sideBar"  >
-              <div  class="sideBar-item" onclick="location.href='/task/tasklist'" ><p><br><i class="bi bi-person-plus-fill" style="font-size: 30px"></i><br>Task list</p></div>
-              <div  class="sideBar-item" onclick="location.href='/task/showdeletedtask'"><p><br><i class="bi bi-card-list" style="font-size: 30px"></i><br>Deleted Task</P></div>
-              <div  class="sideBar-item" onclick="location.href='/task/showfinishedtask'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Finished Task</P></div>
-            <div  class="sideBar-item" onclick="location.href='/task/timer'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Begin Task</P></div>
-            <div  class="sideBar-item" onclick="location.href='/task/report'"><p><br><i class="bi bi-chat-left-text-fill" style="font-size: 30px"></i><br>Report</P></div>
-          </div>
+    <div class="sideBar"  >
+        <div  class="sideBar-item"  onclick="location.href='/task/tasklist'"><p><br><i class="bi bi-list-task" style="font-size: 30px"></i><br>Task list</p></div>
+        <div  class="sideBar-item" onclick="location.href='/task/showdeletedtask'"><p><br><i class="bi bi-trash3-fill" style="font-size: 30px"></i><br>Deleted Task</P></div>
+        <div  class="sideBar-item"  onclick="location.href='/task/showfinishedtask'"><p><br><i class="bi bi-card-checklist" style="font-size: 30px"></i><br>Finished Task</P></div>
+      <div  class="sideBar-item" onclick="location.href='/task/timer'"><p><br><i class="bi bi-hourglass-split" style="font-size: 30px"></i><br>Begin Task</P></div>
+      <div  class="sideBar-item" style="background:#c4dad8" onclick="location.href='/task/report'"><p><br><i class="bi bi-envelope-paper-heart" style="font-size: 30px"></i><br>Report</P></div>
+    </div>
         <div class="header">
             <h2> Report</h2>
             <br>
             {% csrf_token %}
             <label for="friend_list" style="color: #6371c5;">Select a user</label>
-            <select id="friend_list" required>
+            <select class="selectFriend" id="friend_list" required >
                 <option value="Me">Me</option>
               </select>
             <br>
             {% csrf_token %}
+            <div style="margin-top: 20px;">
             <label for="report_date" style="color: #6371c5">Select a date</label>
-            <input type="date" id="report_date" name="date">
+            <input class = "selectDate" type="date" id="report_date" name="date">
 
             <canvas id="myChart" style="height:400px; width:1200px" ></canvas>
 <!--            <canvas id="pieChart" style="height:200px; width:1500px" ></canvas>-->
-
+</div>
         </div>
     </div>
     <script>
