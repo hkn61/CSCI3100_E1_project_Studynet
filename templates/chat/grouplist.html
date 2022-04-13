@@ -128,7 +128,7 @@
             <div class="list">
                 <h1>My groups</h1>
                 <div class="listItem-group"  @click.self="enterGroupChat(group)" v-for="group in group_list " :key="group.ID">
-                  <p class="info-name" @click="enterGroupChat(group)">[[group.group_name]]<br> [[group.mumberNum]] mumbers</p>
+                  <p class="info-name" @click="enterGroupChat(group)">[[group.group_name]]<br> [[group.mumberNum]] members</p>
                   <p class="info-ID">ID: [[group.group_id]]</p>
                 </div>
             </div>
