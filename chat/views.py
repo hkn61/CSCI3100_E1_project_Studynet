@@ -3,6 +3,7 @@ from re import search
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from asgiref.sync import async_to_sync
+from numpy import rec
 from csci3100.settings import MONGO_CLIENT
 from django.contrib import messages
 from bson.objectid import ObjectId
@@ -10,7 +11,6 @@ import string
 import datetime
 # Create your views here.
 
-# test
 def save_to_database(db, collection, chat_message):
     print('inside save_to_database====>', db, collection, chat_message)
     r = MONGO_CLIENT[db][collection].insert_one(chat_message)
@@ -156,7 +156,6 @@ def groupsearch(request):
         username = str(username)
     else:
         return redirect("/auth/signin")
-    #username = 'hkn' #test!!!
     group_name = request.POST["groupname"]
     search_by = request.POST.get('search_type')
     res_group_list = []
@@ -198,7 +197,6 @@ def groupsearch(request):
                 print(record)
                 #dict = {'group_name': record['user_name'], 'description': ''}
                 res_group_list.append(record['user_name']) # matched user
-    #print(res_group_list)
 
     unadded_group_list = [i for i in res_group_list if i not in added_group_list]
     result_group_list = []
@@ -223,9 +221,7 @@ def groupsearch(request):
     return render(request, 'chat/groupadd.html', {
         'search_by': search_by,
         'res_group_list': result_group_list
-        
     })
-
 
 
 def groupchat(request, room_name):
@@ -241,7 +237,6 @@ def groupchat(request, room_name):
         username = str(username)
     else:
         return redirect("/auth/signin")
-    #username = 'Wendy' #test!!!!!!
     if not username:
         return HttpResponseRedirect('homepage/login/')
 
@@ -320,7 +315,6 @@ def groupchat(request, room_name):
     })
 
 
-
 def friendadd(request):
     if request.method == "POST":
         friend_name = request.POST["friendname"]
@@ -335,16 +329,13 @@ def friendadd(request):
     return render(request, 'chat/groupadd.html', {})
 
 
-
 def grouplist(request):
-    #username = request.session.get('username') or ''
     username = ''
     if request.user.is_authenticated:
         username = request.user
         username = str(username)
     else:
         return redirect("/auth/signin")
-    #username = "Wendy"
     print(type(str(username)))
     username = str(username)
     filter = {'user_name': username}
@@ -373,6 +364,43 @@ def grouplist(request):
     return render(request, 'chat/grouplist.html', {
         'group_list': group,
         'friend_list': friend,
-        #'current_user': request.session['username']
         'current_user': username
+    })
+
+
+def historysearch(request):
+    username = ''
+    if request.user.is_authenticated:
+        username = request.user
+        username = str(username)
+    else:
+        return redirect("/auth/signin")
+
+    group_name = request.POST.get("groupname")
+    keyword = request.POST.get('keyword')
+    group_name = 'CSCI_3100'
+    keyword = 'i'
+    filter_kwd = { "message": { "$regex": ".*" + keyword + ".*" } }
+    msg_result = MONGO_CLIENT['chat']['chat_message'].find(filter_kwd)
+
+    message_list = []
+    for record in msg_result:
+        if record['group_name'] == group_name:
+            timestamp = record['time']
+            day = timestamp.day
+            month = timestamp.month
+            year = timestamp.year
+            hour = timestamp.hour
+            minute = timestamp.minute
+            time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
+            dict = {
+                'sender': record['sender'],
+                'time': time,
+                'message': record['message']
+            }
+            message_list.append(dict)
+    print(message_list)
+
+    return render(request, 'chat/groupchat.html', {
+        'history': message_list
     })
