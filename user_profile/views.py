@@ -8,7 +8,6 @@ from csci3100 import settings
 import random
 import string
 from csci3100.settings import MONGO_CLIENT
-from .models import Image
 # Create your views here.
 
 def profile(request):
