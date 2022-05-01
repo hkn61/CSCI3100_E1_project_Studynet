@@ -311,7 +311,8 @@ def groupchat(request, room_name):
         'friend_list': friend_list,
         'group_list': group_list,
         'prev_messages': previous_messages,
-        'current_user': username
+        'current_user': username,
+        'history_indicator': 0
     })
 
 
@@ -394,6 +395,7 @@ def historysearch(request):
             minute = timestamp.minute
             time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
             dict = {
+                'message_id': str(record['_id']),
                 'sender': record['sender'],
                 'time': time,
                 'message': record['message']
@@ -402,5 +404,6 @@ def historysearch(request):
     print(message_list)
 
     return render(request, 'chat/groupchat.html', {
-        'history': message_list
+        'history': message_list,
+        'history_indicator': 1
     })
