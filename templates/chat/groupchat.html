@@ -503,6 +503,7 @@
             //connect to websocket for chat function
             this.room_name = this.room_name.substring(1)
             this.prev_messages = this.prev_messages.reverse();
+            console.log(this.room_name);
             if(this.room_name != 'groupchat' && this.attack_indicator == 0){
                 console.log("Starting connection to WebSocket Server")
                 
