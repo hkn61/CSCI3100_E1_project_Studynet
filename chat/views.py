@@ -377,15 +377,24 @@ def historysearch(request,room_name,keyword=None):
     else:
         return redirect("/auth/signin")
 
-    group_name = room_name
-    #group_name = request.POST.get("groupname")
-    #keyword = request.POST.get('keyword')
+    group_name_with_type = room_name
+    group_name = group_name_with_type[1:]
+    type = group_name_with_type[:1]
+
+    if type == 'f':
+        group_name = username + '&' + group_name
+        try_filter = {'group_name': group_name}
+        if MONGO_CLIENT['chat']['friend_chat'].find_one(try_filter):
+            pass
+        else:
+            group_name = group_name + '&' + username
+        print("friend chat name: {}".format(group_name))
     
     message_list = []
     if keyword != None:
         print("roomname: "+ group_name+ "  keyword: "+keyword)
-        group_name = 'CSCI_3100'
-        keyword = 'i'
+        #group_name = 'CSCI_3100'
+        #keyword = 'i'
         filter_kwd = { "message": { "$regex": ".*" + keyword + ".*" } }
         msg_result = MONGO_CLIENT['chat']['chat_message'].find(filter_kwd)
 
@@ -405,11 +414,55 @@ def historysearch(request,room_name,keyword=None):
                     'message': record['message']
                 }
                 message_list.append(dict)
-        print(message_list)
+    print(message_list)
+
+    filters = {'group_name': group_name}
+    sort_fields = [('time', -1)]
+    previous_messages = []
+    for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
+        print(chat)
+        chat['_id'] = str(chat['_id'])
+        chat['sender'] = str(chat['sender'])
+        chat['time'] = chat['time']
+        chat['message'] = chat['message']
+        previous_messages.append(chat)
+    previous_messages = sorted(previous_messages, key=lambda s: s['time'])
+
+    for chat in previous_messages:
+        timestamp = chat['time']
+        day = timestamp.day
+        month = timestamp.month
+        year = timestamp.year
+        hour = timestamp.hour
+        minute = timestamp.minute
+        time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
+        chat['time'] = time
+        img_filter = {'user_name': chat['sender']}
+        img_record = MONGO_CLIENT['chat']['friend'].find_one(img_filter)
+        image = img_record['profile']
+        chat['image'] = image
+
+
+    filter = {'user_name': username}
+    result = MONGO_CLIENT['chat']['friend'].find(filter)
+    friend_list_tmp = result[0]['friend_list']
+    group_list = result[0]['group_list']
+    print("user: {}, friend list: {}, group list: {}".format(username, friend_list_tmp, group_list))
+    friend_list = []
+
+    for friend in friend_list_tmp:
+        fri_filter = {'user_name': friend}
+        fri_record = MONGO_CLIENT['chat']['friend'].find_one(fri_filter)
+        dict = {"username": friend, 'image': fri_record['profile']}
+        friend_list.append(dict)
 
     return render(request, 'chat/groupchatsearch.html', {
         'history': message_list,
         'history_indicator': 1,
-        'room_name': group_name
+        'room_name': room_name,
+        'friend_list': friend_list,
+        'group_list': group_list,
+        'prev_messages': previous_messages,
+        'current_user': username,
     })
 

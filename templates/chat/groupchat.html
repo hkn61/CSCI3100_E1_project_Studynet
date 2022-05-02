@@ -500,28 +500,30 @@
             //connect to websocket for chat function
             this.room_name = this.room_name.substring(1)
             this.prev_messages = this.prev_messages.reverse();
-            console.log("Starting connection to WebSocket Server")
-            
-            this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
+            if(this.room_name != 'groupchat'){
+                console.log("Starting connection to WebSocket Server")
+                
+                this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
 
-            //send a new message 
-            this.chatSocket.onmessage = (event) => {
-                console.log(event)
-                var data = JSON.parse(event.data)
-                var message = data.message
-                if (message) {
-                    this.prev_messages.unshift(message)
-                    console.log(this.prev_messages)
+                //send a new message 
+                this.chatSocket.onmessage = (event) => {
+                    console.log(event)
+                    var data = JSON.parse(event.data)
+                    var message = data.message
+                    if (message) {
+                        this.prev_messages.unshift(message)
+                        console.log(this.prev_messages)
+                    }
                 }
-            }
-            //handle chatSocket connection open
-            this.chatSocket.onopen = function(event) {
-                console.log(event)
-                console.log("Successfully connected to the echo websocket server...")
-            }
-            //handle chatSocket connection close
-            this.chatSocket.onclose = function (e) {
-                console.error('Chat socket closed unexpectedly');
+                //handle chatSocket connection open
+                this.chatSocket.onopen = function(event) {
+                    console.log(event)
+                    console.log("Successfully connected to the echo websocket server...")
+                }
+                //handle chatSocket connection close
+                this.chatSocket.onclose = function (e) {
+                    console.error('Chat socket closed unexpectedly');
+                }
             }
         }
     });
