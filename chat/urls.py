@@ -9,5 +9,6 @@ urlpatterns = [
     path('groupsearch', views.groupsearch, name='groupsearch'),
     path('grouplist', views.grouplist, name='grouplist'),
     path('<str:room_name>/', views.groupchat, name='groupchat'),
-    path('historysearch', views.historysearch, name='historysearch'),
+    path('historysearch/<str:room_name>/<str:keyword>/', views.historysearch, name='historysearch'),
+    path('historysearch/<str:room_name>/', views.historysearch, name='historysearch'),
 ]

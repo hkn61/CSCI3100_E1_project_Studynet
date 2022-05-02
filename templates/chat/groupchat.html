@@ -347,30 +347,9 @@
 </style>
 
 <div id="app">
-    <!--chat history search box: hide by default-->
-    <div class="searchHistory" v-if="showSearchBox">
-        <div class="history-form" >
-            {% csrf_token %}
-            <!--input keyword-->
-            <div>
-                <input v-model="keyword" @keyup.enter="clickSearch" type="text" placeholder="Enter kerword here...">                                    
-                <button class="searchButton">
-                    <span class="input-group-text" @click="clickSearch"><i class="bi bi-search" style="font-size: 30px"></i></span>
-                </button>
-                <button type="cancel" @click="cancelSearch">Cancel</button>
-            </div>
-            <!--result of matched message history-->
-            <ul class="searchResult">
-                <li class="searchItem"  v-for="his in history" :key="his.message_id">
-                    <div class="message-data" >
-                        <p class="message-data-time"><span>Sender:</span> [[his.sender]] &nbsp &nbsp <span>Time:</span> [[his.time]]</p>
-                        <p class="message-data-time"><span>Message: </span>[[his.message]] </p>
-                    </div>
-                </li>                               
-            </ul>
-        </div>
-        
-    </div>
+    {% block history %}
+
+    {% endblock %}
 
     <!--chat main body-->
     <h1 class="title">StudyNet - [[current_user]] - ChatBox</h1>
@@ -403,9 +382,12 @@
             <!--chatroom header-->
             <div class="chat-header">       
                 <p >[[room_name]]</p>
-                {% csrf_token %}
-                <div class = "search_history" @click="showSearchBox = 1"><p><i class="bi bi-search" style="font-size: 25px"></i> history</p></div>
+                <div class = "search_history" @click="enterSearch">
+                    <i class="bi bi-search" style="font-size: 25px"></i> history</input>
+                </div>
+
             </div>
+            
             <!--chatroom messages-->
             <div class="chat-history ">
                 <ul class="history-list">
@@ -470,15 +452,7 @@
                 group_list: group_list,
                 friend_list: friend_list,
                 showSearchBox: history_indicator,
-                //history: history,
-                history: [{'message_id': '6257a0c6ade27355d1b64550', 'sender': 'Michael', 'time': '14/4/2022 12:19', 'message': 'Hi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guys'}, 
-                          {'message_id': '6257a0d5ade27355d1b64552', 'sender': 'Kaining', 'time': '14/4/2022 12:19', 'message': 'Hi'},
-                          {'message_id': '6257a0c6ade27355d1b64550', 'sender': 'Michael', 'time': '14/4/2022 12:19', 'message': 'Hi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guys'}, 
-                          {'message_id': '6257a0d5ade27355d1b64552', 'sender': 'Kaining', 'time': '14/4/2022 12:19', 'message': 'Hi'},
-                          {'message_id': '6257a0c6ade27355d1b64550', 'sender': 'Michael', 'time': '14/4/2022 12:19', 'message': 'Hi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guys'}, 
-                          {'message_id': '6257a0d5ade27355d1b64552', 'sender': 'Kaining', 'time': '14/4/2022 12:19', 'message': 'Hi'},
-                          {'message_id': '6257a0c6ade27355d1b64550', 'sender': 'Michael', 'time': '14/4/2022 12:19', 'message': 'Hi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guysHi guys'}, 
-                          {'message_id': '6257a0d5ade27355d1b64552', 'sender': 'Kaining', 'time': '14/4/2022 12:19', 'message': 'Hi'}],
+                history: history,
                 keyword: ""
             }
         },
@@ -505,20 +479,15 @@
                 }
                 
             },
+            
             //send roomname and search keyword to backend
-            clickSearch(){
-                console.log("click search")
-                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                const formData = new FormData();
-                formData.append("groupname", this.full_room_name);
-                formData.append("keyword", this.keyword);
-                fetch("../historysearch", {
-                    headers:{'X-CSRFToken': csrftoken},
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'same-origin'
-                })
-                
+            enterSearch(){
+                window.location.pathname = '/chat/historysearch/' + this.full_room_name +'/'
+            },
+            //direct to history search result
+            searchWithKeyword(){
+                window.location.pathname = '/chat/historysearch/' + this.full_room_name +'/'+this.keyword + '/'
+            
             },
             //return to chatroom when clicking 'cancel' in history search box
             cancelSearch(){

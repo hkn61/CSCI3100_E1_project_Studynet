@@ -369,7 +369,7 @@ def grouplist(request):
     })
 
 
-def historysearch(request):
+def historysearch(request,room_name,keyword=None):
     username = ''
     if request.user.is_authenticated:
         username = request.user
@@ -377,33 +377,39 @@ def historysearch(request):
     else:
         return redirect("/auth/signin")
 
-    group_name = request.POST.get("groupname")
-    keyword = request.POST.get('keyword')
-    group_name = 'CSCI_3100'
-    keyword = 'i'
-    filter_kwd = { "message": { "$regex": ".*" + keyword + ".*" } }
-    msg_result = MONGO_CLIENT['chat']['chat_message'].find(filter_kwd)
-
+    group_name = room_name
+    #group_name = request.POST.get("groupname")
+    #keyword = request.POST.get('keyword')
+    
     message_list = []
-    for record in msg_result:
-        if record['group_name'] == group_name:
-            timestamp = record['time']
-            day = timestamp.day
-            month = timestamp.month
-            year = timestamp.year
-            hour = timestamp.hour
-            minute = timestamp.minute
-            time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
-            dict = {
-                'message_id': str(record['_id']),
-                'sender': record['sender'],
-                'time': time,
-                'message': record['message']
-            }
-            message_list.append(dict)
-    print(message_list)
+    if keyword != None:
+        print("roomname: "+ group_name+ "  keyword: "+keyword)
+        group_name = 'CSCI_3100'
+        keyword = 'i'
+        filter_kwd = { "message": { "$regex": ".*" + keyword + ".*" } }
+        msg_result = MONGO_CLIENT['chat']['chat_message'].find(filter_kwd)
 
-    return render(request, 'chat/groupchat.html', {
+        for record in msg_result:
+            if record['group_name'] == group_name:
+                timestamp = record['time']
+                day = timestamp.day
+                month = timestamp.month
+                year = timestamp.year
+                hour = timestamp.hour
+                minute = timestamp.minute
+                time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
+                dict = {
+                    'message_id': str(record['_id']),
+                    'sender': record['sender'],
+                    'time': time,
+                    'message': record['message']
+                }
+                message_list.append(dict)
+        print(message_list)
+
+    return render(request, 'chat/groupchatsearch.html', {
         'history': message_list,
-        'history_indicator': 1
+        'history_indicator': 1,
+        'room_name': group_name
     })
+
