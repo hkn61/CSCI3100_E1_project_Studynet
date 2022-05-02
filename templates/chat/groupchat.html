@@ -421,6 +421,7 @@
     {{ friend_list|json_script:"friend_list" }}
     {{ history|json_script:"history" }}
     {{ history_indicator|json_script:"history_indicator" }}
+    {{ attack_indicator|json_script:"attack_indicator" }}
 
 <script>
     //tranform the reveived data to js object
@@ -431,6 +432,7 @@
     let friend_list = JSON.parse(document.getElementById('friend_list').textContent);
     let history = JSON.parse(document.getElementById('history').textContent);
     let history_indicator = JSON.parse(document.getElementById('history_indicator').textContent);
+    let attack_indicator = JSON.parse(document.getElementById('attack_indicator').textContent);
     
     console.log(room_name);
     console.log( prev_messages);
@@ -453,7 +455,8 @@
                 friend_list: friend_list,
                 showSearchBox: history_indicator,
                 history: history,
-                keyword: ""
+                keyword: "",
+                attack_indicator: attack_indicator
             }
         },
         methods: {
@@ -500,7 +503,7 @@
             //connect to websocket for chat function
             this.room_name = this.room_name.substring(1)
             this.prev_messages = this.prev_messages.reverse();
-            if(this.room_name != 'groupchat'){
+            if(this.room_name != 'groupchat' && this.attack_indicator == 0){
                 console.log("Starting connection to WebSocket Server")
                 
                 this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
@@ -524,6 +527,10 @@
                 this.chatSocket.onclose = function (e) {
                     console.error('Chat socket closed unexpectedly');
                 }
+            }
+            if(this.attack_indicator == 1){
+                window.alert("This is not your friend/group. You can not chat in this chatbox or view chat history!");
+                window.location.pathname = '/chat/groupchat'
             }
         }
     });

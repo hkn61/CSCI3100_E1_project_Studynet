@@ -306,13 +306,23 @@ def groupchat(request, room_name):
     print('previous_messages =======>', previous_messages)
     if room_name_with_type == 'groupchat':
         room_name_with_type = 'g' + room_name_with_type
+
+    attack_indicator = 0
+    if group_name not in group_list and room_name_with_type[1:] not in friend_list:
+        previous_messages = []
+        attack_indicator = 1
+
+    if group_name == 'roupchat':
+        attack_indicator = 0
+
     return render(request, 'chat/groupchat.html', {
         'room_name': room_name_with_type,
         'friend_list': friend_list,
         'group_list': group_list,
         'prev_messages': previous_messages,
         'current_user': username,
-        'history_indicator': 0
+        'history_indicator': 0,
+        'attack_indicator': attack_indicator
     })
 
 
@@ -456,6 +466,15 @@ def historysearch(request,room_name,keyword=None):
         dict = {"username": friend, 'image': fri_record['profile']}
         friend_list.append(dict)
 
+    attack_indicator = 0
+    if group_name not in group_list and group_name_with_type[1:] not in friend_list:
+        previous_messages = []
+        message_list = []
+        attack_indicator = 1
+
+    if group_name == 'roupchat':
+        attack_indicator = 0
+
     return render(request, 'chat/groupchatsearch.html', {
         'history': message_list,
         'history_indicator': 1,
@@ -464,5 +483,6 @@ def historysearch(request,room_name,keyword=None):
         'group_list': group_list,
         'prev_messages': previous_messages,
         'current_user': username,
+        'attack_indicator': attack_indicator
     })
 
