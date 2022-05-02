@@ -308,7 +308,8 @@ def groupchat(request, room_name):
         room_name_with_type = 'g' + room_name_with_type
 
     attack_indicator = 0
-    if group_name not in group_list and room_name_with_type[1:] not in friend_list:
+    print(room_name_with_type[1:])
+    if group_name not in group_list and room_name_with_type[1:] not in friend_list_tmp:
         previous_messages = []
         attack_indicator = 1
 
@@ -467,7 +468,7 @@ def historysearch(request,room_name,keyword=None):
         friend_list.append(dict)
 
     attack_indicator = 0
-    if group_name not in group_list and group_name_with_type[1:] not in friend_list:
+    if group_name not in group_list and group_name_with_type[1:] not in friend_list_tmp:
         previous_messages = []
         message_list = []
         attack_indicator = 1
