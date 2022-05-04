@@ -489,7 +489,13 @@
             },
             //direct to history search result
             searchWithKeyword(){
-                window.location.pathname = '/chat/historysearch/' + this.full_room_name +'/'+this.keyword + '/'
+                if (this.keyword != ""){
+                    window.location.pathname = '/chat/historysearch/' + this.full_room_name +'/'+this.keyword + '/'
+                }
+                else{
+                    window.alert("Please enter a keyword to search")
+                }
+                
             
             },
             //return to chatroom when clicking 'cancel' in history search box
