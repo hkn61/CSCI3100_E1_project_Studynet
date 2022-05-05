@@ -10,6 +10,7 @@ import string
 from csci3100.settings import MONGO_CLIENT
 # Create your views here.
 
+# Connect Databases
 USER_AUTH_DB = MONGO_CLIENT['csci3100']['user_auth']
 FRIEND_DB = MONGO_CLIENT['chat']['friend']
 USER_TASK_DB = MONGO_CLIENT['csci3100']['task_list']
@@ -23,6 +24,8 @@ def signup(request):
         pass2 = request.POST["pass2"]
         email_ver = request.POST["email_ver"]
 
+
+        # Error handling
         if User.objects.filter(username=username):
             messages.error(request, "Username already exists.")
             return render(request, "auth/signup.html")
@@ -32,25 +35,26 @@ def signup(request):
         if pass1 != pass2:
             messages.error(request, "Passwords are not the same.")
             return render(request, "auth/signup.html")
-
         real_auth_token = USER_AUTH_DB.find({"username":username})[0]["token"]
         if email_ver != real_auth_token:
             messages.error(request, "Invalid confirmation code")
             return render(request, "auth/signup.html")
 
+        # Create new user
         newUser = User.objects.create_user(username=username, email=email, password=pass1)
         newUser.first_name = fname
         newUser.last_name = lname
 
         messages.success(request, "Your account has been successfully created.")
         newUser.save()
-
+        # Create new user database
         FRIEND_DB.insert_one({"user_name": username, "friend_list": [], "group_list":[], "profile":"/static/profile/default.png"})
         USER_TASK_DB.insert_one({"username": username, "privacy":0, "tasklist": {}, "deletedtask": {}})
 
         return render(request, "auth/signin.html")
     return render(request, "auth/signup.html")
 
+# Signin
 def signin(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -67,7 +71,7 @@ def signin(request):
             return render(request, "auth/signup.html")
     return render(request, "auth/signin.html")
 
-
+# Signout
 def signout(request):
     logout(request)
     messages.success(request, "Logged out successfully.")
@@ -79,6 +83,7 @@ def signout(request):
 #         messages.success(request, f"Hello {user}, You have been successfully signed in.")
 #     return render(request,"auth/index.html")
 
+# Send email verification code
 def send_email(request):
     username = request.POST["name"]
     email = request.POST["email"]

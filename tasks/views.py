@@ -6,6 +6,8 @@ import json
 USER_TASK_DB = MONGO_CLIENT['csci3100']['task_list']
 FRIEND_DB = MONGO_CLIENT['chat']['friend']
 # Create your views here.
+
+# Render main task page.
 def tasklist(request):
     if request.user.is_authenticated:
         username = request.user
@@ -14,6 +16,7 @@ def tasklist(request):
         return redirect("../auth/signin")
     return render(request, "task/task.html")
 
+# Get tasklist of user.
 def gettasklist(request):
     if request.user.is_authenticated:
         username = request.user
@@ -32,6 +35,7 @@ def gettasklist(request):
             unfinished_task[key] = value
     return JsonResponse(unfinished_task)
 
+# Add a task.
 def inserttask(request):
     if request.user.is_authenticated:
         username = request.user
@@ -49,6 +53,7 @@ def inserttask(request):
     USER_TASK_DB.update_one({"username":str(username)},{"$set":{"tasklist":existing["tasklist"]}})
     return HttpResponse()
 
+# Delete a task.
 def deletetask(request):
     if request.user.is_authenticated:
         username = request.user
@@ -63,7 +68,7 @@ def deletetask(request):
     USER_TASK_DB.update_one({"username": str(username)}, {"$set": {"tasklist": existing["tasklist"],"deletedtask": existing["deletedtask"]}})
     return HttpResponse()
 
-
+# Change working status of a task.
 def changedoingstatus(request):
     if request.user.is_authenticated:
         username = request.user
@@ -78,10 +83,11 @@ def changedoingstatus(request):
     USER_TASK_DB.update_one({"username": str(username)}, {"$set": {"tasklist": existing["tasklist"]}})
     return HttpResponse()
 
-
+# Render finished task page.
 def showfinishedtask(request):
     return render(request, "task/finishedtask.html")
 
+# Get all finished task of user.
 def getfinishedtask(request):
     if request.user.is_authenticated:
         username = request.user
@@ -100,6 +106,7 @@ def getfinishedtask(request):
             finished_task[key] = value
     return JsonResponse(finished_task)
 
+# Restore finished task to task list.
 def restorefinishedtask(request):
     if request.user.is_authenticated:
         username = request.user
@@ -114,6 +121,7 @@ def restorefinishedtask(request):
     USER_TASK_DB.update_one({"username": str(username)},{"$set": {"tasklist": existing["tasklist"]}})
     return HttpResponse()
 
+# Render Deleted task page.
 def showdeletedtask(request):
     return render(request, "task/deletedtask.html")
 
@@ -130,7 +138,7 @@ def getdeletedtask(request):
     # else:
     return JsonResponse(user_task_list[0]["deletedtask"])
 
-
+# Restore deleted task to task list.
 def restoredeletetask(request):
     if request.user.is_authenticated:
         username = request.user
@@ -146,9 +154,11 @@ def restoredeletetask(request):
                             {"$set": {"tasklist": existing["tasklist"], "deletedtask": existing["deletedtask"]}})
     return HttpResponse()
 
+# Render timer page.
 def timer(request):
     return render(request, "task/timer.html")
 
+# Get working task list.
 def getdoinglist(request):
     if request.user.is_authenticated:
         username = request.user
@@ -167,6 +177,7 @@ def getdoinglist(request):
             unfinished_task[key] = value
     return JsonResponse(unfinished_task)
 
+# Change finished status of a task.
 def changefinishedstatus(request):
     if request.user.is_authenticated:
         username = request.user
@@ -184,7 +195,7 @@ def changefinishedstatus(request):
     USER_TASK_DB.update_one({"username": str(username)},{"$set": {"tasklist": existing["tasklist"]}})
     return HttpResponse()
 
-
+# Add timespent to working tasks.
 def addtimespent(request):
     if request.user.is_authenticated:
         username = request.user
@@ -203,9 +214,11 @@ def addtimespent(request):
     USER_TASK_DB.update_one({"username": str(username)}, {"$set": {"tasklist": existing["tasklist"]}})
     return HttpResponse()
 
+# Render report page.
 def report(request):
     return render(request, "task/report.html")
 
+# Get report data.
 def get_report_data(request):
     if request.user.is_authenticated:
         username = request.user
@@ -243,6 +256,7 @@ def get_report_data(request):
 
     return JsonResponse(finished_and_matched,safe=False)
 
+# Get user friend list.
 def get_friend_list(request):
     if request.user.is_authenticated:
         username = request.user
