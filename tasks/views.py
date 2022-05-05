@@ -243,7 +243,7 @@ def get_report_data(request):
         user_task_list = USER_TASK_DB.find({"username": str(username)})
         existing = user_task_list[0]
         if existing["privacy"] == 0:
-            messages.error(request,"The privacy setting for your friend is false")
+            messages.error(request,"The privacy setting of your friend is false")
             print("Error")
             return JsonResponse(-1,safe=False)
         else:
