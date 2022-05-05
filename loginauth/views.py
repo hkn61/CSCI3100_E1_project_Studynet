@@ -8,7 +8,6 @@ from csci3100 import settings
 import random
 import string
 from csci3100.settings import MONGO_CLIENT
-from user_profile.models import Image
 # Create your views here.
 
 USER_AUTH_DB = MONGO_CLIENT['csci3100']['user_auth']
@@ -48,12 +47,6 @@ def signup(request):
 
         FRIEND_DB.insert_one({"user_name": username, "friend_list": [], "group_list":[], "profile":"/static/profile/default.png"})
         USER_TASK_DB.insert_one({"username": username, "privacy":0, "tasklist": {}, "deletedtask": {}})
-
-        # user = UserModel()
-        # user.username = username
-        # user.email = email
-        # #user.image = 'static/default.png'
-        # user.save()
 
         return render(request, "auth/signin.html")
     return render(request, "auth/signup.html")

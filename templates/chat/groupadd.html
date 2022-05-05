@@ -2,6 +2,7 @@
 
 {% block content %}
     <style>
+        /* basic part*/
         .sideBar-item-top{
             background: #c4dad8;
         }
@@ -17,6 +18,7 @@
             margin: 0;
             padding-right: 50px;
         }
+        /* search box for group/friend search */
         .search-form {
             width: 450px;
             align-self: center;
@@ -54,7 +56,7 @@
         .button:hover{
             cursor: pointer;
         }
-        
+        /*search result list*/
         .listItem {
             background: #eed1ac;
             border-radius: 10px;
@@ -82,7 +84,7 @@
             /*display:inline-block;*/
             margin:5px;
         }
-        
+        /* button for create new group */
         .create {
             color: #123777;
             font-size: 40px;
@@ -93,6 +95,7 @@
             color: #99adce;
         }
         
+        /* instruction */
         .notice{
             color:#123777;
             text-align: left;
@@ -103,9 +106,11 @@
 
     </style>
         <h1 class="title">StudyNet - Add Friend/Group</h1>
+        <!-- search form -->
         <div class = "search-form">
         <form  action="/chat/groupsearch" method="post">
             {% csrf_token %}
+            <!--search keyword input box-->
             <div>
                 <input class="input" name="groupname" type="text"  placeholder="Search..." required>
                 
@@ -113,6 +118,8 @@
                     <i class="bi bi-search" style="font-size: 30px"></i>
                 </button>
             </div>
+
+            <!--checkbox for choosing search type:  group name/group id/friend id-->
             <p class="notice-start"> Please select a search option:</p>
             <div class="option">
                 <input class = "radio" type="radio" name="search_type" value="private_group" required>
@@ -133,34 +140,38 @@
         </form>
         </div>
         
-        
+        <!--content in block is create group form, show the form if the user click "CREATE" button-->
         {% block form %}
         
         {% endblock %}
         <h2>Click the card to ADD group/friend  </h2>
+        <!--search result-->
         <div id="app">
-            <!--<div class="search-result" v-if="showList" >-->
                 {% csrf_token %}
                 <div class="listItem" @click="addGroup(item)" v-for="item in res_group_list" :key="item" >
                     <p class="info-name">[[item.group_name]]</p>
                     <p class="info-des">[[item.description]]</p>
                 </div>
-            <!--</div>-->
         </div>
         
+        <!--option for create new group-->
         <h2>No suitable group found? <a onclick="location.href='/chat/groupcreate';"  class="create">CREATE</a> a new group!</h2>
         
         <p><br></p>
 
+    <!--receive response from views.py-->
     {{ search_by|json_script:"search_by" }}
     {{ res_group_list|json_script:"res_group_list" }}
     
 
   <script>
+    //tranform the reveived data to js object
     let search_by = JSON.parse(document.getElementById('search_by').textContent);
     let res_group_list = JSON.parse(document.getElementById('res_group_list').textContent);
     console.log(res_group_list)
     console.log(search_by)
+    
+    //run vue app
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
@@ -171,6 +182,7 @@
             }
         },
         methods: {
+            //when clicking a result card, send groupname/friend name and search method to backend to add a group/friend
             addGroup(item){
                 console.log(item)
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -187,9 +199,6 @@
                 location.href='/chat/groupadd'
             }
             
-        },
-        mounted: function(){
-            console.log('== mounted ==')
         }
     });
     app.mount('#app');

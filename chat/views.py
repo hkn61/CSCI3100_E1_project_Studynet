@@ -3,6 +3,7 @@ from re import search
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from asgiref.sync import async_to_sync
+from numpy import rec
 from csci3100.settings import MONGO_CLIENT
 from django.contrib import messages
 from bson.objectid import ObjectId
@@ -10,7 +11,6 @@ import string
 import datetime
 # Create your views here.
 
-# test
 def save_to_database(db, collection, chat_message):
     print('inside save_to_database====>', db, collection, chat_message)
     r = MONGO_CLIENT[db][collection].insert_one(chat_message)
@@ -156,7 +156,6 @@ def groupsearch(request):
         username = str(username)
     else:
         return redirect("/auth/signin")
-    #username = 'hkn' #test!!!
     group_name = request.POST["groupname"]
     search_by = request.POST.get('search_type')
     res_group_list = []
@@ -198,7 +197,6 @@ def groupsearch(request):
                 print(record)
                 #dict = {'group_name': record['user_name'], 'description': ''}
                 res_group_list.append(record['user_name']) # matched user
-    #print(res_group_list)
 
     unadded_group_list = [i for i in res_group_list if i not in added_group_list]
     result_group_list = []
@@ -223,9 +221,7 @@ def groupsearch(request):
     return render(request, 'chat/groupadd.html', {
         'search_by': search_by,
         'res_group_list': result_group_list
-        
     })
-
 
 
 def groupchat(request, room_name):
@@ -241,7 +237,6 @@ def groupchat(request, room_name):
         username = str(username)
     else:
         return redirect("/auth/signin")
-    #username = 'Wendy' #test!!!!!!
     if not username:
         return HttpResponseRedirect('homepage/login/')
 
@@ -311,14 +306,25 @@ def groupchat(request, room_name):
     print('previous_messages =======>', previous_messages)
     if room_name_with_type == 'groupchat':
         room_name_with_type = 'g' + room_name_with_type
+
+    attack_indicator = 0
+    print(room_name_with_type[1:])
+    if group_name not in group_list and room_name_with_type[1:] not in friend_list_tmp and group_name != 'roupchat':
+        previous_messages = []
+        attack_indicator = 1
+
+    if group_name == 'roupchat':
+        attack_indicator = 0
+
     return render(request, 'chat/groupchat.html', {
         'room_name': room_name_with_type,
         'friend_list': friend_list,
         'group_list': group_list,
         'prev_messages': previous_messages,
-        'current_user': username
+        'current_user': username,
+        'history_indicator': 0,
+        'attack_indicator': attack_indicator
     })
-
 
 
 def friendadd(request):
@@ -335,16 +341,13 @@ def friendadd(request):
     return render(request, 'chat/groupadd.html', {})
 
 
-
 def grouplist(request):
-    #username = request.session.get('username') or ''
     username = ''
     if request.user.is_authenticated:
         username = request.user
         username = str(username)
     else:
         return redirect("/auth/signin")
-    #username = "Wendy"
     print(type(str(username)))
     username = str(username)
     filter = {'user_name': username}
@@ -373,6 +376,114 @@ def grouplist(request):
     return render(request, 'chat/grouplist.html', {
         'group_list': group,
         'friend_list': friend,
-        #'current_user': request.session['username']
         'current_user': username
     })
+
+
+def historysearch(request,room_name,keyword=None):
+    username = ''
+    if request.user.is_authenticated:
+        username = request.user
+        username = str(username)
+    else:
+        return redirect("/auth/signin")
+
+    group_name_with_type = room_name
+    group_name = group_name_with_type[1:]
+    type = group_name_with_type[:1]
+
+    if type == 'f':
+        group_name = username + '&' + group_name
+        try_filter = {'group_name': group_name}
+        if MONGO_CLIENT['chat']['friend_chat'].find_one(try_filter):
+            pass
+        else:
+            group_name = group_name + '&' + username
+        print("friend chat name: {}".format(group_name))
+    
+    message_list = []
+    if keyword != None:
+        print("roomname: "+ group_name+ "  keyword: "+keyword)
+        #group_name = 'CSCI_3100'
+        #keyword = 'i'
+        filter_kwd = { "message": { "$regex": ".*" + keyword + ".*" } }
+        msg_result = MONGO_CLIENT['chat']['chat_message'].find(filter_kwd)
+
+        for record in msg_result:
+            if record['group_name'] == group_name:
+                timestamp = record['time']
+                day = timestamp.day
+                month = timestamp.month
+                year = timestamp.year
+                hour = timestamp.hour
+                minute = timestamp.minute
+                time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
+                dict = {
+                    'message_id': str(record['_id']),
+                    'sender': record['sender'],
+                    'time': time,
+                    'message': record['message']
+                }
+                message_list.append(dict)
+    print(message_list)
+
+    filters = {'group_name': group_name}
+    sort_fields = [('time', -1)]
+    previous_messages = []
+    for chat in MONGO_CLIENT['chat']['chat_message'].find(filters).sort(sort_fields).limit(20):
+        print(chat)
+        chat['_id'] = str(chat['_id'])
+        chat['sender'] = str(chat['sender'])
+        chat['time'] = chat['time']
+        chat['message'] = chat['message']
+        previous_messages.append(chat)
+    previous_messages = sorted(previous_messages, key=lambda s: s['time'])
+
+    for chat in previous_messages:
+        timestamp = chat['time']
+        day = timestamp.day
+        month = timestamp.month
+        year = timestamp.year
+        hour = timestamp.hour
+        minute = timestamp.minute
+        time = str(day) + '/' + str(month) + '/' + str(year) + ' ' + str(hour).zfill(2) + ':' + str(minute).zfill(2)
+        chat['time'] = time
+        img_filter = {'user_name': chat['sender']}
+        img_record = MONGO_CLIENT['chat']['friend'].find_one(img_filter)
+        image = img_record['profile']
+        chat['image'] = image
+
+
+    filter = {'user_name': username}
+    result = MONGO_CLIENT['chat']['friend'].find(filter)
+    friend_list_tmp = result[0]['friend_list']
+    group_list = result[0]['group_list']
+    print("user: {}, friend list: {}, group list: {}".format(username, friend_list_tmp, group_list))
+    friend_list = []
+
+    for friend in friend_list_tmp:
+        fri_filter = {'user_name': friend}
+        fri_record = MONGO_CLIENT['chat']['friend'].find_one(fri_filter)
+        dict = {"username": friend, 'image': fri_record['profile']}
+        friend_list.append(dict)
+
+    attack_indicator = 0
+    if group_name not in group_list and group_name_with_type[1:] not in friend_list_tmp and group_name != 'roupchat':
+        previous_messages = []
+        message_list = []
+        attack_indicator = 1
+
+    if group_name == 'roupchat':
+        attack_indicator = 0
+
+    return render(request, 'chat/groupchatsearch.html', {
+        'history': message_list,
+        'history_indicator': 1,
+        'room_name': room_name,
+        'friend_list': friend_list,
+        'group_list': group_list,
+        'prev_messages': previous_messages,
+        'current_user': username,
+        'attack_indicator': attack_indicator
+    })
+

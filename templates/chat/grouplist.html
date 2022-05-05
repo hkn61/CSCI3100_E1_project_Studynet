@@ -2,6 +2,7 @@
 
 {% block content %}
     <style>
+        /* basic part*/
         .sideBar-item-middle{
             background: #c4dad8;
         }
@@ -11,6 +12,8 @@
         .groupMain {
             padding-right: 7vw;
         }
+
+        /* friend and group list: divided into to columns */
         .row {
             display: flex;
             margin-left: 5vw;
@@ -58,6 +61,7 @@
             text-align: center;
             background-color: #f1f1f1;
         }
+        /* merge 2 list into one column if the screen width < 1000px */
         @media screen and (max-width: 1000px) {
             .row{
                 display: block;
@@ -81,7 +85,6 @@
         }
         .info-name{
             font-size: 25px;
-            /*display:inline-block;*/
             margin: 5px;
             margin-top: 0px;
             font-weight: bold;
@@ -94,13 +97,13 @@
         .info-ID{
             color: gray;
             font-size:20px;
-            /*display:inline-block;*/
             margin:5px;
             visibility: hidden;
         }
         .info-ID:hover{
             cursor: text;
         }
+        /* instruction on the topic */
         .notice{
             color:#123777;
             text-align: center;
@@ -115,9 +118,15 @@
         <div id = "app">
             
             <h1 class="title" >Studynet - [[current_user]] - Friends/Groups List</h1>
+            
+            <!--instructions-->
             <p class="notice"><span>Mouseover</span> group card: &nbsp;&nbsp;show <span>group ID</span> </p> 
             <p class="notice"><span>Click</span> the card: &nbsp;&nbsp;enter <span>Chatroom</span></p> 
+            
+            <!--main body of grouplist-->
             <div class="row">
+            
+            <!--friend list-->
             <div class="list">
                 <h1 >My friends</h1>
                 <div class="listItem-friend"  @click="enterFriendChat(friend)"  v-for="friend in friend_list " :key="friend.ID">
@@ -125,6 +134,8 @@
                     <p class="info-name" >[[friend.friend_name]]</p>
                 </div> 
             </div>
+            
+            <!--group list-->
             <div class="list">
                 <h1>My groups</h1>
                 <div class="listItem-group"  @click.self="enterGroupChat(group)" v-for="group in group_list " :key="group.ID">
@@ -138,7 +149,7 @@
         
     </div> 
     
-   
+   <!--receive response from views.py-->
     {{ current_user|json_script:"current_user" }}
     {{ group_list|json_script:"group_list" }}
     {{ friend_list|json_script:"friend_list" }}
@@ -146,11 +157,13 @@
 
 
   <script>
+    //tranform the reveived data to js object
     let current_user = JSON.parse(document.getElementById('current_user').textContent);
     let group_list = JSON.parse(document.getElementById('group_list').textContent);
     let friend_list = JSON.parse(document.getElementById('friend_list').textContent);
     console.log(group_list)
     console.log(friend_list)
+    //run vue app
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
@@ -162,29 +175,23 @@
             }
         },
         methods: {
+            //render corresponding friend chatroom when clicking the a friend card
             enterFriendChat(friend){
                 console.log(friend)
                 let room_name = friend.friend_name
                 window.location.pathname = '/chat/' + 'f' + room_name +'/'
 
             },
+            //render corresponding friend chatroom when clicking the a group card
             enterGroupChat(group){
                 console.log(group)
                 let room_name = group.group_name
                 window.location.pathname = '/chat/' + 'g' + room_name +'/'
             }
-
             
         }
     });
-    app.mount('#app');
-
-      //document.getElementById("listItem-friend").onclick =  function (e){
-      //  console.log(e);
-      //  friend_list.push({ 'name': 'Wendy', 'ID': 123456, 'photo': 'photo1.jpg' });
-      //console.log(friend_list);
-      //}
-    
+    app.mount('#app'); 
       
   </script>
 

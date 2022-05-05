@@ -2,6 +2,7 @@
 
 {% block content %}
 <style>
+    /* basic part*/
     .title{
         padding:0;
         margin:2vh 0;
@@ -19,228 +20,343 @@
         border: 2px solid white;
     }
 
-.chat{
-    border-radius: 3px;
-    background: rgba(248, 250, 251, 0.4);
-    width: 85vw;
-    margin-bottom: 3vh;
-    height: 80vh;
-}
-.people-list .list-title{
-    background: #eae7e2;
-    color: #728796;
-    font-size: 20px;
-    text-align: left;
-    height: 6vh;
-    border: 2px solid #e8f1f3;
-}
-.people-list .list-title p{
-    margin: 1vh;
-}
-
-.people-list .chat-list{
-    overflow-y: scroll;
-    height: 32.5vh;
-    border: 2px solid white;
-    margin: 0;
-    padding: 0;
-}
-.people-list .chat-list li {
-    padding: 10px 15px;
-    list-style: none;
-    text-align: left;
-    border-bottom: 2px solid lightgrey;
-    height: 40px;
-    vertical-align: middle;
-}
-.people-list .chat-list li p{
-    margin: auto;
-    padding-top: 10px; 
-    padding-left: 65px;
-
-}
-.people-list .chat-list li div{
-    margin: auto;
-    padding-top: 1vh; 
-
-}
-.people-list .chat-list li:hover {
-    background: #efefef;
-    cursor: pointer
-}
-
-.people-list .chat-list img {
-    width: 45px;
-    border-radius: 50%;
-    float: left;
-
-}
-
-@media screen and (max-width: 700px) {
-    .people-list {
-        display: none !important;
+    /* chat box */
+    .chat{
+        border-radius: 3px;
+        background: rgba(248, 250, 251, 0.4);
+        width: 85vw;
+        margin-bottom: 3vh;
+        height: 80vh;
     }
+    /* room list */
+    .people-list .list-title{
+        background: #eae7e2;
+        color: #728796;
+        font-size: 20px;
+        text-align: left;
+        height: 6vh;
+        border: 2px solid #e8f1f3;
+    }
+    .people-list .list-title p{
+        margin: 1vh;
+    }
+
+    .people-list .chat-list{
+        overflow-y: scroll;
+        height: 32.5vh;
+        border: 2px solid white;
+        margin: 0;
+        padding: 0;
+    }
+    .people-list .chat-list li {
+        padding: 10px 15px;
+        list-style: none;
+        text-align: left;
+        border-bottom: 2px solid lightgrey;
+        height: 40px;
+        vertical-align: middle;
+    }
+    .people-list .chat-list li p{
+        margin: auto;
+        padding-top: 10px; 
+        padding-left: 65px;
+
+    }
+    .people-list .chat-list li div{
+        margin: auto;
+        padding-top: 1vh; 
+
+    }
+    .people-list .chat-list li:hover {
+        background: #efefef;
+        cursor: pointer
+    }
+
+    .people-list .chat-list img {
+        width: 45px;
+        border-radius: 50%;
+        float: left;
+
+    }
+    /* hide room list when screen width < 700px */
+    @media screen and (max-width: 700px) {
+        .people-list {
+            display: none !important;
+        }
+        .chat-block{
+            margin-left: 0px !important;
+        }
+    }
+    /* chatroom header */
     .chat-block{
-        margin-left: 0px !important;
+        margin-left: 250px;
+        border: 2px solid white;
+        height: 80vh;
     }
-}
+    .chat-header {
+        
+        border: 2px solid white;
+        height: 8vh;
+        background: #eee3e0;
+    }
+    .chat-header p{
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 2vh;
+        display: inline-block;
+    }
+    .chat-header .search_history {
+        float: right;
+        width: 120px;
+        height: 5vh;
+        border: 3px solid lightgray;
+        border-radius: 5px;
+        margin-left: 3px;
+        margin-right: 30px;
+        margin-top: 1vh;
+        background: rgba(248, 250, 251, 0.7);
+        cursor: pointer;
+    }
+    .chat-header .search_history p{
+        margin-top:0px;
+        display: inline-block;
+    }
 
-.chat-block{
-    margin-left: 250px;
-    border: 2px solid white;
-    height: 80vh;
-}
-.chat-header {
+    /* chatroom messages */
+    .chat-history {
+        border-bottom: 2px solid white;
+        overflow-y: scroll;
+        height: 64vh;
+    }
+
+    .chat-history ul {
+        padding: 0
+    }
+
+    .chat-history ul li {
+        list-style: none;
+        height: 90px;
+        margin-bottom: 40px;
+        margin-left: 13px;
+        margin-right: 13px;
+    }
+
+    .chat-history ul li:last-child {
+        padding-bottom: 10px;
+    }
+    .chat-history .message-data {
+        margin-bottom: 15px;
+        display: block;
+        
+    }
+    .myImage {
+        border-radius: 40px;
+        width: 40px;
+        float: right;
+        margin-right: 16px;
+        
+    }
+    .otherImage{
+        border-radius: 40px;
+        width: 40px;
+        float: left;
+    }
+
+    .chat-history .message-data-time {
+        color: #434651;
+        padding-left: 6px;
+        display: block;
+        margin-left: auto; 
+        margin-right: 0;
+        font-size: 13px;
+        padding-bottom: 25px;
+        float: center;
+        padding-left: 40px;
+        padding-right: 56px;
+    }
+
+    .chat-history .message {
+        color: #444;
+        padding: 13px 20px;
+        line-height: 26px;
+        font-size: 16px;
+        border-radius: 7px;
+        display:  block;
+        position: relative
+    }
+
+    .chat-history .message:after {
+        bottom: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-bottom-color: #fff;
+        border-width: 10px;
+        margin-left: -10px
+    }
+
+    .chat-history .otherMessage {
+        background: #efefef;
+        float: left;
+        text-align: left;
+    }
+
+    .chat-history .otherMessage:after {
+        bottom: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-bottom-color: #efefef;
+        border-width: 10px;
+        margin-left: -10px;
+        left: 20px;
+    }
+
+    .chat-history .myMessage {
+        background: #e8f1f3;
+        float: right;
+        margin-right:10px;
+        text-align: left;
+    }
+
+    .chat-history .myMessage:after {
+        border-bottom-color: #e8f1f3;
+        right: 15px;
+    }
+
+    /* chatroom send box */
+    .chat-message {
+        padding: 0px;
+        height: 6vh;
+        align-items: left;
+    }
+    .chat-message input{
+        width: 85%;
+        height: 6vh;
+        border-radius: 5px;
+        font-size: 20px;
+        border: 3px solid lightgray;
+        display:flex;
+
+    }
+    .chat-message span{
+        float: left;
+        width: 8%;
+        height: 6vh;
+        border: 3px solid lightgray;
+        border-radius: 5px;
+        margin-left: 3px;
+    }
+    .textright{
+        margin-right:10px;
+    }
+
+
+    /* chathistory search box */
+    .searchHistory{
+        top: 0;
+        position: fixed;
+        background: rgba(0,0,0,0.5);
+        width: 100%;
+        height: 100%;
+        z-index: 900;
+    }
+    .history-form{
+        width: 500px;
+        height: 435px;
+        padding: 20px;
+        margin-top: 100px;
+        background: white;
+        border-radius: 30px;
+        text-align: left;
+        margin-left: 20%;
+        padding-top: 40px;
+    }
+    /*add responsive feature */
+    @media screen and (max-width: 700px) {
+        .history-form {
+            width: 350px !important;    
+        }
+        .history-form input[type=text]{
+            width:140px !important;
+        }
+
+    }
+    .history-form input[type=text] {
+        border: 2px solid lightgray;
+        border-radius: 10px;
+        padding: 10px,6px;
+        margin: 0px;
+        font-size: 20px;
+        height: 40px;
+        width: 300px;
+        font-size: 20px;
+        float:left;
+        margin-left: 20px;
+    }
+    .history-form button{
+        padding: 10px,6px;
+        border: 2px solid lightgray;
+        margin: 0px;
+        font-size: 17px;
+        width: 100px;
+        height: 45px;
+        border-radius: 10px;
+        float: left;
+        cursor: pointer;
+    }
+    .history-form .searchButton{
+        margin-left: 250px;
+        border: 2px solid lightgray;
+        margin: 0px;
+        font-size: 17px;
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        float: left;
+        padding: 10px,6px;
+        cursor: pointer;
+
+    }
     
-    border: 2px solid white;
-    height: 8vh;
-    background: #eee3e0;
+    .searchHistory ul {
+        overflow-y: scroll;
+        height: 330px;
+        list-style-type: none;
+        padding-left: 20px;
+        padding-top: 30px;
+        margin-top: 50px;
+    }
+    .searchHistory ul li{
+        border-bottom: 2px solid lightgray;
+        margin-right: 5px;
+    }
+    .searchHistory ul li p span{
+        color:#123777;
+        font-weight: bold;
+    }
 
-}
-.chat-header p{
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 2vh;
-}
-
-.chat-history {
-    border-bottom: 2px solid white;
-    overflow-y: scroll;
-    height: 64vh;
-}
-
-.chat-history ul {
-    padding: 0
-}
-
-.chat-history ul li {
-    list-style: none;
-    height: 90px;
-    margin-bottom: 40px;
-    margin-left: 13px;
-    margin-right: 13px;
-}
-
-.chat-history ul li:last-child {
-    padding-bottom: 10px;
-}
-.chat-history .message-data {
-    margin-bottom: 15px;
-    display: block;
-    
-}
-.myImage {
-    border-radius: 40px;
-    width: 40px;
-    float: right;
-    margin-right: 16px;
-    
-}
-.otherImage{
-    border-radius: 40px;
-    width: 40px;
-    float: left;
-}
-
-.chat-history .message-data-time {
-    color: #434651;
-    padding-left: 6px;
-    display: block;
-    margin-left: auto; 
-    margin-right: 0;
-    font-size: 13px;
-    padding-bottom: 25px;
-    float: center;
-    padding-left: 40px;
-    padding-right: 56px;
-}
-
-.chat-history .message {
-    color: #444;
-    padding: 13px 20px;
-    line-height: 26px;
-    font-size: 16px;
-    border-radius: 7px;
-    display:  block;
-    position: relative
-}
-
-.chat-history .message:after {
-    bottom: 100%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-bottom-color: #fff;
-    border-width: 10px;
-    margin-left: -10px
-}
-
-.chat-history .otherMessage {
-    background: #efefef;
-    float: left;
-    text-align: left;
-}
-
-.chat-history .otherMessage:after {
-    bottom: 100%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-bottom-color: #efefef;
-    border-width: 10px;
-    margin-left: -10px;
-    left: 20px;
-}
-
-.chat-history .myMessage {
-    background: #e8f1f3;
-    float: right;
-    margin-right:10px;
-    text-align: left;
-}
-
-.chat-history .myMessage:after {
-    border-bottom-color: #e8f1f3;
-    right: 15px;
-}
-.chat-message {
-    padding: 0px;
-    height: 6vh;
-    align-items: left;
-}
-.chat-message input{
-    width: 85%;
-    height: 6vh;
-    border-radius: 5px;
-    font-size: 20px;
-    border: 3px solid lightgray;
-    display:flex;
-
-}
-.chat-message span{
-    float: left;
-    width: 8%;
-    height: 6vh;
-    border: 3px solid lightgray;
-    border-radius: 5px;
-    margin-left: 3px;
-}
-.textright{
-    margin-right:10px;
-}
+        
+        
 </style>
 
 <div id="app">
+    {% block history %}
+
+    {% endblock %}
+
+    <!--chat main body-->
     <h1 class="title">StudyNet - [[current_user]] - ChatBox</h1>
     <div class="chat"> 
+        <!--chatroom list-->
         <div id="plist" class="people-list ">
-                
+            <!--friend chatroom list-->
             <div class="list-title">
                 <p>Friends:</p>
             </div>  
@@ -251,7 +367,7 @@
                     <p class="friend-name">[[friend.username]]</p>    
                 </li> 
             </ul>
-
+            <!--group chatroom list-->
             <div class="list-title">
                 <p>Groups:</p>
             </div>  
@@ -261,18 +377,23 @@
                 </li>  
             </ul>
         </div>
-
+        <!--chatroom body-->
         <div class="chat-block">
+            <!--chatroom header-->
             <div class="chat-header">       
                 <p >[[room_name]]</p>
+                <div class = "search_history" @click="enterSearch">
+                    <i class="bi bi-search" style="font-size: 25px"></i> history</input>
+                </div>
+
             </div>
             
+            <!--chatroom messages-->
             <div class="chat-history ">
                 <ul class="history-list">
                     <li class="history-item"  v-for="mes in prev_messages" :key="mes._id">
                         <div class="message-data" >
                             <img :src="mes.image" alt="selfie" :class="{otherImage: mes.sender != current_user , myImage: mes.sender == current_user}">
-                            <!--:class="{textright: mes.sender == current_user}"-->
                             <span class="message-data-time">[[mes.time]]</span>
                         </div>
                         
@@ -280,7 +401,7 @@
                     </li>                               
                 </ul>
             </div>
-
+            <!--chatrooom send box-->
             <div class="chat-message">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -292,48 +413,64 @@
         </div>
     </div>
 </div>
-
+    <!--receive response from views.py-->
     {{ room_name|json_script:"room_name" }}
     {{ prev_messages|json_script:"prev_messages" }}
     {{ current_user|json_script:"current_user" }}
     {{ group_list|json_script:"group_list" }}
     {{ friend_list|json_script:"friend_list" }}
+    {{ history|json_script:"history" }}
+    {{ history_indicator|json_script:"history_indicator" }}
+    {{ attack_indicator|json_script:"attack_indicator" }}
 
 <script>
-
+    //tranform the reveived data to js object
     let room_name = JSON.parse(document.getElementById('room_name').textContent);
     let prev_messages = JSON.parse(document.getElementById('prev_messages').textContent);
     let current_user = JSON.parse(document.getElementById('current_user').textContent);
     let group_list = JSON.parse(document.getElementById('group_list').textContent);
     let friend_list = JSON.parse(document.getElementById('friend_list').textContent);
+    let history = JSON.parse(document.getElementById('history').textContent);
+    let history_indicator = JSON.parse(document.getElementById('history_indicator').textContent);
+    let attack_indicator = JSON.parse(document.getElementById('attack_indicator').textContent);
+    
     console.log(room_name);
     console.log( prev_messages);
     console.log( current_user)
     
+    //run vue app
     const app =  Vue.createApp({
         delimiters: ['[[', ']]'],
         el: '#app',
         
         data() {
             return {
+                full_room_name: room_name,
                 room_name: room_name,
                 current_user: current_user,
                 prev_messages: prev_messages,
                 chatSocket: null,
                 myInput: "",
                 group_list: group_list,
-                friend_list: friend_list
+                friend_list: friend_list,
+                showSearchBox: history_indicator,
+                history: history,
+                keyword: "",
+                attack_indicator: attack_indicator
             }
         },
         methods: {
+            //render corresponding friend chatroom when clicking the chatroom in roomlist
             enterFriendChatroom(friend){
                 console.log(friend)
                 window.location.pathname = '/chat/' + 'f' + friend.username +'/'
             },
+            //render corresponding group chatroom when clicking the chatroom in roomlist
             enterGroupChatroom(group){
                 console.log(group)
                 window.location.pathname = '/chat/' + 'g' + group +'/'
             },
+            //send a new message
             clickSend(){
                 if (this.myInput != ""){
                     console.log(this.myInput)
@@ -345,30 +482,62 @@
                 }
                 
             },
+            
+            //send roomname and search keyword to backend
+            enterSearch(){
+                window.location.pathname = '/chat/historysearch/' + this.full_room_name +'/'
+            },
+            //direct to history search result
+            searchWithKeyword(){
+                if (this.keyword != ""){
+                    window.location.pathname = '/chat/historysearch/' + this.full_room_name +'/'+this.keyword + '/'
+                }
+                else{
+                    window.alert("Please enter a keyword to search")
+                }
+                
+            
+            },
+            //return to chatroom when clicking 'cancel' in history search box
+            cancelSearch(){
+                window.location.pathname = '/chat/' + this.full_room_name +'/'
+            }
+
         },
         mounted: function(){
+
+            //connect to websocket for chat function
             this.room_name = this.room_name.substring(1)
             this.prev_messages = this.prev_messages.reverse();
-            console.log("Starting connection to WebSocket Server")
-            
-            this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
+            console.log(this.room_name);
+            if(this.room_name != 'groupchat' && this.attack_indicator == 0){
+                console.log("Starting connection to WebSocket Server")
+                
+                this.chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + room_name + '/')
 
-            this.chatSocket.onmessage = (event) => {
-                console.log(event)
-                var data = JSON.parse(event.data)
-                var message = data.message
-                if (message) {
-                    this.prev_messages.unshift(message)
-                    console.log(this.prev_messages)
+                //send a new message 
+                this.chatSocket.onmessage = (event) => {
+                    console.log(event)
+                    var data = JSON.parse(event.data)
+                    var message = data.message
+                    if (message) {
+                        this.prev_messages.unshift(message)
+                        console.log(this.prev_messages)
+                    }
+                }
+                //handle chatSocket connection open
+                this.chatSocket.onopen = function(event) {
+                    console.log(event)
+                    console.log("Successfully connected to the echo websocket server...")
+                }
+                //handle chatSocket connection close
+                this.chatSocket.onclose = function (e) {
+                    console.error('Chat socket closed unexpectedly');
                 }
             }
-            
-            this.chatSocket.onopen = function(event) {
-                console.log(event)
-                console.log("Successfully connected to the echo websocket server...")
-            }
-            this.chatSocket.onclose = function (e) {
-                console.error('Chat socket closed unexpectedly');
+            if(this.attack_indicator == 1){
+                window.alert("This is not your friend/group. You can not chat in this chatbox or view chat history!");
+                window.location.pathname = '/chat/groupchat'
             }
         }
     });

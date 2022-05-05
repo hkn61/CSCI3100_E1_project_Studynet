@@ -2,6 +2,7 @@
 
 {% block form %}
 <style>
+        /* a lightgray backdrop */
         .backdrop{
         top: 0;
         position: fixed;
@@ -9,6 +10,7 @@
         width: 100%;
         height: 100%;
         }
+        /* form for groupcreate */
         .create-form{
             color:#9ea0b2;
             width: 400px;
@@ -23,6 +25,7 @@
             
 
         }
+        /* add responsive feature */
         @media screen and (max-width: 700px) {
             .create-form {
                 width: 250px !important;
@@ -101,6 +104,7 @@
 <div class="backdrop" >
         <form class="create-form" action="/chat/groupcreate" method="post">
             {% csrf_token %}
+            <!--show a message if create successfully-->
             {% if messages %}
               <ul class="messages">
                   {% for message in messages %}
@@ -108,6 +112,7 @@
                   {% endfor %}
               </ul>
             {% endif %}
+            <!--input group name and group description-->
             <label>Group Name: <br></label>
             <input type="text" required name="groupname">
 
@@ -115,6 +120,7 @@
             <input type="text" required name="description">
 
             <p></p>
+            <!--set the group to be private-->
             <div>
                 <input type="checkbox" name="private" >
                 <label> Set to be private</label>

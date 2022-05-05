@@ -18,6 +18,7 @@
       <script src="https://unpkg.com/vue@3"></script>
 
       <style>
+        /* main body */
           body {
             font-family: 'Ubuntu', sans-serif;
             text-align: center;
@@ -26,7 +27,7 @@
             padding: 0;
           }
           .body-content {
-            background-image: url("../../static/10.jpg");
+            background-image: url("/static/10.jpg");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -34,9 +35,8 @@
             min-height: 91vh;
             text-align: center;
             display:flex;
-            /*overflow-x: hidden;*/
           }
-
+          /* navbar on the top */
           .navbar {
             position: sticky;
             height: 7vh;
@@ -64,11 +64,15 @@
           }
           .navbar :hover {
             background: #a8c8b1;
+          }
+          .navbar li a:hover {
             cursor: pointer
           }
           .nav_of_group{
             background: #a8c8b1;
           }
+
+          /* saidebar on the left */
           .sideBar {
             width: 10vw;
             height: 93vh;
@@ -92,11 +96,14 @@
           .sideBar-item-bottom{
             height: 34%;
           }
+
+          /* basic body for groupadd/grouplist/groupchat */
           .groupMain {
             margin-left: 11vw;
             padding-right: 2vw;
             width: 89vw;
           }
+          /* footer */
           footer{
             display: block;
             text-align: left;
@@ -136,7 +143,7 @@
           </div>
           
           <div class="groupMain">
-
+              <!--the block will be replaced by groupchat or groupadd or grouplist-->
               {% block content %}
 
               {% endblock %}

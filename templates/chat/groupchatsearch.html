@@ -1,0 +1,30 @@
+{% extends "chat/groupchat.html" %}
+
+{% block history %}
+
+<!--chat history search box: hide by default-->
+<div class="searchHistory" v-if="showSearchBox">
+    <div class="history-form" >
+        {% csrf_token %}
+        <!--input keyword-->
+        <div>
+            <input v-model="keyword" @keyup.enter="searchWithKeyword" type="text" placeholder="Enter kerword here...">                                    
+            <button class="searchButton">
+                <span class="input-group-text" @click="searchWithKeyword"><i class="bi bi-search" style="font-size: 30px"></i></span>
+            </button>
+            <button type="cancel" @click="cancelSearch">Cancel</button>
+        </div>
+        <!--result of matched message history-->
+        <ul class="searchResult">
+            <li class="searchItem"  v-for="his in history" :key="his.message_id">
+                <div class="message-data" >
+                    <p class="message-data-time"><span>Sender:</span> [[his.sender]] &nbsp &nbsp <span>Time:</span> [[his.time]]</p>
+                    <p class="message-data-time"><span>Message: </span>[[his.message]] </p>
+                </div>
+            </li>                               
+        </ul>
+    </div>
+    
+</div>
+
+{% endblock %}
