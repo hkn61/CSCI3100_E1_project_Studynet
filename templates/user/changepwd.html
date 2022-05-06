@@ -3,7 +3,7 @@
   <head>
     {% load static %}
     <title>Studynet</title>
-<!--    <link rel="shortcut icon" href="1.jpg">-->
+    <!-- <link rel="shortcut icon" href="1.jpg">-->
     <link rel="stylesheet" href="{% static 'style.css' %}" />
     <meta http-equiv="refresh" content="300">
     <meta name="msapplication-TileColor" content="#6371C5" />
@@ -16,16 +16,16 @@
 
   </head>
   <style>
-    .form-wrapper {
-      margin-top: 10px;
-    }
-    body {
-      font-family: 'Ubuntu', sans-serif;
-      text-align: center;
-      color: #2c3e50;
-      margin: 0;
-      padding: 0;
-    }
+      .form-wrapper {
+        margin-top: 10px;
+      }
+      body {
+        font-family: 'Ubuntu', sans-serif;
+        text-align: center;
+        color: #2c3e50;
+        margin: 0;
+        padding: 0;
+      }
       button {
         font-family: 'Ubuntu', sans-serif;
         text-align: center;
@@ -41,6 +41,7 @@
       }
   </style>
   <body>
+    <!-- navigation bar -->
     <ul class = "navbar">
       <li><a href="/task/tasklist">My Task</a></li>
       <li><a href="/chat/grouplist">My Friends/Groups</a></li>
@@ -51,6 +52,7 @@
       <div class="form-wrapper">
         <form class="bewhite" id="message" action="/user/changepwd" method="post">  <!-- can change -->
           {% csrf_token %}
+          <!-- show a message from backend -->
           {% if messages %}
               <ul class="messages">
                   {% for message in messages %}
@@ -59,6 +61,7 @@
               </ul>
           {% endif %}
 
+          <!-- a form to reset the password -->
           <h1 class="text-title">Reset password</h1>
           <br/>
 
@@ -90,7 +93,6 @@
       </div>
     </div>
 
-    <!-- Bottom line -->
     <footer>
 
       <span class="author">

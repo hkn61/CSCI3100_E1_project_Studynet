@@ -10,6 +10,9 @@ import string
 from csci3100.settings import MONGO_CLIENT
 # Create your views here.
 
+'''
+This will find and return the current username, the user’s friend ID, profile photo and privacy status.
+'''
 def profile(request):
     # username = ''
     if request.user.is_authenticated:
@@ -37,6 +40,10 @@ def profile(request):
     })
 
 
+'''
+The profile photo path of the user in the friend database collection will be updated.
+The new photo path will be returned.
+'''
 def updatephoto(request):
     username = ''
     if request.user.is_authenticated:
@@ -45,15 +52,7 @@ def updatephoto(request):
     if request.method == 'GET':
         return render(request, 'user/profile.html')
     if request.method == "POST":
-        #username = '1'
-    # change profile photo if uploaded
-        #if len(request.FILES) != 0:
         image = request.POST.get('image')
-        #print(request)
-        #user.objects.filter(username = username).update(image=image)
-        #images = Image(username=username, image=image)
-        #print(images.image)
-        #images.save()
         image = '/static/profile/' + image
         print("image chosen:", image)
         filter = {'user_name': username}
@@ -78,6 +77,10 @@ def updatephoto(request):
     })
 
 
+'''
+The privacy of the user in the task_list database collection will be updated. 
+The new private status will be returned.
+'''
 def updateprivacy(request):
     username = ''
     if request.user.is_authenticated:
@@ -107,8 +110,13 @@ def updateprivacy(request):
     })
 
 
-
-
+'''
+The user needs to input the username, current password, new password and re-enter the new password. This function will check:
+•	whether the current password is correct;
+•	whether the new password is different from the current one;
+•	whether the re-entered password is the same as the new password.
+If all the conditions are met, this function will update the record in the authentication database.
+'''
 def changepwd(request):
     if request.method == "POST":
         username = request.POST["username"]

@@ -1,18 +1,18 @@
 import datetime
 import json
-
 from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer, JsonWebsocketConsumer, WebsocketConsumer
-
 from csci3100.settings import MONGO_CLIENT
 
+# save the chat massage to the database
 def save_to_database(db, collection, chat_message):
     print('inside save_to_database====>', db, collection, chat_message)
     r = MONGO_CLIENT[db][collection].insert_one(chat_message)
     return True, r.inserted_id
 
 
+# find user's profile photo
 def find_image(username):
     filter = {'user_name': username}
     img_record = MONGO_CLIENT['chat']['friend'].find_one(filter)
@@ -20,6 +20,12 @@ def find_image(username):
     return image
 
 
+'''
+Once a user enters a group/friend chat, he/she will get connected to a websocket of the current 
+group. If the user sends a message, then it will be stored in the chat_message database and broadcasted 
+to other users in this group. If other users send messages in this group, it will also be broadcasted 
+and returned to the current user. The running of websocket is based on Redis.
+'''
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']

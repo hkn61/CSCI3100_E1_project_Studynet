@@ -24,6 +24,7 @@ def create_a_group(db, collection, group_info):
     return True, r.inserted_id
 
 
+# update friend_chat db when add a friend
 def create_friend_chat(db, collection, friend_info):
     print('inside save_to_ friend_chat database====>', db, collection, friend_info)
     r = MONGO_CLIENT[db][collection].insert_one(friend_info)
@@ -36,7 +37,6 @@ def add_a_group(db, collection, group_name, user_name):
     print(type(group_name))
     filter = { 'group_name': group_name }
     entry = MONGO_CLIENT[db][collection].find_one(filter)
-    # ??? update member number 
     group_name = str(group_name)
     member_num = entry['memberNum'] + 1 
     if user_name not in entry['member']:
@@ -52,7 +52,7 @@ def add_a_group(db, collection, group_name, user_name):
     return True
 
 
-
+# update friend_chat db when add a friend
 def add_a_friend(db, collection, adder, added):
     print('inside add_to_ friend database====>', db, collection, adder, added)
     filter = { 'user_name': adder }
@@ -77,7 +77,15 @@ def group(request):
     return render(request, 'chat/group.html', {})
 
 
+'''
+If add a group: 
+In the friend database, the group list for the current user will be updated. 
+In the group database, the group member list and the member number will be updated.
 
+If add a friend:
+In the friend database, the friend lists for both the current user and the added friend will be updated. 
+In the friend_chat database, a private chat for the two new friends will be created.
+'''
 def groupadd(request):
     # add a group
     username = ''
@@ -109,6 +117,11 @@ def groupadd(request):
     })
 
 
+'''
+The function will check whether the group name is the same as an existing one in the 
+database. If yes, “group name already exists” message will be shown, and the group will 
+not be created. Otherwise, the group will be created and added to the creator’s group list.
+'''
 def groupcreate(request):
     # create a group
     username = ''
@@ -149,6 +162,14 @@ def groupcreate(request):
     return render(request, 'chat/groupcreate.html', {})
 
 
+'''
+•	Search by group name
+Use a whole group name or a partial keyword to search for a group. (Partial) Matched public group results will be shown.
+•	Search by group ID
+Use a group ID to search for a group. Matched group (public or private) result will be shown.
+•	Search by friend ID
+Use a friend ID to search for a friend. Matched friend result will be shown.
+'''
 def groupsearch(request):
     username = ''
     if request.user.is_authenticated:
@@ -224,6 +245,13 @@ def groupsearch(request):
     })
 
 
+'''
+When the user enters the chat page, his/her group list and friend list will be shown. 
+If the user enters a group/friend chat, the chat history will be returned. 
+The group name comes from the URL. To prevent the case that the user tries to enter a 
+chatroom not belonging to him/her by changing the URL, this function will also check 
+whether the group/friend belongs to the user, and send an attack indicator to frontend.
+'''
 def groupchat(request, room_name):
     room_name_with_type = room_name
     type = room_name[:1]
@@ -341,6 +369,9 @@ def friendadd(request):
     return render(request, 'chat/groupadd.html', {})
 
 
+'''
+This function will return the group list and friend list (together with their profile photo) of the current user. 
+'''
 def grouplist(request):
     username = ''
     if request.user.is_authenticated:
@@ -380,6 +411,10 @@ def grouplist(request):
     })
 
 
+'''
+After the user entering a searching keyword, all the (partial) matched previous 
+chat messages of the current group will be returned as a list.
+'''
 def historysearch(request,room_name,keyword=None):
     username = ''
     if request.user.is_authenticated:

@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from . import views
 
+# match or capture a value from the URL and invoke functions in views.py accordingly
 urlpatterns = [
     path('group', views.group, name='group'),
     path('groupadd', views.groupadd, name='groupadd'),
