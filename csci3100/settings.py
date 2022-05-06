@@ -154,7 +154,7 @@ CHANNEL_LAYERS = {
     },
 }
 
-MONGO_CLIENT = pymongo.MongoClient("mongodb://localhost:27017/")
+MONGO_CLIENT = pymongo.MongoClient("mongodb+srv://hkn:csci3100@cluster0.zxnmn.mongodb.net/test")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
