@@ -28,5 +28,6 @@ CSCI3100 Project of Group E1
 5. Visit the server via http://127.0.0.1:8000/ (default)
 
 ## Admin Page
-username: csci3100\
+
+username: csci3100
 password: csci3100
